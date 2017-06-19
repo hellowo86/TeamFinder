@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "547861577521",
+    "firebase_url": "https://teamfinder-32133.firebaseio.com",
+    "project_id": "teamfinder-32133",
+    "storage_bucket": "teamfinder-32133.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547861577521:android:99fa2939ec6a2b4e",
+        "android_client_info": {
+          "package_name": "com.hellowo.teamfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547861577521-7to5r2kmlepk4vhr9474bc1die4ku7ei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hellowo.teamfinder",
+            "certificate_hash": "7f8c92f651f5f79759875c3fe79a850b70517fe7"
+          }
+        },
+        {
+          "client_id": "547861577521-tu3iig9pqiild6d8gkdpfcir6kk4mmgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2ZLnVhqQIzL664_9KBl5zpn7zfMEBQ1o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547861577521-tu3iig9pqiild6d8gkdpfcir6kk4mmgh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
