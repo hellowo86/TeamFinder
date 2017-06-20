@@ -6,7 +6,6 @@ import android.content.ContextWrapper;
 import com.pixplicity.easyprefs.library.Prefs;
 
 public class App extends Application {
-
     public static App context;
 
     @Override
