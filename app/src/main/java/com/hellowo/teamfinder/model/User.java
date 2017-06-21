@@ -3,6 +3,7 @@ package com.hellowo.teamfinder.model;
 public class User {
     public final static String DB_REF = "users";
     public final static String KEY_PUSH_TOKEN = "pushToken";
+    public static final String KEY_PHOTO_URL = "photoUrl";
 
     String id;
     String nickName;

@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.model.User;
@@ -16,14 +17,12 @@ import com.hellowo.teamfinder.utils.StringUtil;
 
 public class SignUpViewModel extends ViewModel {
     public enum Status{InvalidNickName, InvalidEmail, InvalidPassword, PolicyUncheck, CompleteSignUp}
-    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     public MutableLiveData<Status> status = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
     public SignUpViewModel() {
         super();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -64,9 +63,12 @@ public class SignUpViewModel extends ViewModel {
         me.setEmail(user.getEmail());
         me.setNickName(nickName);
 
-        mDatabase.child(User.DB_REF).child(me.getId()).setValue(me, (error, databaseReference)->{
-            status.setValue(Status.CompleteSignUp);
-            loading.setValue(false);
-        });
+        FirebaseDatabase.getInstance().getReference()
+                .child(User.DB_REF)
+                .child(me.getId())
+                .setValue(me, (error, databaseReference)->{
+                    status.setValue(Status.CompleteSignUp);
+                    loading.setValue(false);
+                });
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hellowo.teamfinder.fbms;
+package com.hellowo.teamfinder.fcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

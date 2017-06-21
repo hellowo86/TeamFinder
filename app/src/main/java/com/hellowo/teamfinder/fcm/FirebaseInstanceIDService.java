@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hellowo.teamfinder.fbms;
+package com.hellowo.teamfinder.fcm;
 
 import android.util.Log;
 
@@ -23,7 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.hellowo.teamfinder.data.Me;
 import com.hellowo.teamfinder.model.User;
 
 

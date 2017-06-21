@@ -22,4 +22,5 @@
     <string name="existed_email">이미 존재하는 이메일 입니다.</string>
     <string name="incorrect_password">비밀번호가 틀립니다.</string>
     <string name="not_existed_user">존재하지 않는 계정입니다.</string>
+    <string name="plz_wait">잠시만 기다려주세요.</string>
 </resources>
