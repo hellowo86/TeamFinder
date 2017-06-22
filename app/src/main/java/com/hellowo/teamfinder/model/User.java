@@ -4,14 +4,17 @@ public class User {
     public final static String DB_REF = "users";
     public final static String KEY_PUSH_TOKEN = "pushToken";
     public final static String KEY_PHOTO_URL = "photoUrl";
-    public final static String PHOTO_URL_PREFIX = "https://firebasestorage.googleapis.com";
 
     String id;
     String nickName;
     String email;
-    String gender;
     String photoUrl;
     String pushToken;
+
+    int gender;
+
+    long dtCreated;
+
 
     public String getId() {
         return id;
@@ -37,11 +40,11 @@ public class User {
         this.email = email;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -59,5 +62,13 @@ public class User {
 
     public void setPushToken(String pushToken) {
         this.pushToken = pushToken;
+    }
+
+    public long getDtCreated() {
+        return dtCreated;
+    }
+
+    public void setDtCreated(long dtCreated) {
+        this.dtCreated = dtCreated;
     }
 }

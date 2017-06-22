@@ -6,6 +6,7 @@
 
     <color name="background">#FFFFFF</color>
     <color name="backgroundDark">#80FFFFFF</color>
+    <color name="backgroundAlpha">#DDFFFFFF</color>
 
     <color name="primaryText">#de000000</color>
     <color name="secondaryText">#89000000</color>

@@ -8,54 +8,80 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <android.support.design.widget.CoordinatorLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <FrameLayout
+                android:id="@+id/findTeamLy"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="match_parent">
+
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </android.support.v7.widget.RecyclerView>
+
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:background="@color/backgroundAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="62dp">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginLeft="62dp">
 
                         <TextView
+                            android:id="@+id/mainTopTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="TITLE"
-                            android:id="@+id/mainMonthText"
-                            android:textColor="@color/primaryText"
-                            android:gravity="center"
                             android:layout_gravity="center"
-                            android:textSize="21dp" />
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="Title"
+                            android:textColor="@color/primaryText"
+                            android:textSize="21dp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:text="subtitle"
-                            android:id="@+id/mainYearText"
+                            android:id="@+id/mainTopSubTitle"
                             android:textColor="@color/secondaryText"
                             android:gravity="center"
                             android:layout_gravity="center"
-                            android:textSize="11dp" />
+                            android:textSize="12dp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <ImageButton
+                    android:layout_gravity="center_vertical"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="6dp"
                     android:id="@+id/menuBtn"
                     android:background="@drawable/ripple_circle_button"
                     android:src="@drawable/ic_menu_black_48dp"
@@ -63,26 +89,58 @@
                     android:scaleType="centerInside"
                     android:padding="11dp" />
 
-                <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/myAccountBtn"
-                    android:layout_gravity="right"
-                    android:tint="@color/grey"
-                    android:background="@drawable/ripple_circle_button"
-                    android:src="@drawable/ic_account_circle_black_48dp"
-                    android:scaleType="centerInside"
-                    android:padding="11dp" />
-
             </FrameLayout>
 
-        </FrameLayout>
+            <LinearLayout
+                android:id="@+id/bottomSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="72dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="@string/app_name"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:rating="3.5" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+
+            </LinearLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@mipmap/ic_launcher_round"
+                app:layout_anchor="@+id/bottomSheet"
+                app:layout_anchorGravity="top|right" />
+
+        </android.support.design.widget.CoordinatorLayout>
 
         <LinearLayout
             android:id="@+id/myAccountDrawerLy"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_gravity="left"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -92,17 +150,6 @@
                 android:layout_margin="50dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/menuDrawerLy"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@color/white"
-            android:orientation="vertical">
 
         </LinearLayout>
 

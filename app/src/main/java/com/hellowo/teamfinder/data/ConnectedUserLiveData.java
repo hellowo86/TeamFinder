@@ -45,6 +45,8 @@ public class ConnectedUserLiveData extends LiveData<User> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 setValueEventListener(user.getUid());
+            }else{
+                setValue(null);
             }
         };
     }

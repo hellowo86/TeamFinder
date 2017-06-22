@@ -14,9 +14,9 @@ import com.hellowo.teamfinder.model.User;
 import com.hellowo.teamfinder.utils.StringUtil;
 
 public class SignUpViewModel extends ViewModel {
-    public enum Status{InvalidNickName, InvalidEmail, InvalidPassword, PolicyUncheck, CompleteSignUp}
+    public enum SignUpStatus {InvalidNickName, InvalidEmail, InvalidPassword, PolicyUncheck, CompleteSignUp}
     private FirebaseAuth mAuth;
-    public MutableLiveData<Status> status = new MutableLiveData<>();
+    public MutableLiveData<SignUpStatus> signUpStatus = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
     public SignUpViewModel() {
@@ -26,13 +26,13 @@ public class SignUpViewModel extends ViewModel {
 
     public void signUp(String nickName, String email, String password, boolean policyCheck){
         if(nickName.trim().length() < 2) {
-            status.setValue(Status.InvalidNickName);
+            signUpStatus.setValue(SignUpStatus.InvalidNickName);
         }else if(!StringUtil.isEmailValid(email.trim())){
-            status.setValue(Status.InvalidEmail);
+            signUpStatus.setValue(SignUpStatus.InvalidEmail);
         }else if(password.length() < 8){
-            status.setValue(Status.InvalidPassword);
+            signUpStatus.setValue(SignUpStatus.InvalidPassword);
         }else if(!policyCheck){
-            status.setValue(Status.PolicyUncheck);
+            signUpStatus.setValue(SignUpStatus.PolicyUncheck);
         }else{
             loading.setValue(true);
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -60,12 +60,13 @@ public class SignUpViewModel extends ViewModel {
         me.setId(user.getUid());
         me.setEmail(user.getEmail());
         me.setNickName(nickName);
+        me.setDtCreated(System.currentTimeMillis());
 
         FirebaseDatabase.getInstance().getReference()
                 .child(User.DB_REF)
                 .child(me.getId())
                 .setValue(me, (error, databaseReference)->{
-                    status.setValue(Status.CompleteSignUp);
+                    signUpStatus.setValue(SignUpStatus.CompleteSignUp);
                     loading.setValue(false);
                 });
     }

@@ -12,9 +12,9 @@ import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.utils.StringUtil;
 
 public class SignInViewModel extends ViewModel {
-    public enum Status{InvalidEmail, InvalidPassword, CompleteSignIn}
+    public enum SignInStatus {InvalidEmail, InvalidPassword, CompleteSignIn}
     private FirebaseAuth mAuth;
-    public MutableLiveData<Status> status = new MutableLiveData<>();
+    public MutableLiveData<SignInStatus> signInStatus = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>();
 
     public SignInViewModel() {
@@ -24,9 +24,9 @@ public class SignInViewModel extends ViewModel {
 
     public void signIn(String email, String password){
         if(!StringUtil.isEmailValid(email.trim())){
-            status.setValue(Status.InvalidEmail);
+            signInStatus.setValue(SignInStatus.InvalidEmail);
         }else if(password.length() < 8){
-            status.setValue(Status.InvalidPassword);
+            signInStatus.setValue(SignInStatus.InvalidPassword);
         }else{
             loading.setValue(true);
             mAuth.signInWithEmailAndPassword(email, password)
@@ -46,7 +46,7 @@ public class SignInViewModel extends ViewModel {
                             }
                             loading.setValue(false);
                         }else {
-                            status.setValue(Status.CompleteSignIn);
+                            signInStatus.setValue(SignInStatus.CompleteSignIn);
                             loading.setValue(false);
                         }
                     });

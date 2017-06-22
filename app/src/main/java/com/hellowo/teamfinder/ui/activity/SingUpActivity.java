@@ -23,11 +23,18 @@ public class SingUpActivity extends LifecycleActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         viewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
 
+        initLayout();
+        initObserve();
+    }
+
+    private void initLayout() {
         binding.backBtn.setOnClickListener(v->finish());
         binding.goSignInViewBtn.setOnClickListener(v -> goSignInView());
         binding.signUpBtn.setOnClickListener(v -> signUp());
+    }
 
-        viewModel.status.observe(this, (status)->{
+    private void initObserve() {
+        viewModel.signUpStatus.observe(this, (status)->{
             switch (status) {
                 case InvalidNickName:
                     binding.nameEdit.setError(getString(R.string.invalid_nick_name));
