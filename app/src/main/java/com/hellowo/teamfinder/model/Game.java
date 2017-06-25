@@ -6,4 +6,5 @@ public class Game {
     String name;
     String iconUrl;
     List<String> roles;
+    int maxMemberCount;
 }

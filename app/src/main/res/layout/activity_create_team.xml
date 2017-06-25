@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <FrameLayout
+            android:background="@color/backgroundAlpha"
+            android:layout_width="match_parent"
+            android:layout_height="62dp">
+
+            <TextView
+                android:id="@+id/mainTopTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="62dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/create_team"
+                android:textColor="@color/primaryText"
+                android:textSize="21dp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:layout_gravity="center_vertical"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="6dp"
+                android:id="@+id/backBtn"
+                android:background="@drawable/ripple_circle_button"
+                android:src="@drawable/ic_arrow_back_black_48dp"
+                android:tint="@color/colorPrimaryDark"
+                android:scaleType="centerInside"
+                android:padding="11dp" />
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</layout>

@@ -14,7 +14,7 @@
             android:background="@drawable/ripple_circle_button"
             android:padding="12dp"
             android:scaleType="centerInside"
-            android:tint="@color/grey"
+            android:tint="@color/colorPrimaryDark"
             android:src="@drawable/ic_clear_black_48dp" />
 
         <LinearLayout

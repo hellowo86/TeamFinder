@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +44,7 @@ public class MainActivity extends LifecycleActivity {
 
         binding.menuBtn.setOnClickListener(v->binding.drawerLy.openDrawer(Gravity.LEFT));
         binding.accountPhotoImg.setOnClickListener(viewModel::checkExternalStoragePermission);
-        binding.fab.setOnClickListener(viewModel::clickFab);
+        binding.fab.setOnClickListener(this::clickFab);
     }
 
     private void initObserve() {
@@ -103,6 +104,10 @@ public class MainActivity extends LifecycleActivity {
                 .setMaxCount(100)
                 .create();
         bottomSheetDialogFragment.show(getSupportFragmentManager());
+    }
+
+    private void clickFab(View view) {
+        startActivity(new Intent(this, CreateTeamActivity.class));
     }
 
 }
