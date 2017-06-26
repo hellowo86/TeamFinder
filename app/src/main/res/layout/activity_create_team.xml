@@ -2,7 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -12,8 +12,98 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:orientation="vertical"
+                android:paddingTop="@dimen/top_menu_bar_height"
+                android:paddingLeft="@dimen/big_margin"
+                android:paddingRight="@dimen/big_margin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SubText"
+                    android:text="@string/game"/>
+
+                <LinearLayout
+                    android:id="@+id/gameSelectBtn"
+                    android:background="@drawable/ripple_button"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/gameIconImg"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp" />
+
+                    <TextView
+                        android:id="@+id/gameTitleText"
+                        android:layout_marginLeft="@dimen/normal_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/TitleText"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SubText"
+                    android:text="@string/title"/>
+
+                <EditText
+                    android:id="@+id/titleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_title"
+                    android:maxLength="60"
+                    style="@style/TitleEditText"/>
+
+                <TextView
+                    android:layout_marginTop="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SubText"
+                    android:text="@string/members"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/memberRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:layout_marginTop="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SubText"
+                    android:text="@string/active_time"/>
+
+                <TextView
+                    android:layout_marginTop="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SubText"
+                    android:text="@string/options"/>
+
+                <TextView
+                    android:layout_marginTop="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/SubText"
+                    android:text="@string/description"/>
 
 
 
@@ -24,13 +114,13 @@
         <FrameLayout
             android:background="@color/backgroundAlpha"
             android:layout_width="match_parent"
-            android:layout_height="62dp">
+            android:layout_height="@dimen/top_menu_bar_height">
 
             <TextView
                 android:id="@+id/mainTopTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="62dp"
+                android:layout_marginLeft="@dimen/top_menu_bar_height"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -53,6 +143,6 @@
 
         </FrameLayout>
 
-    </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>

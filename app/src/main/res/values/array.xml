@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="games">
+        <item>["lol","리그오브레전드",["탑","정글","미드","원딜","서포터"],"5"]</item>
+        <item>["ow","오버워치",["공격군","돌격군","수비군","지원군"],"6"]</item>
+        <item>["dia3","디아블로3",["마법사","성전사","야만용사","악마사냥꾼","부두술사","수도사","강령술사"],"4"]</item>
+    </string-array>
+
+</resources>

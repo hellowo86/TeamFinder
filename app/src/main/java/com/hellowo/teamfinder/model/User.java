@@ -10,9 +10,7 @@ public class User {
     String email;
     String photoUrl;
     String pushToken;
-
     int gender;
-
     long dtCreated;
 
 
@@ -70,5 +68,14 @@ public class User {
 
     public void setDtCreated(long dtCreated) {
         this.dtCreated = dtCreated;
+    }
+
+    public Member makeMember(String role) {
+        Member member = new Member();
+        member.setName(nickName);
+        member.setPhotoUrl(photoUrl);
+        member.setUserId(id);
+        member.setRole(role);
+        return member;
     }
 }
