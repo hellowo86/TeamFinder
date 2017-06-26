@@ -31,4 +31,6 @@
     <string name="enter_title">제목을 입력하세요</string>
     <string name="free_role">자유역할</string>
     <string name="add_member">멤버추가</string>
+    <string name="team_member">팀원</string>
+    <string name="select_role">역할 선택</string>
 </resources>

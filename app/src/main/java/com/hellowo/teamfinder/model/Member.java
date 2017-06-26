@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.model;
 
+import com.hellowo.teamfinder.data.ConnectedUserLiveData;
+
 public class Member {
     String userId;
     String name;
@@ -36,5 +38,9 @@ public class Member {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isMe() {
+        return userId != null && ConnectedUserLiveData.get().getSnapshot().getId().equals(userId);
     }
 }

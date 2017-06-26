@@ -23,6 +23,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private List<Member> mContentsList;
     private boolean isEditable;
+    private boolean isFullMember;
     private MemberListInterface memberListInterface;
 
     final private static int TYPE_NORMAL = 0;
@@ -88,21 +89,33 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 if(!TextUtils.isEmpty(member.getPhotoUrl())) {
                     Glide.with(context).load(member.getPhotoUrl())
+                            .bitmapTransform(new CropCircleTransformation(context))
                             .thumbnail(0.1f)
                             .into(holder.imageView);
                 }else {
-                    holder.imageView.setImageResource(R.drawable.default_profile_circle);
+                    Glide.with(context).load(R.drawable.default_profile)
+                            .bitmapTransform(new CropCircleTransformation(context))
+                            .into(holder.imageView);
                 }
 
-                holder.container.setOnClickListener(v ->{});
-
-                if(isEditable) {
-                    holder.deleteBtn.setOnClickListener(v ->{});
+                if(isEditable && !member.isMe()) {
+                    holder.deleteBtn.setVisibility(View.VISIBLE);
+                    holder.deleteBtn.setOnClickListener(v ->memberListInterface.onDeleteClicked(member));
+                }else {
+                    holder.deleteBtn.setVisibility(View.GONE);
                 }
+
+                holder.container.setOnClickListener(v ->memberListInterface.onItemClicked(member));
+
                 break;
             case TYPE_FOOTER:
                 FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
-                footerViewHolder.container.setOnClickListener(v -> memberListInterface.onAddClicked());
+                if(isEditable && !isFullMember) {
+                    footerViewHolder.container.setVisibility(View.VISIBLE);
+                    footerViewHolder.container.setOnClickListener(v -> memberListInterface.onAddClicked());
+                }else{
+                    footerViewHolder.container.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -126,7 +139,14 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mContentsList.size() + 1;
     }
 
+    public void setIsFullMember(boolean isFullMember) {
+        this.isFullMember = isFullMember;
+        notifyItemChanged(mContentsList.size());
+    }
+
     public interface MemberListInterface{
         void onAddClicked();
+        void onDeleteClicked(Member member);
+        void onItemClicked(Member member);
     }
 }

@@ -15,7 +15,7 @@ public class HorizontalSpaceItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state) {
-        if(parent.getChildAdapterPosition(view) > 0) {
+        if(parent.getChildAdapterPosition(view) >= 0) {
             outRect.left = horizontalSpaceHeight;
         }
     }

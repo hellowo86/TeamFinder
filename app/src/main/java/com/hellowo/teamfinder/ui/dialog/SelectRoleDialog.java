@@ -17,13 +17,19 @@ import android.widget.TextView;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.ui.adapter.GameListAdapter;
+import com.hellowo.teamfinder.ui.adapter.RoleListAdapter;
 import com.hellowo.teamfinder.viewmodel.CreateTeamViewModel;
 
-public class SelectGameDialog extends BottomSheetDialog {
+public class SelectRoleDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;
+    Game game;
 
     public void setDialogInterface(DialogInterface dialogInterface) {
         this.dialogInterface = dialogInterface;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     @Override
@@ -35,18 +41,18 @@ public class SelectGameDialog extends BottomSheetDialog {
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         sheetBehavior = (BottomSheetBehavior)layoutParams.getBehavior();
-        if (sheetBehavior != null) {
+        if (sheetBehavior != null && game != null) {
             sheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
 
             TextView mainTopTitle = (TextView) contentView.findViewById(R.id.mainTopTitle);
-            mainTopTitle.setText(R.string.select_game);
+            mainTopTitle.setText(R.string.select_role);
 
             RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(new GameListAdapter(getContext(), game->{
+            recyclerView.setAdapter(new RoleListAdapter(getContext(), game, role->{
                 if(dialogInterface != null) {
-                    dialogInterface.onSelectedGame(game);
+                    dialogInterface.onSelectedGame(role);
                 }
             }));
 
@@ -56,6 +62,6 @@ public class SelectGameDialog extends BottomSheetDialog {
     }
 
     public interface DialogInterface{
-        void onSelectedGame(Game game);
+        void onSelectedGame(String role);
     }
 }
