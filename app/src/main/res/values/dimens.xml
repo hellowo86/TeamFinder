@@ -9,4 +9,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="top_menu_bar_height">62dp</dimen>
+    <dimen name="member_card_width">100dp</dimen>
+    <dimen name="member_card_height">130dp</dimen>
 </resources>

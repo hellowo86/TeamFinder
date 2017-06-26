@@ -33,4 +33,6 @@
     <string name="add_member">멤버추가</string>
     <string name="team_member">팀원</string>
     <string name="select_role">역할 선택</string>
+    <string name="active_infinity">팀 결성완료시 까지</string>
+    <string name="enter_description">추가로 설명할것이 있다면 적어주세요</string>
 </resources>

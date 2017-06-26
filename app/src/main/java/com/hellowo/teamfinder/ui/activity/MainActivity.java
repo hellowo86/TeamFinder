@@ -41,6 +41,10 @@ public class MainActivity extends LifecycleActivity {
     private void initLayout() {
         binding.swipeRefreshLy.setProgressViewOffset(false, 0,
                 (int) ViewUtil.dpToPx(this, 72));
+        binding.swipeRefreshLy.setColorSchemeColors(
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.red));
 
         binding.menuBtn.setOnClickListener(v->binding.drawerLy.openDrawer(Gravity.LEFT));
         binding.accountPhotoImg.setOnClickListener(viewModel::checkExternalStoragePermission);
