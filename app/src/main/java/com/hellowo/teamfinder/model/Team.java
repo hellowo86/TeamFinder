@@ -1,24 +1,39 @@
 package com.hellowo.teamfinder.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
-    List<User> members;
+    public final static String DB_REF = "teams";
+    public final static String KEY_DT_CREATED = "dtCreated";
+    public final static String KEY_DT_ACTIVE = "dtActive";
+
+    List<Member> members = new ArrayList<>();
+    String id;
     long dtCreated;
     String title;
     String description;
-    String gameId;
+    int gameId;
     long dtActive;
     long dtStart;
     long dtEnd;
-    List<String> options;
     int Status;
 
-    public List<User> getMembers() {
+
+
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 
@@ -46,11 +61,11 @@ public class Team {
         this.description = description;
     }
 
-    public String getGameId() {
+    public int getGameId() {
         return gameId;
     }
 
-    public void setGameId(String gameId) {
+    public void setGameId(int gameId) {
         this.gameId = gameId;
     }
 
@@ -78,19 +93,27 @@ public class Team {
         this.dtEnd = dtEnd;
     }
 
-    public List<String> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-
     public int getStatus() {
         return Status;
     }
 
     public void setStatus(int status) {
         Status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "members=" + members +
+                ", id='" + id + '\'' +
+                ", dtCreated=" + dtCreated +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", gameId=" + gameId +
+                ", dtActive=" + dtActive +
+                ", dtStart=" + dtStart +
+                ", dtEnd=" + dtEnd +
+                ", Status=" + Status +
+                '}';
     }
 }

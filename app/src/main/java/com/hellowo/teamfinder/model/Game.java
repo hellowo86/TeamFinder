@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    String id;
+    int id;
     String title;
     List<String> roles = new ArrayList<>();
     int maxMemberCount;
     int iconId;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

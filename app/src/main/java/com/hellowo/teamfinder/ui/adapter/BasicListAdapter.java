@@ -15,17 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RoleListAdapter extends RecyclerView.Adapter<RoleListAdapter.ViewHolder> {
+public class BasicListAdapter extends RecyclerView.Adapter<BasicListAdapter.ViewHolder> {
     private Context context;
     private List<String> mContentsList;
-    private RoleListAdapterInterface roleListAdapterInterface;
+    private AdapterInterface adapterInterface;
 
-    public RoleListAdapter(Context context, Game game, RoleListAdapterInterface roleListAdapterInterface) {
+    public BasicListAdapter(Context context, List<String> items, AdapterInterface adapterInterface) {
         this.context = context;
-        this.roleListAdapterInterface = roleListAdapterInterface;
-        mContentsList = new ArrayList<>();
-        mContentsList.add(context.getString(R.string.free_role));
-        mContentsList.addAll(game.getRoles());
+        this.adapterInterface = adapterInterface;
+        mContentsList = items;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,7 +54,7 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleListAdapter.ViewHo
         holder.titleText.setText(role);
         holder.imageView.setVisibility(View.GONE);
         holder.container.setOnClickListener(v1 ->
-                roleListAdapterInterface.onItemClicked(role));
+                adapterInterface.onItemClicked(role, position));
     }
 
     @Override
@@ -69,7 +67,7 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleListAdapter.ViewHo
         return mContentsList.size();
     }
 
-    public interface RoleListAdapterInterface{
-        void onItemClicked(String role);
+    public interface AdapterInterface {
+        void onItemClicked(String item, int position);
     }
 }

@@ -25,14 +25,17 @@
     <string name="game">게임</string>
     <string name="members">멤버</string>
     <string name="active_time">모집 종료시간</string>
-    <string name="description">추가설명</string>
+    <string name="description">세부설명</string>
     <string name="options">옵션</string>
     <string name="select_game">게임선택</string>
     <string name="enter_title">제목을 입력하세요</string>
     <string name="free_role">자유역할</string>
     <string name="add_member">멤버추가</string>
     <string name="team_member">팀원</string>
-    <string name="select_role">역할 선택</string>
+    <string name="select_role">역할선택</string>
     <string name="active_infinity">팀 결성완료시 까지</string>
-    <string name="enter_description">추가로 설명할것이 있다면 적어주세요</string>
+    <string name="enter_description">자세한 내용이나 태그를 추가하세요</string>
+    <string name="add_tag">태그추가</string>
+    <string name="select_tag">태그선택</string>
+    <string name="confirm">완료</string>
 </resources>

@@ -22,7 +22,6 @@ public class SingUpActivity extends LifecycleActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         viewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
-
         initLayout();
         initObserve();
     }

@@ -1,11 +1,15 @@
 package com.hellowo.teamfinder.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityCreateTeamBinding;
@@ -13,29 +17,48 @@ import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.ui.adapter.MemberListAdapter;
 import com.hellowo.teamfinder.ui.adapter.decoration.HorizontalSpaceItemDecoration;
 import com.hellowo.teamfinder.ui.dialog.SelectGameDialog;
+import com.hellowo.teamfinder.ui.dialog.SelectTagDialog;
 import com.hellowo.teamfinder.ui.dialog.SelectRoleDialog;
+import com.hellowo.teamfinder.ui.dialog.SetActiveTimeDialog;
 import com.hellowo.teamfinder.utils.ViewUtil;
 import com.hellowo.teamfinder.viewmodel.CreateTeamViewModel;
+import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 public class CreateTeamActivity extends LifecycleActivity {
     ActivityCreateTeamBinding binding;
     CreateTeamViewModel viewModel;
     MemberListAdapter memberListAdapter;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_team);
         viewModel = ViewModelProviders.of(this).get(CreateTeamViewModel.class);
-
         initLayout();
         initObserve();
     }
 
     private void initLayout() {
         binding.backBtn.setOnClickListener(v->finish());
-        binding.gameSelectBtn.setOnClickListener(v-> showSelectGameDialog());
+        binding.titleInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.setTitle(s);
+            }
+        });
+        binding.gameSelectBtn.setOnClickListener(v->showSelectGameDialog());
+        binding.activeTimeText.setOnClickListener(v->showAcitveTimeDialog());
+        binding.addTagBtn.setOnClickListener(v ->showSelectTagDialog());
+        binding.confirmBtn.setOnClickListener(v->{
+            viewModel.saveTeam(binding.descriptionInput.getText().toString());
+        });
         initMemberList();
+        initDescriptionInput();
     }
 
     private void initMemberList() {
@@ -46,7 +69,7 @@ public class CreateTeamActivity extends LifecycleActivity {
                 this,
                 true,
                 viewModel.currentMember.getValue(),
-                new MemberListAdapter.MemberListInterface() {
+                new MemberListAdapter.AdapterInterface() {
                     @Override
                     public void onAddClicked() {viewModel.addNewMember();}
                     @Override
@@ -56,9 +79,16 @@ public class CreateTeamActivity extends LifecycleActivity {
                 });
         binding.memberRecyclerView.setAdapter(memberListAdapter);
         HorizontalSpaceItemDecoration divider = new HorizontalSpaceItemDecoration(
-                (int) ViewUtil.dpToPx(this, 5));
+                (int) ViewUtil.dpToPx(this, 3));
         binding.memberRecyclerView.addItemDecoration(divider);
         setMemberSizeText();
+    }
+
+    private void initDescriptionInput() {
+        HashTagHelper tagHelper = HashTagHelper.Creator.create(
+                getResources().getColor(R.color.colorAccent),
+                hashTag -> {/*click tag*/});
+        tagHelper.handle(binding.descriptionInput);
     }
 
     private void initObserve() {
@@ -85,6 +115,29 @@ public class CreateTeamActivity extends LifecycleActivity {
         viewModel.currentMember.observe(this, memberList -> {
             memberListAdapter.notifyDataSetChanged();
             setMemberSizeText();
+        });
+
+        viewModel.isConfirmable.observe(this, isConfirmable -> {
+            binding.confirmBtn.setEnabled(isConfirmable);
+            if(isConfirmable) {
+                binding.confirmBtn.setAlpha(1f);
+            }else {
+                binding.confirmBtn.setAlpha(0.5f);
+            }
+        });
+
+        viewModel.loading.observe(this, loading -> {
+            if(loading) {
+                showProgressDialog();
+            }else {
+                hideProgressDialog();
+            }
+        });
+
+        viewModel.confirmed.observe(this, confirmed -> {
+            if(confirmed) {
+                finish();
+            }
         });
     }
 
@@ -113,6 +166,39 @@ public class CreateTeamActivity extends LifecycleActivity {
             selectRoleDialog.dismiss();
         });
         selectRoleDialog.show(getSupportFragmentManager(), selectRoleDialog.getTag());
+    }
+
+    private void showAcitveTimeDialog() {
+        final SetActiveTimeDialog activeTimeDialog = new SetActiveTimeDialog();
+        activeTimeDialog.setDialogInterface((text, time) -> {
+            binding.activeTimeText.setText(text);
+            viewModel.setActiveTime(time);
+            activeTimeDialog.dismiss();
+        });
+        activeTimeDialog.show(getSupportFragmentManager(), activeTimeDialog.getTag());
+    }
+
+    private void showSelectTagDialog() {
+        final SelectTagDialog selectTagDialog = new SelectTagDialog();
+        selectTagDialog.setDialogInterface(option -> {
+            String tag = option.makeTag();
+            binding.descriptionInput.getText().insert(binding.descriptionInput.getSelectionStart(), tag);
+        });
+        selectTagDialog.show(getSupportFragmentManager(), selectTagDialog.getTag());
+    }
+
+    private void showProgressDialog() {
+        hideProgressDialog();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.plz_wait));
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if(progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 
 }

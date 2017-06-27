@@ -20,7 +20,6 @@ public class SignInActivity extends LifecycleActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
         viewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
-
         initLayout();
         initObserve();
     }

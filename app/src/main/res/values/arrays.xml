@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="games">
+        <item>["리그오브레전드",["탑","정글","미드","원딜","서포터"],"5"]</item>
+        <item>["오버워치",["공격군","돌격군","수비군","지원군"],"6"]</item>
+        <item>["디아블로3",["마법사","성전사","야만용사","악마사냥꾼","부두술사","수도사","강령술사"],"4"]</item>
+    </string-array>
+
+    <string-array name="active_time_text">
+        <item>@string/active_infinity</item>
+        <item>1시간 후</item>
+        <item>2시간 후</item>
+        <item>3시간 후</item>
+        <item>4시간 후</item>
+        <item>5시간 후</item>
+        <item>6시간 후</item>
+        <item>12시간 후</item>
+        <item>24시간 후</item>
+        <item>1주일 후</item>
+    </string-array>
+
+    <integer-array name="active_time">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+        <item>168</item>
+    </integer-array>
+
+    <string-array name="options">
+        <item>음성대화필수</item>
+        <item>음성대화권장</item>
+        <item>매너게임</item>
+        <item>여성팀</item>
+        <item>남성팀</item>
+        <item>나이제한</item>
+    </string-array>
+
+</resources>

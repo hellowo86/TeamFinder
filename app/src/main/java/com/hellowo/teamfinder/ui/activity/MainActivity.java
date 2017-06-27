@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityMainBinding;
+import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.model.User;
 import com.hellowo.teamfinder.utils.ViewUtil;
 import com.hellowo.teamfinder.viewmodel.MainViewModel;
@@ -33,7 +34,6 @@ public class MainActivity extends LifecycleActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-
         initLayout();
         initObserve();
     }
@@ -54,6 +54,11 @@ public class MainActivity extends LifecycleActivity {
     private void initObserve() {
         viewModel.connectedUserLiveData.observe(this, this::updateUserUI);
         viewModel.status.observe(this, this::updateUI);
+        viewModel.teamsLiveData.observe(this, teams -> {
+            for (Team team : teams) {
+                Log.d("aaa", team.toString());
+            }
+        });
     }
 
     private void updateUI(MainViewModel.Status status) {

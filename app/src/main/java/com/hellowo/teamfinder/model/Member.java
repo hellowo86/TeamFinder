@@ -1,5 +1,6 @@
 package com.hellowo.teamfinder.model;
 
+import com.google.firebase.database.Exclude;
 import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 
 public class Member {
@@ -40,6 +41,7 @@ public class Member {
         this.role = role;
     }
 
+    @Exclude
     public boolean isMe() {
         return userId != null && ConnectedUserLiveData.get().getSnapshot().getId().equals(userId);
     }

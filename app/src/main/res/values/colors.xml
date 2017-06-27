@@ -26,5 +26,6 @@
     <color name="white">#FFFFFF</color>
     <color name="grey">#A6B6BF</color>
     <color name="red">#F74444</color>
+    <color name="green">#8AE083</color>
     <color name="transparent">#00000000</color>
 </resources>

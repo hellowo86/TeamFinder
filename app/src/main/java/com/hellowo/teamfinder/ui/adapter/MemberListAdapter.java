@@ -24,17 +24,17 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Member> mContentsList;
     private boolean isEditable;
     private boolean isFullMember;
-    private MemberListInterface memberListInterface;
+    private AdapterInterface adapterInterface;
 
     final private static int TYPE_NORMAL = 0;
     final private static int TYPE_FOOTER = 1;
 
     public MemberListAdapter(Context context, boolean isEditable, List<Member> mContentsList,
-                             MemberListInterface memberListInterface) {
+                             AdapterInterface adapterInterface) {
         this.context = context;
         this.mContentsList = mContentsList;
         this.isEditable = isEditable;
-        this.memberListInterface = memberListInterface;
+        this.adapterInterface = adapterInterface;
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -100,19 +100,19 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 if(isEditable && !member.isMe()) {
                     holder.deleteBtn.setVisibility(View.VISIBLE);
-                    holder.deleteBtn.setOnClickListener(v ->memberListInterface.onDeleteClicked(member));
+                    holder.deleteBtn.setOnClickListener(v -> adapterInterface.onDeleteClicked(member));
                 }else {
                     holder.deleteBtn.setVisibility(View.GONE);
                 }
 
-                holder.container.setOnClickListener(v ->memberListInterface.onItemClicked(member));
+                holder.container.setOnClickListener(v -> adapterInterface.onItemClicked(member));
 
                 break;
             case TYPE_FOOTER:
                 FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
                 if(isEditable && !isFullMember) {
                     footerViewHolder.container.setVisibility(View.VISIBLE);
-                    footerViewHolder.container.setOnClickListener(v -> memberListInterface.onAddClicked());
+                    footerViewHolder.container.setOnClickListener(v -> adapterInterface.onAddClicked());
                 }else{
                     footerViewHolder.container.setVisibility(View.GONE);
                 }
@@ -144,7 +144,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemChanged(mContentsList.size());
     }
 
-    public interface MemberListInterface{
+    public interface AdapterInterface {
         void onAddClicked();
         void onDeleteClicked(Member member);
         void onItemClicked(Member member);

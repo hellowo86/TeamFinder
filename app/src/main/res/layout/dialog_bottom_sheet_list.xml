@@ -16,7 +16,8 @@
         </android.support.v7.widget.RecyclerView>
 
         <FrameLayout
-            android:background="@color/backgroundAlpha"
+            android:background="@color/background"
+            android:elevation="1dp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/top_menu_bar_height">
 

@@ -102,6 +102,8 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/memberRecyclerView"
+                    android:paddingLeft="10dp"
+                    android:clipToPadding="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 </android.support.v7.widget.RecyclerView>
@@ -134,22 +136,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/SubText"
-                    android:text="@string/options"/>
+                    android:text="@string/description"/>
 
-                <TextView
-                    android:layout_marginTop="@dimen/big_margin"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
+                <LinearLayout
+                    android:id="@+id/addTagBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/SubText"
-                    android:text="@string/description"/>
+                    android:layout_marginLeft="@dimen/big_margin"
+                    android:layout_marginRight="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:background="@drawable/ripple_button"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_add_black_48dp"
+                        android:tint="@color/grey" />
+
+                    <TextView
+                        style="@style/SubText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_tag"
+                        android:textColor="@color/disableText" />
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/descriptionInput"
                     android:layout_marginLeft="@dimen/big_margin"
                     android:layout_marginRight="@dimen/big_margin"
+                    android:layout_marginBottom="@dimen/big_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enter_description"
@@ -189,6 +209,18 @@
                 android:padding="11dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_arrow_back_black_48dp"
+                android:tint="@color/colorPrimaryDark" />
+
+            <ImageButton
+                android:id="@+id/confirmBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="11dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_done_black_48dp"
                 android:tint="@color/colorPrimaryDark" />
 
         </FrameLayout>

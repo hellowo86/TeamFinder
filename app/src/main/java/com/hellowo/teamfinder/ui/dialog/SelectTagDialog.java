@@ -10,22 +10,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Game;
-import com.hellowo.teamfinder.ui.adapter.BasicListAdapter;
+import com.hellowo.teamfinder.data.OptionData;
+import com.hellowo.teamfinder.model.Option;
+import com.hellowo.teamfinder.ui.adapter.TagListAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SelectRoleDialog extends BottomSheetDialog {
+public class SelectTagDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;
-    Game game;
 
     public void setDialogInterface(DialogInterface dialogInterface) {
         this.dialogInterface = dialogInterface;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     @Override
@@ -37,25 +30,26 @@ public class SelectRoleDialog extends BottomSheetDialog {
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         sheetBehavior = (BottomSheetBehavior)layoutParams.getBehavior();
-        if (sheetBehavior != null && game != null) {
+        if (sheetBehavior != null) {
             sheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
 
             TextView mainTopTitle = (TextView) contentView.findViewById(R.id.mainTopTitle);
-            mainTopTitle.setText(R.string.select_role);
+            mainTopTitle.setText(R.string.select_tag);
 
             RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            List<String> items = new ArrayList<>();
-            items.add(getContext().getString(R.string.free_role));
-            items.addAll(game.getRoles());
-
-            recyclerView.setAdapter(new BasicListAdapter(getContext(), items, (item, pos)->{
-                if(dialogInterface != null) {
-                    dialogInterface.onSelectedGame(item);
-                }
-            }));
+            TagListAdapter tagListAdapter = new TagListAdapter(
+                    getContext(),
+                    false,
+                    OptionData.get().getOptions(),
+                    option -> {
+                        if(dialogInterface != null) {
+                            dialogInterface.onSelectItem(option);
+                            dismiss();
+                        }
+                    });
+            recyclerView.setAdapter(tagListAdapter);
 
             ImageButton backBtn = (ImageButton) contentView.findViewById(R.id.backBtn);
             backBtn.setOnClickListener(v->dismiss());
@@ -63,6 +57,6 @@ public class SelectRoleDialog extends BottomSheetDialog {
     }
 
     public interface DialogInterface{
-        void onSelectedGame(String role);
+        void onSelectItem(Option option);
     }
 }

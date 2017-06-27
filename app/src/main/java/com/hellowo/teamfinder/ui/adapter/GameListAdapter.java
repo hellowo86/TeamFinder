@@ -20,13 +20,13 @@ import java.util.List;
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHolder> {
     private Context context;
     private List<Game> mContentsList;
-    private GameSelectAdapterInterface gameSelectAdapterInterface;
+    private AdapterInterface adapterInterface;
 
-    public GameListAdapter(Context context, GameSelectAdapterInterface gameSelectAdapterInterface) {
+    public GameListAdapter(Context context, AdapterInterface adapterInterface) {
         this.context = context;
-        this.gameSelectAdapterInterface = gameSelectAdapterInterface;
+        this.adapterInterface = adapterInterface;
         mContentsList = new ArrayList<>();
-        mContentsList.addAll(GameData.get().getGameMap().values());
+        mContentsList.addAll(GameData.get().getGames());
         Collections.sort(mContentsList, (l, r) ->
                 l.getTitle().charAt(0) < r.getTitle().charAt(0) ? -1 :
                 l.getTitle().charAt(0) > r.getTitle().charAt(0) ? 1 : 0);
@@ -60,7 +60,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
         holder.titleText.setText(game.getTitle());
         holder.imageView.setImageResource(game.getIconId());
         holder.container.setOnClickListener(v1 ->
-            gameSelectAdapterInterface.onItemClicked(game));
+            adapterInterface.onItemClicked(game));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
         return mContentsList.size();
     }
 
-    public interface GameSelectAdapterInterface{
+    public interface AdapterInterface {
         void onItemClicked(Game game);
     }
 }

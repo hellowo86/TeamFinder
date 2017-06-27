@@ -15,6 +15,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.data.ConnectedUserLiveData;
+import com.hellowo.teamfinder.data.TeamsLiveData;
 import com.hellowo.teamfinder.model.User;
 import com.hellowo.teamfinder.utils.BitmapUtil;
 import com.hellowo.teamfinder.utils.FileUtil;
@@ -27,6 +28,7 @@ public class MainViewModel extends ViewModel {
     public enum Status{ShowPhotoPicker, UploadPhoto, CompleteUpload, FailedUpload}
     public ConnectedUserLiveData connectedUserLiveData = ConnectedUserLiveData.get();
     public MutableLiveData<Status> status = new MutableLiveData<>();
+    public TeamsLiveData teamsLiveData = TeamsLiveData.get();
 
     private PermissionListener permissionlistener = new PermissionListener() {
         @Override

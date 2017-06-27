@@ -14,18 +14,14 @@ import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.ui.adapter.BasicListAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class SelectRoleDialog extends BottomSheetDialog {
+public class SetActiveTimeDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;
-    Game game;
 
     public void setDialogInterface(DialogInterface dialogInterface) {
         this.dialogInterface = dialogInterface;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     @Override
@@ -37,25 +33,32 @@ public class SelectRoleDialog extends BottomSheetDialog {
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         sheetBehavior = (BottomSheetBehavior)layoutParams.getBehavior();
-        if (sheetBehavior != null && game != null) {
+        if (sheetBehavior != null) {
             sheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
 
             TextView mainTopTitle = (TextView) contentView.findViewById(R.id.mainTopTitle);
-            mainTopTitle.setText(R.string.select_role);
+            mainTopTitle.setText(R.string.active_time);
 
             RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(new BasicListAdapter(
+                    getContext(),
+                    Arrays.asList(getContext().getResources().getStringArray(R.array.active_time_text)),
+                    (item, pos)->{
+                        if(dialogInterface != null) {
 
-            List<String> items = new ArrayList<>();
-            items.add(getContext().getString(R.string.free_role));
-            items.addAll(game.getRoles());
+                            int hour = getContext().getResources().getIntArray(R.array.active_time)[pos];
+                            long time;
+                            if(hour == -1) {
+                                time = 0;
+                            }else {
+                                time = System.currentTimeMillis() + (hour * 1000 * 60 * 60);
+                            }
 
-            recyclerView.setAdapter(new BasicListAdapter(getContext(), items, (item, pos)->{
-                if(dialogInterface != null) {
-                    dialogInterface.onSelectedGame(item);
-                }
-            }));
+                            dialogInterface.onSetActiveTime(item, time);
+                        }
+                    }));
 
             ImageButton backBtn = (ImageButton) contentView.findViewById(R.id.backBtn);
             backBtn.setOnClickListener(v->dismiss());
@@ -63,6 +66,6 @@ public class SelectRoleDialog extends BottomSheetDialog {
     }
 
     public interface DialogInterface{
-        void onSelectedGame(String role);
+        void onSetActiveTime(String text, long dtActive);
     }
 }
