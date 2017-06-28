@@ -25,7 +25,7 @@ public class SignUpViewModel extends ViewModel {
     }
 
     public void signUp(String nickName, String email, String password, boolean policyCheck){
-        if(nickName.trim().length() < 2) {
+        if(nickName.trim().length() < 2 || nickName.trim().length() > 10) {
             signUpStatus.setValue(SignUpStatus.InvalidNickName);
         }else if(!StringUtil.isEmailValid(email.trim())){
             signUpStatus.setValue(SignUpStatus.InvalidEmail);

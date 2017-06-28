@@ -26,8 +26,10 @@ import java.util.ArrayList;
 
 public class MainViewModel extends ViewModel {
     public enum Status{ShowPhotoPicker, UploadPhoto, CompleteUpload, FailedUpload}
+    public enum ViewMope{SearchTeam}
     public ConnectedUserLiveData connectedUserLiveData = ConnectedUserLiveData.get();
     public MutableLiveData<Status> status = new MutableLiveData<>();
+    public MutableLiveData<ViewMope> viewMode = new MutableLiveData<>();
     public TeamsLiveData teamsLiveData = TeamsLiveData.get();
 
     private PermissionListener permissionlistener = new PermissionListener() {
@@ -38,6 +40,10 @@ public class MainViewModel extends ViewModel {
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {}
     };
+
+    public MainViewModel() {
+        viewMode.setValue(ViewMope.SearchTeam);
+    }
 
     public void checkExternalStoragePermission(View view) {
         new TedPermission(view.getContext())
@@ -75,9 +81,8 @@ public class MainViewModel extends ViewModel {
                         .child(User.DB_REF)
                         .child(connectedUserLiveData.getSnapshot().getId())
                         .child(User.KEY_PHOTO_URL)
-                        .setValue(downloadUrl.toString(), (error, databaseReference)->{
-                            status.setValue(Status.CompleteUpload);
-                        });
+                        .setValue(downloadUrl.toString(),
+                                (error, ref)->status.setValue(Status.CompleteUpload));
             });
         } catch (Exception e) {
             e.printStackTrace();

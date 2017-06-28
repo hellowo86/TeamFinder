@@ -2,18 +2,13 @@ package com.hellowo.teamfinder.data;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.MainThread;
-import android.util.Log;
-import android.util.TimeUtils;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hellowo.teamfinder.model.Team;
-import com.hellowo.teamfinder.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +17,7 @@ public class TeamsLiveData extends LiveData<List<Team>> {
     private static TeamsLiveData sInstance;
     private DatabaseReference mDatabase;
     private List<Team> currentList;
+    int gameId = -1;
 
     @MainThread
     public static TeamsLiveData get() {
@@ -37,21 +33,21 @@ public class TeamsLiveData extends LiveData<List<Team>> {
         setValue(currentList);
     }
 
-    public void getTeams() {
+    public void loadTeams() {
         mDatabase.child(Team.DB_REF)
-                .orderByChild(Team.KEY_DT_ACTIVE)
-                .startAt(System.currentTimeMillis())
+                .orderByChild(Team.KEY_FILTERING)
+                .startAt(0 + "_" + System.currentTimeMillis())
                 .addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                currentList.clear();
                                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                     Team team = postSnapshot.getValue(Team.class);
-                                    currentList.add(team);
+                                    currentList.add(0, team);
                                 }
                                 setValue(currentList);
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {}
                         });
@@ -59,7 +55,7 @@ public class TeamsLiveData extends LiveData<List<Team>> {
 
     @Override
     protected void onActive() {
-        getTeams();
+        loadTeams();
     }
 
 }

@@ -48,6 +48,7 @@ public class SingUpActivity extends LifecycleActivity {
                     Toast.makeText(App.context, R.string.plz_check_policy, Toast.LENGTH_SHORT).show();
                     break;
                 case CompleteSignUp:
+                    startActivity(new Intent(SingUpActivity.this, MainActivity.class));
                     finish();
                     break;
                 default:

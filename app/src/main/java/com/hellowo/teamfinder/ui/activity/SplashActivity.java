@@ -37,6 +37,7 @@ public class SplashActivity extends LifecycleActivity {
                 finish();
             }else{
                 startActivity(new Intent(this, SignInActivity.class));
+                finish();
             }
         });
     }

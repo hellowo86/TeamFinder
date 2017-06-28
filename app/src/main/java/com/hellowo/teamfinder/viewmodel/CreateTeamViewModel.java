@@ -33,7 +33,9 @@ public class CreateTeamViewModel extends ViewModel {
         selectedGame.setValue(GameData.get().getGame(0));
         team.getMembers().add(ConnectedUserLiveData.get().getSnapshot()
                 .makeMember(App.context.getString(R.string.free_role)));
+        team.setDtActive(Long.MAX_VALUE);
         currentMember.setValue(team.getMembers());
+        isConfirmable.setValue(false);
     }
 
     public void addNewMember() {

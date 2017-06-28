@@ -43,6 +43,7 @@ public class SignInActivity extends LifecycleActivity {
                     binding.passwordEdit.setError(getString(R.string.invalid_password));
                     break;
                 case CompleteSignIn:
+                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
                     finish();
                     break;
                 default:

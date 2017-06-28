@@ -47,11 +47,10 @@ public class SetActiveTimeDialog extends BottomSheetDialog {
                     Arrays.asList(getContext().getResources().getStringArray(R.array.active_time_text)),
                     (item, pos)->{
                         if(dialogInterface != null) {
-
                             int hour = getContext().getResources().getIntArray(R.array.active_time)[pos];
                             long time;
                             if(hour == -1) {
-                                time = 0;
+                                time = Long.MAX_VALUE;
                             }else {
                                 time = System.currentTimeMillis() + (hour * 1000 * 60 * 60);
                             }

@@ -11,7 +11,7 @@
     <string name="signup_failed">회원가입이 실패했습니다. 다시 시도해주세요.</string>
     <string name="already_have_id">이미 계정이 있습니다.</string>
     <string name="invalid_email">이메일 형식이 올바르지 않습니다.</string>
-    <string name="invalid_nick_name">닉네임은 2글자 이상이어야 합니다.</string>
+    <string name="invalid_nick_name">닉네임은 2글자 이상 10글자 이하로 만들어야 합니다.</string>
     <string name="invalid_password">비밀번호는 8자리 이상이어야 합니다.</string>
     <string name="plz_check_policy">개인정보 취급방침에 동의해야합니다.</string>
     <string name="existed_nick_name">이미 존재하는 이름입니다.</string>
@@ -38,4 +38,11 @@
     <string name="add_tag">태그추가</string>
     <string name="select_tag">태그선택</string>
     <string name="confirm">완료</string>
+    <string name="search_team">팀 찾기</string>
+    <string name="sign_out">로그아웃</string>
+    <string name="no_clan">아직 가입한 클랜이 없습니다</string>
+    <string name="settings">환경설정</string>
+    <string name="member_count">%1$d / %2$d</string>
+    <string name="active_infinity_time">제한없음</string>
+    <string name="active_time_finish_soon">마감임박</string>
 </resources>

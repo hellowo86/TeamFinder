@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.model;
 
+import android.text.TextUtils;
+
 public class User {
     public final static String DB_REF = "users";
     public final static String KEY_PUSH_TOKEN = "pushToken";
@@ -73,7 +75,9 @@ public class User {
     public Member makeMember(String role) {
         Member member = new Member();
         member.setName(nickName);
-        member.setPhotoUrl(photoUrl);
+        if(!TextUtils.isEmpty(photoUrl)) {
+            member.setPhotoUrl(photoUrl.substring(0, photoUrl.indexOf("&token")));
+        }
         member.setUserId(id);
         member.setRole(role);
         return member;

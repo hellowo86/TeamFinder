@@ -122,7 +122,7 @@ public class CreateTeamActivity extends LifecycleActivity {
             if(isConfirmable) {
                 binding.confirmBtn.setAlpha(1f);
             }else {
-                binding.confirmBtn.setAlpha(0.5f);
+                binding.confirmBtn.setAlpha(0.2f);
             }
         });
 
@@ -182,7 +182,8 @@ public class CreateTeamActivity extends LifecycleActivity {
         final SelectTagDialog selectTagDialog = new SelectTagDialog();
         selectTagDialog.setDialogInterface(option -> {
             String tag = option.makeTag();
-            binding.descriptionInput.getText().insert(binding.descriptionInput.getSelectionStart(), tag);
+            int startPos = binding.descriptionInput.getSelectionStart();
+            binding.descriptionInput.getText().insert(startPos < 0 ? 0 : startPos, tag);
         });
         selectTagDialog.show(getSupportFragmentManager(), selectTagDialog.getTag());
     }
