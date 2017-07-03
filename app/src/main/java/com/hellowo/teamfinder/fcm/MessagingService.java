@@ -33,18 +33,15 @@ public class MessagingService extends com.google.firebase.messaging.FirebaseMess
 
     private static final String TAG = "MyFirebaseMsgService";
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
             String subject = remoteMessage.getData().get("subject");
             String message = remoteMessage.getData().get("message");
+            Log.d("aaa", subject + "/" + message);
             sendNotification(subject, message);
         }
 
@@ -56,7 +53,7 @@ public class MessagingService extends com.google.firebase.messaging.FirebaseMess
     private void sendNotification(String subject, String message) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -72,6 +69,6 @@ public class MessagingService extends com.google.firebase.messaging.FirebaseMess
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(0, notificationBuilder.build());
     }
 }
