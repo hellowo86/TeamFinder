@@ -53,7 +53,7 @@ public class BasicListAdapter extends RecyclerView.Adapter<BasicListAdapter.View
         final String role = mContentsList.get(position);
         holder.titleText.setText(role);
         holder.imageView.setVisibility(View.GONE);
-        holder.container.setOnClickListener(v1 ->
+        holder.container.setOnClickListener(v ->
                 adapterInterface.onItemClicked(role, position));
     }
 

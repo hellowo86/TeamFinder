@@ -37,7 +37,7 @@
     <string name="enter_description">자세한 내용이나 태그를 추가하세요</string>
     <string name="add_tag">태그추가</string>
     <string name="select_tag">태그선택</string>
-    <string name="confirm">완료</string>
+    <string name="confirm">완료하기</string>
     <string name="search_team">팀 찾기</string>
     <string name="sign_out">로그아웃</string>
     <string name="no_clan">아직 가입한 클랜이 없습니다</string>
@@ -45,4 +45,5 @@
     <string name="member_count">%1$d / %2$d</string>
     <string name="active_infinity_time">제한없음</string>
     <string name="active_time_finish_soon">마감임박</string>
+    <string name="do_join">참가신청</string>
 </resources>

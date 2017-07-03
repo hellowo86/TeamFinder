@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.model;
 
+import android.text.TextUtils;
+
 import com.google.firebase.database.Exclude;
 import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 
@@ -44,5 +46,10 @@ public class Member {
     @Exclude
     public boolean isMe() {
         return userId != null && ConnectedUserLiveData.get().getSnapshot().getId().equals(userId);
+    }
+
+    @Exclude
+    public boolean isJoinable() {
+        return TextUtils.isEmpty(userId);
     }
 }

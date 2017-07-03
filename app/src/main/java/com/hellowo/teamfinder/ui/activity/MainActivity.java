@@ -2,28 +2,25 @@ package com.hellowo.teamfinder.ui.activity;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleActivity;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityMainBinding;
-import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.model.User;
-import com.hellowo.teamfinder.ui.adapter.MemberListAdapter;
 import com.hellowo.teamfinder.ui.adapter.TeamListAdapter;
 import com.hellowo.teamfinder.utils.ViewUtil;
 import com.hellowo.teamfinder.viewmodel.MainViewModel;
@@ -48,7 +45,7 @@ public class MainActivity extends LifecycleActivity {
 
     private void initLayout() {
         binding.swipeRefreshLy.setProgressViewOffset(false, 0,
-                (int) ViewUtil.dpToPx(this, 72));
+                (int) ViewUtil.dpToPx(this, 100));
         binding.swipeRefreshLy.setColorSchemeColors(
                 getResources().getColor(R.color.colorPrimary),
                 getResources().getColor(R.color.colorPrimaryDark),
@@ -57,14 +54,29 @@ public class MainActivity extends LifecycleActivity {
         binding.menuBtn.setOnClickListener(v->binding.drawerLy.openDrawer(Gravity.LEFT));
         binding.accountPhotoImg.setOnClickListener(viewModel::checkExternalStoragePermission);
         binding.fab.setOnClickListener(this::clickFab);
-        binding.signOutBtn.setOnClickListener(v -> FirebaseAuth.getInstance().signOut());
+        binding.signOutBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            FirebaseAuth.getInstance().signOut();
+        });
         initTeamRecyclerView();
     }
 
     private void initTeamRecyclerView() {
         binding.teamRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        teamListAdapter = new TeamListAdapter(this, team -> {});
+        teamListAdapter = new TeamListAdapter(this, this::clickTeam);
         binding.teamRecyclerView.setAdapter(teamListAdapter);
+    }
+
+    private void clickTeam(Team team) {
+        /*
+        FirebaseMessaging.getInstance().send( new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
+                .setMessageId(id)
+                .addData("action", "1")
+                .addData("subject", "2")
+                .addData("message", "3")
+                .build());
+                */
     }
 
     private void initObserve() {
@@ -129,9 +141,6 @@ public class MainActivity extends LifecycleActivity {
                     .thumbnail(0.1f)
                     .into(binding.accountPhotoImg);
             binding.accountNameText.setText(user.getNickName());
-        }else {
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
         }
     }
 

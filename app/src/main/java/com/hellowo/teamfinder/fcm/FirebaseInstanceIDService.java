@@ -23,37 +23,25 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.model.User;
 
 
 public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
-    private static final String TAG = "MyFirebaseIIDService";
-
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
     @Override
     public void onTokenRefresh() {
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
-        sendRegistrationToServer(refreshedToken);
+        sendRegistrationToServer();
     }
 
-    /**
-     * Persist token to third-party servers.
-     *
-     * Modify this method to associate the user's FCM InstanceID token with any server-side account
-     * maintained by your application.
-     */
-    private void sendRegistrationToServer(String refreshedToken) {
-        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            FirebaseDatabase.getInstance().getReference().child(User.DB_REF)
+    public static void sendRegistrationToServer() {
+        String pushToken = FirebaseInstanceId.getInstance().getToken();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null && pushToken != null) {
+            FirebaseDatabase.getInstance().getReference().child("pushToken")
                     .child(user.getUid())
-                    .child(User.KEY_PUSH_TOKEN).setValue(refreshedToken);
+                    .child(App.androidId)
+                    .setValue(pushToken);
         }
     }
 }

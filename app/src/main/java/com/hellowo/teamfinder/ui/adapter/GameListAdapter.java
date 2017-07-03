@@ -59,7 +59,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
         final Game game = mContentsList.get(position);
         holder.titleText.setText(game.getTitle());
         holder.imageView.setImageResource(game.getIconId());
-        holder.container.setOnClickListener(v1 ->
+        holder.container.setOnClickListener(v ->
             adapterInterface.onItemClicked(game));
     }
 

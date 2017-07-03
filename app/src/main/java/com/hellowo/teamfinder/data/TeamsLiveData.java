@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hellowo.teamfinder.model.Team;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TeamsLiveData extends LiveData<List<Team>> {
@@ -44,8 +45,12 @@ public class TeamsLiveData extends LiveData<List<Team>> {
                                 currentList.clear();
                                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                     Team team = postSnapshot.getValue(Team.class);
+                                    team.setId(postSnapshot.getKey());
                                     currentList.add(0, team);
                                 }
+                                Collections.sort(currentList, (l,r)->
+                                    l.getDtCreated() > r.getDtCreated() ? -1 :
+                                            l.getDtCreated() < r.getDtCreated() ? 1 : 0);
                                 setValue(currentList);
                             }
                             @Override

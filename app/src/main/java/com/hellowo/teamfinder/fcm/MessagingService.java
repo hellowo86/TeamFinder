@@ -43,11 +43,9 @@ public class MessagingService extends com.google.firebase.messaging.FirebaseMess
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            int action = Integer.valueOf(remoteMessage.getData().get("action"));
             String subject = remoteMessage.getData().get("subject");
             String message = remoteMessage.getData().get("message");
-            String etc;
+            sendNotification(subject, message);
         }
 
         if (remoteMessage.getNotification() != null) {

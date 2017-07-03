@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
+import com.hellowo.teamfinder.data.ConnectedUserLiveData;
+import com.hellowo.teamfinder.fcm.FirebaseInstanceIDService;
 import com.hellowo.teamfinder.model.User;
 import com.hellowo.teamfinder.utils.StringUtil;
 
@@ -66,6 +68,7 @@ public class SignUpViewModel extends ViewModel {
                 .child(User.DB_REF)
                 .child(me.getId())
                 .setValue(me, (error, databaseReference)->{
+                    FirebaseInstanceIDService.sendRegistrationToServer();
                     signUpStatus.setValue(SignUpStatus.CompleteSignUp);
                     loading.setValue(false);
                 });

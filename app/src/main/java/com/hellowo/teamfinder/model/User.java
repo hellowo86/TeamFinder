@@ -4,14 +4,12 @@ import android.text.TextUtils;
 
 public class User {
     public final static String DB_REF = "users";
-    public final static String KEY_PUSH_TOKEN = "pushToken";
     public final static String KEY_PHOTO_URL = "photoUrl";
 
     String id;
     String nickName;
     String email;
     String photoUrl;
-    String pushToken;
     int gender;
     long dtCreated;
 
@@ -54,14 +52,6 @@ public class User {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
-    }
-
-    public String getPushToken() {
-        return pushToken;
-    }
-
-    public void setPushToken(String pushToken) {
-        this.pushToken = pushToken;
     }
 
     public long getDtCreated() {

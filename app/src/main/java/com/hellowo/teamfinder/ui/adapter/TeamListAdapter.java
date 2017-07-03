@@ -1,28 +1,48 @@
 package com.hellowo.teamfinder.ui.adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.support.annotation.WorkerThread;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.data.GameData;
 import com.hellowo.teamfinder.data.TeamsLiveData;
+import com.hellowo.teamfinder.databinding.ViewTeamListItemBinding;
 import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
+import com.hellowo.teamfinder.ui.adapter.decoration.HorizontalDotDecoration;
+import com.hellowo.teamfinder.utils.ViewUtil;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.GrayscaleTransformation;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHolder> {
@@ -30,34 +50,25 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     private List<Team> mContentsList;
     private AdapterInterface adapterInterface;
     private int hashTagColor;
+    private Team expandedTeam;
 
     public TeamListAdapter(Context context, AdapterInterface adapterInterface) {
         this.context = context;
         this.adapterInterface = adapterInterface;
         mContentsList = TeamsLiveData.get().getValue();
-        hashTagColor = context.getResources().getColor(R.color.colorAccent);
+        hashTagColor = context.getResources().getColor(R.color.primaryText);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        ViewTeamListItemBinding binding;
         View container;
-        TextView nameText;
-        TextView titleText;
-        TextView subText;
-        ImageView profileImage;
-        ImageView gameIconImg;
-        TextView memberCountText;
-        TextView activeTimeText;
 
         public ViewHolder(View v) {
             super(v);
             container = v;
-            nameText = (TextView) v.findViewById(R.id.nameText);
-            titleText = (TextView) v.findViewById(R.id.titleText);
-            subText = (TextView) v.findViewById(R.id.subText);
-            profileImage = (ImageView) v.findViewById(R.id.profileImage);
-            gameIconImg = (ImageView) v.findViewById(R.id.gameIconImg);
-            memberCountText = (TextView) v.findViewById(R.id.memberCountText);
-            activeTimeText = (TextView) v.findViewById(R.id.activeTimeText);
+            binding = DataBindingUtil.bind(v);
+            binding.memberRecyclerView.addItemDecoration(
+                    new HorizontalDotDecoration((int) ViewUtil.dpToPx(context, 5)));
         }
     }
 
@@ -71,33 +82,115 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Team team = mContentsList.get(position);
+        final Game game = GameData.get().getGame(team.getGameId());
         final Member organizer = team.getMembers().get(0);
+        final ViewTeamListItemBinding binding = holder.binding;
 
-        holder.titleText.setText(team.getTitle());
-        holder.nameText.setText(organizer.getName());
-        holder.gameIconImg.setImageResource(GameData.get().getGame(team.getGameId()).getIconId());
-        holder.memberCountText.setText(team.makeMemberText());
-        holder.activeTimeText.setText(team.makeActiveTimeText());
+        binding.titleText.setText(team.getTitle());
+        binding.nameText.setText(organizer.getName());
+        binding.memberCountText.setText(team.makeMemberText());
+        binding.activeTimeText.setText(team.makeActiveTimeText());
 
-        HashTagHelper tagHelper = HashTagHelper.Creator.create(hashTagColor,
-                hashTag -> {/*click tag*/});
-        tagHelper.handle(holder.subText);
+        HashTagHelper tagHelper = HashTagHelper.Creator.create(hashTagColor, null);
+        tagHelper.handle(binding.subText);
 
         if(!TextUtils.isEmpty(team.getDescription())) {
-            holder.subText.setVisibility(View.VISIBLE);
-            holder.subText.setText(team.getDescription());
+            binding.subText.setVisibility(View.VISIBLE);
+            binding.subText.setText(team.getDescription());
         }else {
-            holder.subText.setVisibility(View.GONE);
+            binding.subText.setVisibility(View.GONE);
         }
+
+        Glide.with(context)
+                .load(game.getIconId())
+                .bitmapTransform(new GrayscaleTransformation(context))
+                .into(binding.gameIconImg);
+        binding.gameText.setText(game.getTitle());
 
         Glide.with(context)
                 .load(!TextUtils.isEmpty(organizer.getUserId()) ? organizer.getPhotoUrl() : R.drawable.default_profile)
                 .bitmapTransform(new CropCircleTransformation(context))
                 .thumbnail(0.1f)
-                .into(holder.profileImage);
+                .into(binding.profileImage);
 
-        holder.container.setOnClickListener(v ->
-                adapterInterface.onItemClicked(team));
+        setExpandedView(binding, team);
+
+        holder.container.setOnClickListener(v ->{
+            if(expandedTeam == team) {
+                expandedTeam = null;
+            }else {
+                if(expandedTeam != null && !expandedTeam.getId().equals(team.getId())) {
+                    notifyItemChanged(mContentsList.indexOf(expandedTeam));
+                }
+                expandedTeam = team;
+            }
+            notifyItemChanged(position);
+            adapterInterface.onItemClicked(team);
+        });
+    }
+
+    public void setExpandedView(ViewTeamListItemBinding binding, Team team) {
+        if(expandedTeam != null && expandedTeam.getId().equals(team.getId())) {
+            binding.expandedLy.setVisibility(View.VISIBLE);
+            binding.memberRecyclerView.setLayoutManager(
+                    new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+            MemberListAdapter adapter = new MemberListAdapter(
+                    context,
+                    false,
+                    team.getMembers(),
+                    new MemberListAdapter.AdapterInterface() {
+                        @Override
+                        public void onDeleteClicked(Member member) {}
+                        @Override
+                        public void onItemClicked(Member member) {
+                            joinTeam(team);
+                        }
+                    });
+            binding.memberRecyclerView.setAdapter(adapter);
+        }else {
+            binding.expandedLy.setVisibility(View.GONE);
+        }
+    }
+
+    private void joinTeam(Team team) {
+        FirebaseDatabase.getInstance().getReference()
+                .child("pushToken")
+                .child(team.getMembers().get(0).getUserId())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                new Thread(() -> {
+                                    try {
+                                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                            String pushToken = (String) postSnapshot.getValue();
+                                            Log.d("aaa" ,pushToken);
+                                            JSONArray registration_ids = new JSONArray();
+                                            registration_ids.put(pushToken);
+
+                                            JSONObject data = new JSONObject();
+                                            data.put("subject", "haha");
+                                            data.put("message", "22222");
+
+                                            FormBody.Builder bodyBuilder = new FormBody.Builder();
+                                            bodyBuilder.add("to", pushToken);
+                                            bodyBuilder.add("data", data.toString());
+                                            Request request = new Request.Builder()
+                                                    .url("https://fcm.googleapis.com/fcm/send")
+                                                    .addHeader("Authorization", "key=AAAAf48YPzE:APA91bHTTAW9NmbxcijSrey7FCMYt20PvO-hKl23ge5ZnPrGCTUlLiArHxu3_g_P20Vi91eT7ym_1UAYBnBbkLOMoM8gm-eRkBPrSxmRy-bv47usBC_MliCjjSCzkqnpj7sSSWIWHWAB")
+                                                    .post(bodyBuilder.build())
+                                                    .build();
+                                            Response response = new OkHttpClient().newCall(request).execute();
+                                            Log.d("aaa" ,response.toString());
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }).start();
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {}
+                        });
     }
 
     @Override

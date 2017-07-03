@@ -23,11 +23,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private List<Member> mContentsList;
     private boolean isEditable;
-    private boolean isFullMember;
     private AdapterInterface adapterInterface;
-
-    final private static int TYPE_NORMAL = 0;
-    final private static int TYPE_FOOTER = 1;
 
     public MemberListAdapter(Context context, boolean isEditable, List<Member> mContentsList,
                              AdapterInterface adapterInterface) {
@@ -65,68 +61,44 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v;
-        switch(viewType){
-            case TYPE_FOOTER:
-                v = LayoutInflater.from(context)
-                        .inflate(R.layout.view_member_list_footer, viewGroup, false);
-                return new FooterViewHolder(v);
-            default:
-                v = LayoutInflater.from(context)
-                        .inflate(R.layout.view_member_list_item, viewGroup, false);
-                return new ItemViewHolder(v);
-        }
+        View v = LayoutInflater.from(context)
+                .inflate(R.layout.view_member_list_item, viewGroup, false);
+        return new ItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        switch(getItemViewType(position)){
-            case TYPE_NORMAL:
-                final Member member = mContentsList.get(position);
-                ItemViewHolder holder = (ItemViewHolder) viewHolder;
-                holder.titleText.setText(member.getName());
-                holder.subText.setText(member.getRole());
+        final Member member = mContentsList.get(position);
+        ItemViewHolder holder = (ItemViewHolder) viewHolder;
+        holder.titleText.setText(member.getRole());
 
-                if(!TextUtils.isEmpty(member.getPhotoUrl())) {
-                    Glide.with(context).load(member.getPhotoUrl())
-                            .bitmapTransform(new CropCircleTransformation(context))
-                            .thumbnail(0.1f)
-                            .into(holder.imageView);
-                }else {
-                    Glide.with(context).load(R.drawable.default_profile)
-                            .bitmapTransform(new CropCircleTransformation(context))
-                            .into(holder.imageView);
-                }
-
-                if(isEditable && !member.isMe()) {
-                    holder.deleteBtn.setVisibility(View.VISIBLE);
-                    holder.deleteBtn.setOnClickListener(v -> adapterInterface.onDeleteClicked(member));
-                }else {
-                    holder.deleteBtn.setVisibility(View.GONE);
-                }
-
-                holder.container.setOnClickListener(v -> adapterInterface.onItemClicked(member));
-
-                break;
-            case TYPE_FOOTER:
-                FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
-                if(isEditable && !isFullMember) {
-                    footerViewHolder.container.setVisibility(View.VISIBLE);
-                    footerViewHolder.container.setOnClickListener(v -> adapterInterface.onAddClicked());
-                }else{
-                    footerViewHolder.container.setVisibility(View.GONE);
-                }
-                break;
+        if(!isEditable && member.isJoinable()) {
+            holder.subText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.subText.setText(R.string.do_join);
+        }else {
+            holder.subText.setTextColor(context.getResources().getColor(R.color.primaryText));
+            holder.subText.setText(member.getName());
         }
-    }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == mContentsList.size()) {
-            return TYPE_FOOTER;
-        } else {
-            return TYPE_NORMAL;
+        if(!TextUtils.isEmpty(member.getPhotoUrl())) {
+            Glide.with(context).load(member.getPhotoUrl())
+                    .bitmapTransform(new CropCircleTransformation(context))
+                    .thumbnail(0.1f)
+                    .into(holder.imageView);
+        }else {
+            Glide.with(context).load(R.drawable.default_profile)
+                    .bitmapTransform(new CropCircleTransformation(context))
+                    .into(holder.imageView);
         }
+
+        if(isEditable && !member.isMe()) {
+            holder.deleteBtn.setVisibility(View.VISIBLE);
+            holder.deleteBtn.setOnClickListener(v -> adapterInterface.onDeleteClicked(member));
+        }else {
+            holder.deleteBtn.setVisibility(View.GONE);
+        }
+
+        holder.container.setOnClickListener(v -> adapterInterface.onItemClicked(member));
     }
 
     @Override
@@ -136,16 +108,10 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return mContentsList.size() + 1;
-    }
-
-    public void setIsFullMember(boolean isFullMember) {
-        this.isFullMember = isFullMember;
-        notifyItemChanged(mContentsList.size());
+        return mContentsList.size();
     }
 
     public interface AdapterInterface {
-        void onAddClicked();
         void onDeleteClicked(Member member);
         void onItemClicked(Member member);
     }

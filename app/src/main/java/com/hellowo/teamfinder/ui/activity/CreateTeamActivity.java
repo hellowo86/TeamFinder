@@ -15,7 +15,7 @@ import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityCreateTeamBinding;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.ui.adapter.MemberListAdapter;
-import com.hellowo.teamfinder.ui.adapter.decoration.HorizontalSpaceItemDecoration;
+import com.hellowo.teamfinder.ui.adapter.decoration.HorizontalDotDecoration;
 import com.hellowo.teamfinder.ui.dialog.SelectGameDialog;
 import com.hellowo.teamfinder.ui.dialog.SelectTagDialog;
 import com.hellowo.teamfinder.ui.dialog.SelectRoleDialog;
@@ -53,16 +53,18 @@ public class CreateTeamActivity extends LifecycleActivity {
         });
         binding.gameSelectBtn.setOnClickListener(v->showSelectGameDialog());
         binding.activeTimeText.setOnClickListener(v->showAcitveTimeDialog());
+        binding.addMemberBtn.setOnClickListener(v ->viewModel.addNewMember());
         binding.addTagBtn.setOnClickListener(v ->showSelectTagDialog());
         binding.confirmBtn.setOnClickListener(v->{
-            viewModel.saveTeam(binding.descriptionInput.getText().toString());
+            if(viewModel.isConfirmable.getValue()) {
+                viewModel.saveTeam(binding.descriptionInput.getText().toString());
+            }
         });
         initMemberList();
         initDescriptionInput();
     }
 
     private void initMemberList() {
-        binding.memberRecyclerView.setHasFixedSize(true);
         binding.memberRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         memberListAdapter = new MemberListAdapter(
@@ -71,23 +73,18 @@ public class CreateTeamActivity extends LifecycleActivity {
                 viewModel.currentMember.getValue(),
                 new MemberListAdapter.AdapterInterface() {
                     @Override
-                    public void onAddClicked() {viewModel.addNewMember();}
-                    @Override
                     public void onDeleteClicked(Member member) {viewModel.deleteMember(member);}
                     @Override
                     public void onItemClicked(Member member) {showRoloEditDialog(member);}
                 });
         binding.memberRecyclerView.setAdapter(memberListAdapter);
-        HorizontalSpaceItemDecoration divider = new HorizontalSpaceItemDecoration(
-                (int) ViewUtil.dpToPx(this, 3));
-        binding.memberRecyclerView.addItemDecoration(divider);
+        binding.memberRecyclerView.addItemDecoration(
+                new HorizontalDotDecoration((int) ViewUtil.dpToPx(this, 5)));
         setMemberSizeText();
     }
 
     private void initDescriptionInput() {
-        HashTagHelper tagHelper = HashTagHelper.Creator.create(
-                getResources().getColor(R.color.colorAccent),
-                hashTag -> {/*click tag*/});
+        HashTagHelper tagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.primaryText), null);
         tagHelper.handle(binding.descriptionInput);
     }
 
@@ -109,7 +106,7 @@ public class CreateTeamActivity extends LifecycleActivity {
         });
 
         viewModel.isFullMember.observe(this, isFullMember -> {
-            memberListAdapter.setIsFullMember(isFullMember);
+            binding.addMemberBtn.setVisibility(isFullMember ? View.GONE : View.VISIBLE);
         });
 
         viewModel.currentMember.observe(this, memberList -> {
@@ -118,7 +115,6 @@ public class CreateTeamActivity extends LifecycleActivity {
         });
 
         viewModel.isConfirmable.observe(this, isConfirmable -> {
-            binding.confirmBtn.setEnabled(isConfirmable);
             if(isConfirmable) {
                 binding.confirmBtn.setAlpha(1f);
             }else {

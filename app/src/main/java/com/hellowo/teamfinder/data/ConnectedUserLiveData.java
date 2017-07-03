@@ -83,10 +83,6 @@ public class ConnectedUserLiveData extends LiveData<User> {
         }
     }
 
-    public boolean isConnected(){
-        return connectedUser != null;
-    }
-
     public User getSnapshot(){
         return connectedUser;
     }
