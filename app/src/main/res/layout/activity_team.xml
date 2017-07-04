@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:background="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </FrameLayout>
+
+            <FrameLayout
+                android:background="@color/grey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </FrameLayout>
+
+            <FrameLayout
+                android:background="@color/green"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </FrameLayout>
+
+        </android.support.v4.view.ViewPager>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_menu_bar_height"
+            android:background="@color/colorPrimaryDark"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/mainTopTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/team_info"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back_black_48dp"
+                android:tint="@color/white" />
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

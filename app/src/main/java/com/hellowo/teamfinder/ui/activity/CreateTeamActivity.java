@@ -116,9 +116,9 @@ public class CreateTeamActivity extends LifecycleActivity {
 
         viewModel.isConfirmable.observe(this, isConfirmable -> {
             if(isConfirmable) {
-                binding.confirmBtn.setAlpha(1f);
+                binding.confirmBtn.setBackgroundResource(R.drawable.primary_ripple_button);
             }else {
-                binding.confirmBtn.setAlpha(0.2f);
+                binding.confirmBtn.setBackgroundResource(R.color.disableText);
             }
         });
 

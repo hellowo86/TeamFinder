@@ -1,19 +1,3 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.hellowo.teamfinder.fcm;
 
 import android.app.NotificationManager;
@@ -29,6 +13,11 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.ui.activity.MainActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
+
 public class MessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
@@ -37,16 +26,15 @@ public class MessagingService extends com.google.firebase.messaging.FirebaseMess
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            String subject = remoteMessage.getData().get("subject");
-            String message = remoteMessage.getData().get("message");
-            Log.d("aaa", subject + "/" + message);
-            sendNotification(subject, message);
-        }
-
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            try {
+                JSONObject data = new JSONObject(remoteMessage.getData().get("data"));
+                String subject = data.getString("subject");
+                String message = data.getString("message");
+                Log.d("aaa", subject + "/" + message);
+                sendNotification(subject, message);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -98,7 +98,7 @@
 
             <Button
                 android:id="@+id/signUpBtn"
-                style="@style/NormalButton"
+                style="@style/PrimaryButton"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:text="@string/sign_up" />

@@ -21,6 +21,7 @@
         <activity android:name=".ui.activity.SignInActivity"/>
         <activity android:name=".ui.activity.SingUpActivity"/>
         <activity android:name=".ui.activity.CreateTeamActivity"/>
+        <activity android:name=".ui.activity.TeamActivity"/>
 
         <service
             android:name=".fcm.MessagingService">

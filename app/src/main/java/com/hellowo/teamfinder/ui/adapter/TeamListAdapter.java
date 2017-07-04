@@ -50,7 +50,6 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     private List<Team> mContentsList;
     private AdapterInterface adapterInterface;
     private int hashTagColor;
-    private Team expandedTeam;
 
     public TeamListAdapter(Context context, AdapterInterface adapterInterface) {
         this.context = context;
@@ -67,8 +66,6 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
             super(v);
             container = v;
             binding = DataBindingUtil.bind(v);
-            binding.memberRecyclerView.addItemDecoration(
-                    new HorizontalDotDecoration((int) ViewUtil.dpToPx(context, 5)));
         }
     }
 
@@ -113,43 +110,9 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
                 .thumbnail(0.1f)
                 .into(binding.profileImage);
 
-        setExpandedView(binding, team);
-
         holder.container.setOnClickListener(v ->{
-            if(expandedTeam == team) {
-                expandedTeam = null;
-            }else {
-                if(expandedTeam != null && !expandedTeam.getId().equals(team.getId())) {
-                    notifyItemChanged(mContentsList.indexOf(expandedTeam));
-                }
-                expandedTeam = team;
-            }
-            notifyItemChanged(position);
             adapterInterface.onItemClicked(team);
         });
-    }
-
-    public void setExpandedView(ViewTeamListItemBinding binding, Team team) {
-        if(expandedTeam != null && expandedTeam.getId().equals(team.getId())) {
-            binding.expandedLy.setVisibility(View.VISIBLE);
-            binding.memberRecyclerView.setLayoutManager(
-                    new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-            MemberListAdapter adapter = new MemberListAdapter(
-                    context,
-                    false,
-                    team.getMembers(),
-                    new MemberListAdapter.AdapterInterface() {
-                        @Override
-                        public void onDeleteClicked(Member member) {}
-                        @Override
-                        public void onItemClicked(Member member) {
-                            joinTeam(team);
-                        }
-                    });
-            binding.memberRecyclerView.setAdapter(adapter);
-        }else {
-            binding.expandedLy.setVisibility(View.GONE);
-        }
     }
 
     private void joinTeam(Team team) {
@@ -164,7 +127,6 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
                                     try {
                                         for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                             String pushToken = (String) postSnapshot.getValue();
-                                            Log.d("aaa" ,pushToken);
                                             JSONArray registration_ids = new JSONArray();
                                             registration_ids.put(pushToken);
 
@@ -180,8 +142,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
                                                     .addHeader("Authorization", "key=AAAAf48YPzE:APA91bHTTAW9NmbxcijSrey7FCMYt20PvO-hKl23ge5ZnPrGCTUlLiArHxu3_g_P20Vi91eT7ym_1UAYBnBbkLOMoM8gm-eRkBPrSxmRy-bv47usBC_MliCjjSCzkqnpj7sSSWIWHWAB")
                                                     .post(bodyBuilder.build())
                                                     .build();
-                                            Response response = new OkHttpClient().newCall(request).execute();
-                                            Log.d("aaa" ,response.toString());
+                                            new OkHttpClient().newCall(request).execute();
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();

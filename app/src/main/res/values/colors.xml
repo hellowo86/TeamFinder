@@ -5,13 +5,13 @@
     <color name="colorAccent">#dbb876</color>
 
     <color name="background">#FFFFFF</color>
-    <color name="backgroundDark">#80FFFFFF</color>
+    <color name="backgroundDark">#f0f0f0</color>
     <color name="backgroundAlpha">#AAFFFFFF</color>
     <color name="disableIcon">#D3D3D3</color>
 
     <color name="primaryText">#434957</color>
-    <color name="secondaryText">#89434957</color>
-    <color name="disableText">#60434957</color>
+    <color name="secondaryText">#6a6f7a</color>
+    <color name="disableText">#b5b8bd</color>
     <color name="primaryWhiteText">#FFFFFFFF</color>
     <color name="secondaryWhiteText">#b3FFFFFF</color>
     <color name="disableWhiteText">#80FFFFFF</color>

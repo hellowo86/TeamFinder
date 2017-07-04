@@ -221,14 +221,13 @@
                     android:maxLines="100"
                     style="@style/NormalEditText"/>
 
-                <Button
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
+                <TextView
                     android:id="@+id/confirmBtn"
-                    style="@style/NormalButton"
+                    android:layout_margin="@dimen/big_margin"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/confirm" />
+                    android:layout_gravity="bottom"
+                    style="@style/PrimaryButton"
+                    android:text="@string/confirm"/>
 
             </LinearLayout>
 

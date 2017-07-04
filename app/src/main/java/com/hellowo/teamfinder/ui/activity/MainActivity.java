@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.hellowo.teamfinder.App;
+import com.hellowo.teamfinder.AppConst;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityMainBinding;
 import com.hellowo.teamfinder.model.Team;
@@ -27,6 +28,8 @@ import com.hellowo.teamfinder.viewmodel.MainViewModel;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
+import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
 
 public class MainActivity extends LifecycleActivity {
     ActivityMainBinding binding;
@@ -69,14 +72,9 @@ public class MainActivity extends LifecycleActivity {
     }
 
     private void clickTeam(Team team) {
-        /*
-        FirebaseMessaging.getInstance().send( new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com")
-                .setMessageId(id)
-                .addData("action", "1")
-                .addData("subject", "2")
-                .addData("message", "3")
-                .build());
-                */
+        Intent intent = new Intent(this, TeamActivity.class);
+        intent.putExtra(EXTRA_TEAM_ID, team.getId());
+        startActivity(intent);
     }
 
     private void initObserve() {
