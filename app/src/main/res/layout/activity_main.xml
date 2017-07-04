@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/title_text_size" />
 
                 <ImageButton
                     android:id="@+id/menuBtn"

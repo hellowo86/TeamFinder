@@ -247,7 +247,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/create_team"
                 android:textColor="@color/white"
-                android:textSize="18dp" />
+                android:textSize="@dimen/title_text_size" />
 
             <ImageButton
                 android:id="@+id/backBtn"

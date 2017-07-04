@@ -47,4 +47,5 @@
     <string name="active_time_finish_soon">마감임박</string>
     <string name="do_join">참가신청</string>
     <string name="team_info">팀 정보</string>
+    <string name="comments">코멘트</string>
 </resources>
