@@ -9,6 +9,8 @@
         <item name="android:background">@drawable/primary_ripple_button</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/normal_button_height</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
@@ -17,13 +19,13 @@
     <style name="TitleEditText" parent="@android:style/Widget.EditText">
         <item name="android:background">@color/transparent</item>
         <item name="android:textColor">@color/primaryText</item>
-        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textSize">@dimen/title_input_size</item>
     </style>
 
     <style name="NormalEditText" parent="@android:style/Widget.EditText">
         <item name="android:background">@color/transparent</item>
         <item name="android:textColor">@color/secondaryText</item>
-        <item name="android:textSize">@dimen/normal_text_size</item>
+        <item name="android:textSize">@dimen/normal_input_size</item>
     </style>
 
     <style name="TitleText" parent="@android:style/Widget.TextView">

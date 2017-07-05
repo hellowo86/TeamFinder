@@ -71,6 +71,7 @@ public class CreateTeamActivity extends LifecycleActivity {
                 this,
                 true,
                 viewModel.currentMember.getValue(),
+                R.layout.list_item_member_horizontal,
                 new MemberListAdapter.AdapterInterface() {
                     @Override
                     public void onDeleteClicked(Member member) {viewModel.deleteMember(member);}

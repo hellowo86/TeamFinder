@@ -50,7 +50,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View v = LayoutInflater.from(context)
-                .inflate(R.layout.view_normal_list_item, viewGroup, false);
+                .inflate(R.layout.list_item_basic, viewGroup, false);
         return new ViewHolder(v);
     }
 

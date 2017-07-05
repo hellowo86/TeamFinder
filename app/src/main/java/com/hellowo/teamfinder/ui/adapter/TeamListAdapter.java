@@ -2,11 +2,8 @@ package com.hellowo.teamfinder.ui.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.WorkerThread;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +13,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.data.GameData;
 import com.hellowo.teamfinder.data.TeamsLiveData;
-import com.hellowo.teamfinder.databinding.ViewTeamListItemBinding;
+import com.hellowo.teamfinder.databinding.ListItemTeamBinding;
 import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
-import com.hellowo.teamfinder.ui.adapter.decoration.HorizontalDotDecoration;
-import com.hellowo.teamfinder.utils.ViewUtil;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
@@ -42,7 +32,6 @@ import jp.wasabeef.glide.transformations.GrayscaleTransformation;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHolder> {
@@ -59,7 +48,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ViewTeamListItemBinding binding;
+        ListItemTeamBinding binding;
         View container;
 
         public ViewHolder(View v) {
@@ -72,7 +61,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View v = LayoutInflater.from(context)
-                .inflate(R.layout.view_team_list_item, viewGroup, false);
+                .inflate(R.layout.list_item_team, viewGroup, false);
         return new ViewHolder(v);
     }
 
@@ -81,12 +70,13 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
         final Team team = mContentsList.get(position);
         final Game game = GameData.get().getGame(team.getGameId());
         final Member organizer = team.getMembers().get(0);
-        final ViewTeamListItemBinding binding = holder.binding;
+        final ListItemTeamBinding binding = holder.binding;
 
         binding.titleText.setText(team.getTitle());
         binding.nameText.setText(organizer.getName());
         binding.memberCountText.setText(team.makeMemberText());
         binding.activeTimeText.setText(team.makeActiveTimeText());
+        binding.commentCountText.setText(String.valueOf(team.getCommentCount()));
 
         HashTagHelper tagHelper = HashTagHelper.Creator.create(hashTagColor, null);
         tagHelper.handle(binding.subText);
@@ -108,6 +98,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
                 .load(!TextUtils.isEmpty(organizer.getUserId()) ? organizer.getPhotoUrl() : R.drawable.default_profile)
                 .bitmapTransform(new CropCircleTransformation(context))
                 .thumbnail(0.1f)
+                .placeholder(R.drawable.default_profile)
                 .into(binding.profileImage);
 
         holder.container.setOnClickListener(v ->{

@@ -79,13 +79,51 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/small_margin"
-                android:layout_marginRight="@dimen/big_margin"
                 android:text="name"
                 style="@style/SubText"
                 android:textColor="@color/secondaryText"/>
 
+            <ImageView
+                android:layout_marginLeft="@dimen/big_margin"
+                android:layout_gravity="center_vertical"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_query_builder_black_48dp"
+                android:tint="@color/disableIcon"/>
+
+            <TextView
+                android:id="@+id/activeTimeText"
+                style="@style/SubText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:gravity="center_vertical"
+                android:text="name"
+                android:textColor="@color/secondaryText" />
 
             <ImageView
+                android:layout_marginLeft="@dimen/big_margin"
+                android:layout_gravity="center_vertical"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_comment_black_48dp"
+                android:tint="@color/disableIcon"/>
+
+            <TextView
+                android:id="@+id/commentCountText"
+                style="@style/SubText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:gravity="center_vertical"
+                android:text="name"
+                android:textColor="@color/secondaryText" />
+
+
+            <ImageView
+                android:layout_marginLeft="@dimen/big_margin"
                 android:layout_gravity="center_vertical"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
@@ -103,24 +141,6 @@
                 android:text="name"
                 style="@style/SubText"
                 android:textColor="@color/secondaryText"/>
-
-            <ImageView
-                android:layout_gravity="center_vertical"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:src="@drawable/ic_query_builder_black_48dp"
-                android:tint="@color/disableIcon"/>
-
-            <TextView
-                android:id="@+id/activeTimeText"
-                style="@style/SubText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/small_margin"
-                android:gravity="center_vertical"
-                android:text="name"
-                android:textColor="@color/secondaryText" />
 
         </LinearLayout>
 

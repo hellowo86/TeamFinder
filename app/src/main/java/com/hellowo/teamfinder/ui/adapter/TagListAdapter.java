@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +44,7 @@ public class TagListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(context)
-                .inflate(R.layout.view_normal_list_item, viewGroup, false);
+                .inflate(R.layout.list_item_basic, viewGroup, false);
         return new ItemViewHolder(v);
     }
 

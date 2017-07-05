@@ -2,6 +2,8 @@ package com.hellowo.teamfinder.model;
 
 import android.text.TextUtils;
 
+import com.google.firebase.database.Exclude;
+
 public class User {
     public final static String DB_REF = "users";
     public final static String KEY_PHOTO_URL = "photoUrl";
@@ -62,14 +64,23 @@ public class User {
         this.dtCreated = dtCreated;
     }
 
+    @Exclude
     public Member makeMember(String role) {
         Member member = new Member();
         member.setName(nickName);
-        if(!TextUtils.isEmpty(photoUrl)) {
-            member.setPhotoUrl(photoUrl.substring(0, photoUrl.indexOf("&token")));
-        }
+        member.setPhotoUrl(makePublicPhotoUrl(id));
         member.setUserId(id);
         member.setRole(role);
         return member;
+    }
+
+    @Exclude
+    public static String makePublicPhotoUrl(String userId) {
+        if(!TextUtils.isEmpty(userId)) {
+            return "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F"
+                    + userId + ".jpg?alt=media";
+        }else{
+            return "";
+        }
     }
 }

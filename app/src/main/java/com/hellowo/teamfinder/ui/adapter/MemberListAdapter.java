@@ -23,13 +23,15 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private List<Member> mContentsList;
     private boolean isEditable;
+    private int layoutId;
     private AdapterInterface adapterInterface;
 
     public MemberListAdapter(Context context, boolean isEditable, List<Member> mContentsList,
-                             AdapterInterface adapterInterface) {
+                             int layoutId, AdapterInterface adapterInterface) {
         this.context = context;
         this.mContentsList = mContentsList;
         this.isEditable = isEditable;
+        this.layoutId = layoutId;
         this.adapterInterface = adapterInterface;
     }
 
@@ -50,19 +52,9 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
-        View container;
-
-        public FooterViewHolder(View v) {
-            super(v);
-            container = v;
-        }
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(context)
-                .inflate(R.layout.view_member_list_item, viewGroup, false);
+        View v = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
         return new ItemViewHolder(v);
     }
 
@@ -70,24 +62,23 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         final Member member = mContentsList.get(position);
         ItemViewHolder holder = (ItemViewHolder) viewHolder;
-        holder.titleText.setText(member.getRole());
+        holder.subText.setText(member.getRole());
 
         if(!isEditable && member.isJoinable()) {
-            holder.subText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            holder.subText.setText(R.string.do_join);
+            holder.titleText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.titleText.setText(R.string.do_join);
         }else {
-            holder.subText.setTextColor(context.getResources().getColor(R.color.primaryText));
-            holder.subText.setText(member.getName());
+            holder.titleText.setTextColor(context.getResources().getColor(R.color.primaryText));
+            holder.titleText.setText(member.getName());
         }
 
         if(!TextUtils.isEmpty(member.getPhotoUrl())) {
             Glide.with(context).load(member.getPhotoUrl())
-                    .bitmapTransform(new CropCircleTransformation(context))
                     .thumbnail(0.1f)
+                    .placeholder(R.drawable.default_profile)
                     .into(holder.imageView);
         }else {
             Glide.with(context).load(R.drawable.default_profile)
-                    .bitmapTransform(new CropCircleTransformation(context))
                     .into(holder.imageView);
         }
 

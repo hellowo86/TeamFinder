@@ -12,7 +12,6 @@ import java.util.List;
 
 public class Team {
     public final static String DB_REF = "teams";
-    public final static String KEY_DT_CREATED = "dtCreated";
     public final static String KEY_DT_ACTIVE = "dtActive";
     public final static String KEY_FILTERING = "filteringKey";
 
@@ -26,6 +25,7 @@ public class Team {
     long dtStart;
     long dtEnd;
     int Status;
+    int commentCount;
 
     public List<Member> getMembers() {
         return members;
@@ -111,6 +111,14 @@ public class Team {
         return gameId + "_" + dtActive;
     }
 
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
     @Exclude
     public String makeMemberText() {
         int attendedMemberCount = 0;
@@ -135,21 +143,5 @@ public class Team {
                 return h + "h";
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Team{" +
-                "members=" + members +
-                ", id='" + id + '\'' +
-                ", dtCreated=" + dtCreated +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", gameId=" + gameId +
-                ", dtActive=" + dtActive +
-                ", dtStart=" + dtStart +
-                ", dtEnd=" + dtEnd +
-                ", Status=" + Status +
-                '}';
     }
 }

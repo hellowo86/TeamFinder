@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_button"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_marginLeft="10dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/default_profile"/>
+
+            <TextView
+                android:id="@+id/meesageText"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:textColor="@color/secondaryText"
+                style="@style/NormalText"
+                android:textSize="@dimen/normal_text_size"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_query_builder_black_48dp"
+                android:tint="@color/disableIcon"/>
+
+            <TextView
+                android:id="@+id/activeTimeText"
+                style="@style/SubText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:gravity="center_vertical"
+                android:text="name"
+                android:textColor="@color/disableText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

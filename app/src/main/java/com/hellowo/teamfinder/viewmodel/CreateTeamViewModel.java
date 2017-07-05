@@ -93,6 +93,7 @@ public class CreateTeamViewModel extends ViewModel {
         loading.setValue(true);
         team.setDescription(description);
         team.setDtCreated(System.currentTimeMillis());
+        team.setCommentCount(0);
         team.setStatus(0);
 
         String key = FirebaseDatabase.getInstance().getReference().child(Team.DB_REF).push().getKey();

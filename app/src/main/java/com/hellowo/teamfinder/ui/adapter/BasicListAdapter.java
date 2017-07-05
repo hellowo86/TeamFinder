@@ -9,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Game;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,7 +42,7 @@ public class BasicListAdapter extends RecyclerView.Adapter<BasicListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View v = LayoutInflater.from(context)
-                .inflate(R.layout.view_normal_list_item, viewGroup, false);
+                .inflate(R.layout.list_item_basic, viewGroup, false);
         return new ViewHolder(v);
     }
 
