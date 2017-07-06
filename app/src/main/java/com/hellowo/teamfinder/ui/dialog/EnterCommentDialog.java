@@ -1,11 +1,15 @@
 package com.hellowo.teamfinder.ui.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,53 +20,45 @@ import com.hellowo.teamfinder.ui.adapter.BasicListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectRoleDialog extends BottomSheetDialog {
+public class EnterCommentDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;
-    Game game;
 
     public void setDialogInterface(DialogInterface dialogInterface) {
         this.dialogInterface = dialogInterface;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        View contentView = View.inflate(getContext(), R.layout.dialog_bottom_sheet_list, null);
+        View contentView = View.inflate(getContext(), R.layout.dialog_input_text, null);
         dialog.setContentView(contentView);
 
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         sheetBehavior = (BottomSheetBehavior)layoutParams.getBehavior();
-        if (sheetBehavior != null && game != null) {
+        if (sheetBehavior != null) {
             sheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
 
-            TextView mainTopTitle = (TextView) contentView.findViewById(R.id.mainTopTitle);
-            mainTopTitle.setText(R.string.select_role);
+            EditText messageInput = (EditText) contentView.findViewById(R.id.messageInput);
+            messageInput.setHint(R.string.enter_comment);
 
-            RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            List<String> items = new ArrayList<>();
-            items.add(getContext().getString(R.string.free_role));
-            items.addAll(game.getRoles());
-
-            recyclerView.setAdapter(new BasicListAdapter(getContext(), items, (item, pos)->{
-                if(dialogInterface != null) {
-                    dialogInterface.onSelectedRole(item);
+            TextView sendBtn = (TextView) contentView.findViewById(R.id.sendBtn);
+            sendBtn.setOnClickListener(v->{
+                if(!TextUtils.isEmpty(messageInput.getText())) {
+                    dialogInterface.enterText(messageInput.getText().toString());
                 }
-            }));
+            });
 
-            ImageButton backBtn = (ImageButton) contentView.findViewById(R.id.backBtn);
-            backBtn.setOnClickListener(v->dismiss());
+            messageInput.postDelayed(() -> {
+                InputMethodManager imm = (InputMethodManager)
+                        getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(messageInput,
+                        InputMethodManager.SHOW_IMPLICIT);
+            }, 0);
         }
     }
 
     public interface DialogInterface{
-        void onSelectedRole(String role);
+        void enterText(String text);
     }
 }

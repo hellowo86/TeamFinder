@@ -15,20 +15,20 @@ import com.hellowo.teamfinder.databinding.ActivityTeamBinding;
 import com.hellowo.teamfinder.ui.fragment.CommentListFragment;
 import com.hellowo.teamfinder.ui.fragment.MemberListFragment;
 import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment;
-import com.hellowo.teamfinder.viewmodel.TeamViewModel;
+import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 
 import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
 
 public class TeamActivity extends LifecycleActivity {
     ActivityTeamBinding binding;
-    TeamViewModel viewModel;
+    TeamDetailViewModel viewModel;
     TeamPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_team);
-        viewModel = ViewModelProviders.of(this).get(TeamViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_team_detail);
+        viewModel = ViewModelProviders.of(this).get(TeamDetailViewModel.class);
         viewModel.initTeam(getIntent().getStringExtra(EXTRA_TEAM_ID));
         initLayout();
         initObserve();

@@ -68,8 +68,8 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Team team = mContentsList.get(position);
+        final Member organizer = team.getOrganizer();
         final Game game = GameData.get().getGame(team.getGameId());
-        final Member organizer = team.getMembers().get(0);
         final ListItemTeamBinding binding = holder.binding;
 
         binding.titleText.setText(team.getTitle());
@@ -95,7 +95,8 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
         binding.gameText.setText(game.getTitle());
 
         Glide.with(context)
-                .load(!TextUtils.isEmpty(organizer.getUserId()) ? organizer.getPhotoUrl() : R.drawable.default_profile)
+                .load(!TextUtils.isEmpty(organizer.getPhotoUrl()) ?
+                        organizer.getPhotoUrl() : R.drawable.default_profile)
                 .bitmapTransform(new CropCircleTransformation(context))
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)

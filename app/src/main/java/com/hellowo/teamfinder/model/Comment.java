@@ -55,7 +55,7 @@ public class Comment {
         }else if(m < 60){
             return String.format(App.context.getString(R.string.min_before), m);
         }else if(m < 60 * 24){
-            return String.format(App.context.getString(R.string.min_before), m / 60);
+            return String.format(App.context.getString(R.string.hour_before), m / 60);
         }else {
             return DateFormat.getDateTimeInstance().format(new Date(dtCreated));
         }

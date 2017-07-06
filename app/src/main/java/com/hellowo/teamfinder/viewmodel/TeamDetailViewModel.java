@@ -2,6 +2,7 @@ package com.hellowo.teamfinder.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import static com.hellowo.teamfinder.AppConst.DB_KEY_DT_CREATED;
 
-public class TeamViewModel extends ViewModel {
+public class TeamDetailViewModel extends ViewModel {
     public MutableLiveData<Team> team = new MutableLiveData<>();
     public MutableLiveData<List<Member>> members = new MutableLiveData<>();
     public MutableLiveData<List<Comment>> comments = new MutableLiveData<>();
@@ -31,7 +32,7 @@ public class TeamViewModel extends ViewModel {
     private List<Member> memberList = new ArrayList<>();
     private List<Comment> commentList = new ArrayList<>();
 
-    public TeamViewModel() {
+    public TeamDetailViewModel() {
         currentPage.setValue(0);
     }
 
@@ -78,6 +79,8 @@ public class TeamViewModel extends ViewModel {
                                     commentList.add(0, comment);
                                 }
                                 comments.setValue(commentList);
+                                Log.d("aaa", commentList.size() + "");
+                                loading.setValue(false);
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {}
@@ -85,6 +88,7 @@ public class TeamViewModel extends ViewModel {
     }
 
     public void postComment(String message) {
+        loading.setValue(true);
         Comment comment = new Comment();
         comment.setDtCreated(System.currentTimeMillis());
         comment.setText(message);

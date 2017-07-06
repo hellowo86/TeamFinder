@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.FragmentTeamInfoBinding;
 import com.hellowo.teamfinder.model.Team;
-import com.hellowo.teamfinder.viewmodel.TeamViewModel;
+import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 
 public class TeamInfoFragment extends LifecycleFragment{
-    TeamViewModel viewModel;
+    TeamDetailViewModel viewModel;
     FragmentTeamInfoBinding binding;
 
     public TeamInfoFragment(){}
@@ -23,7 +23,7 @@ public class TeamInfoFragment extends LifecycleFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(TeamViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(TeamDetailViewModel.class);
     }
 
     @Nullable

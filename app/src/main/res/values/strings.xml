@@ -48,7 +48,7 @@
     <string name="do_join">참가신청</string>
     <string name="team_info">팀 정보</string>
     <string name="comments">코멘트</string>
-    <string name="enter_comment">메세지를 입력하세요.</string>
+    <string name="enter_comment">댓글 입력하기</string>
     <string name="send">전송</string>
     <string name="just_before">방금 전</string>
     <string name="min_before">%1$d분 전</string>

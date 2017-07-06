@@ -144,4 +144,9 @@ public class Team {
             }
         }
     }
+
+    @Exclude
+    public Member getOrganizer() {
+        return members.get(0);
+    }
 }

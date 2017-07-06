@@ -2,14 +2,16 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLy"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -28,7 +30,6 @@
             android:paddingLeft="10dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:layout_gravity="bottom"
             android:elevation="2dp">
 
             <EditText
@@ -52,6 +53,6 @@
 
         </LinearLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
 </layout>

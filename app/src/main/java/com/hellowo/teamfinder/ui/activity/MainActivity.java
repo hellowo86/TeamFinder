@@ -14,10 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 import com.hellowo.teamfinder.App;
-import com.hellowo.teamfinder.AppConst;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityMainBinding;
 import com.hellowo.teamfinder.model.Team;
@@ -72,7 +69,7 @@ public class MainActivity extends LifecycleActivity {
     }
 
     private void clickTeam(Team team) {
-        Intent intent = new Intent(this, TeamActivity.class);
+        Intent intent = new Intent(this, TeamDetailActivity.class);
         intent.putExtra(EXTRA_TEAM_ID, team.getId());
         startActivity(intent);
     }

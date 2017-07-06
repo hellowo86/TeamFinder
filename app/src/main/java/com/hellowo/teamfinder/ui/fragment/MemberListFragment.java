@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.ui.adapter.MemberListAdapter;
-import com.hellowo.teamfinder.viewmodel.TeamViewModel;
+import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 
 import java.util.List;
 
 public class MemberListFragment extends LifecycleFragment{
-    TeamViewModel viewModel;
+    TeamDetailViewModel viewModel;
     RecyclerView recyclerView;
     MemberListAdapter adapter;
 
@@ -27,7 +27,7 @@ public class MemberListFragment extends LifecycleFragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(TeamViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(TeamDetailViewModel.class);
     }
 
     @Nullable
