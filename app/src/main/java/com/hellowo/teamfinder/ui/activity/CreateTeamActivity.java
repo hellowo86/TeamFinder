@@ -15,6 +15,7 @@ import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityCreateTeamBinding;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.ui.adapter.MemberListAdapter;
+import com.hellowo.teamfinder.ui.adapter.RolesAdapter;
 import com.hellowo.teamfinder.ui.adapter.decoration.HorizontalDotDecoration;
 import com.hellowo.teamfinder.ui.dialog.SelectGameDialog;
 import com.hellowo.teamfinder.ui.dialog.SelectTagDialog;
@@ -27,7 +28,6 @@ import com.volokh.danylo.hashtaghelper.HashTagHelper;
 public class CreateTeamActivity extends LifecycleActivity {
     ActivityCreateTeamBinding binding;
     CreateTeamViewModel viewModel;
-    MemberListAdapter memberListAdapter;
     ProgressDialog progressDialog;
 
     @Override
@@ -60,14 +60,15 @@ public class CreateTeamActivity extends LifecycleActivity {
                 viewModel.saveTeam(binding.descriptionInput.getText().toString());
             }
         });
-        initMemberList();
+        initRolosRecyclerView();
         initDescriptionInput();
+        setMemberSizeText();
     }
 
-    private void initMemberList() {
-        binding.memberRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        memberListAdapter = new MemberListAdapter(
+    private void initRolosRecyclerView() {
+        binding.rolesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        /*
+        memberListAdapter = new RolesAdapter(
                 this,
                 true,
                 viewModel.currentMember.getValue(),
@@ -78,10 +79,8 @@ public class CreateTeamActivity extends LifecycleActivity {
                     @Override
                     public void onItemClicked(Member member) {showRoloEditDialog(member);}
                 });
-        binding.memberRecyclerView.setAdapter(memberListAdapter);
-        binding.memberRecyclerView.addItemDecoration(
-                new HorizontalDotDecoration((int) ViewUtil.dpToPx(this, 5)));
-        setMemberSizeText();
+        binding.rolesRecyclerView.setAdapter(memberListAdapter);
+        */
     }
 
     private void initDescriptionInput() {
@@ -95,24 +94,8 @@ public class CreateTeamActivity extends LifecycleActivity {
             binding.gameIconImg.setImageResource(game.getIconId());
         });
 
-        viewModel.addedMemberPos.observe(this, position -> {
-            memberListAdapter.notifyItemInserted(position);
-            binding.memberRecyclerView.scrollToPosition(position + 1);
-            setMemberSizeText();
-        });
-
-        viewModel.deletedMemberPos.observe(this, position -> {
-            memberListAdapter.notifyItemRemoved(position);
-            setMemberSizeText();
-        });
-
         viewModel.isFullMember.observe(this, isFullMember -> {
             binding.addMemberBtn.setVisibility(isFullMember ? View.GONE : View.VISIBLE);
-        });
-
-        viewModel.currentMember.observe(this, memberList -> {
-            memberListAdapter.notifyDataSetChanged();
-            setMemberSizeText();
         });
 
         viewModel.isConfirmable.observe(this, isConfirmable -> {
@@ -159,7 +142,6 @@ public class CreateTeamActivity extends LifecycleActivity {
         selectRoleDialog.setGame(viewModel.selectedGame.getValue());
         selectRoleDialog.setDialogInterface(role -> {
             member.setRole(role);
-            memberListAdapter.notifyItemChanged(viewModel.currentMember.getValue().indexOf(member));
             selectRoleDialog.dismiss();
         });
         selectRoleDialog.show(getSupportFragmentManager(), selectRoleDialog.getTag());

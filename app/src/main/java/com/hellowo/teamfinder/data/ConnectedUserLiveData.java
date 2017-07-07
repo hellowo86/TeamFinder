@@ -27,7 +27,6 @@ public class ConnectedUserLiveData extends LiveData<User> {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ValueEventListener valueEventListener;
     private DatabaseReference mDatabase;
-    private User connectedUser;
 
     @MainThread
     public static ConnectedUserLiveData get() {
@@ -55,8 +54,7 @@ public class ConnectedUserLiveData extends LiveData<User> {
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                connectedUser = dataSnapshot.getValue(User.class);
-                setValue(connectedUser);
+                setValue(dataSnapshot.getValue(User.class));
             }
 
             @Override
@@ -81,9 +79,5 @@ public class ConnectedUserLiveData extends LiveData<User> {
             mDatabase.removeEventListener(valueEventListener);
             valueEventListener = null;
         }
-    }
-
-    public User getSnapshot(){
-        return connectedUser;
     }
 }

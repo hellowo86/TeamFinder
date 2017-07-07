@@ -5,15 +5,27 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="PrimaryButton" parent="@android:style/Widget.TextView">
+    <style name="BasicButton" parent="@android:style/Widget.TextView">
         <item name="android:background">@drawable/primary_ripple_button</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/normal_button_height</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">@dimen/normal_margin</item>
+        <item name="android:paddingRight">@dimen/normal_margin</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="FullButton" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/primary_ripple_button</item>
+        <item name="android:layout_height">@dimen/full_button_height</item>
+        <item name="android:paddingLeft">@dimen/big_margin</item>
+        <item name="android:paddingRight">@dimen/big_margin</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TitleEditText" parent="@android:style/Widget.EditText">

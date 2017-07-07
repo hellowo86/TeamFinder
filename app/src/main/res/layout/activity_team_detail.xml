@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.design.widget.CoordinatorLayout
         android:background="@color/background"
@@ -135,7 +134,7 @@
             <TextView
                 android:id="@+id/joinBtn"
                 android:layout_margin="@dimen/small_margin"
-                style="@style/PrimaryButton"
+                style="@style/BasicButton"
                 android:layout_gravity="center_vertical"
                 android:text="@string/do_join"/>
 

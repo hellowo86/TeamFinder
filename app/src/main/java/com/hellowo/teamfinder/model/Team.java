@@ -1,5 +1,6 @@
 package com.hellowo.teamfinder.model;
 
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
@@ -9,22 +10,21 @@ import com.hellowo.teamfinder.data.GameData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Team {
     public final static String DB_REF = "teams";
-    public final static String KEY_DT_ACTIVE = "dtActive";
     public final static String KEY_FILTERING = "filteringKey";
 
     List<Member> members = new ArrayList<>();
+    Map<String, Integer> roles = new ArrayMap<>();
     String id;
     long dtCreated;
     String title;
     String description;
     int gameId;
     long dtActive;
-    long dtStart;
-    long dtEnd;
-    int Status;
+    int status;
     int commentCount;
 
     public List<Member> getMembers() {
@@ -37,10 +37,6 @@ public class Team {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
     }
 
     public long getDtCreated() {
@@ -83,32 +79,16 @@ public class Team {
         this.dtActive = dtActive;
     }
 
-    public long getDtStart() {
-        return dtStart;
-    }
-
-    public void setDtStart(long dtStart) {
-        this.dtStart = dtStart;
-    }
-
-    public long getDtEnd() {
-        return dtEnd;
-    }
-
-    public void setDtEnd(long dtEnd) {
-        this.dtEnd = dtEnd;
-    }
-
     public int getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(int status) {
-        Status = status;
+        this.status = status;
     }
 
     public String getFilteringKey() {
-        return gameId + "_" + dtActive;
+        return dtActive + "_" + gameId;
     }
 
     public int getCommentCount() {
@@ -117,6 +97,10 @@ public class Team {
 
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public Map<String, Integer> getRoles() {
+        return roles;
     }
 
     @Exclude

@@ -45,7 +45,7 @@ public class Member {
 
     @Exclude
     public boolean isMe() {
-        return userId != null && ConnectedUserLiveData.get().getSnapshot().getId().equals(userId);
+        return userId != null && ConnectedUserLiveData.get().getValue().getId().equals(userId);
     }
 
     @Exclude

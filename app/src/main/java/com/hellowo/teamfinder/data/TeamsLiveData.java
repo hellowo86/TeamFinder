@@ -37,7 +37,7 @@ public class TeamsLiveData extends LiveData<List<Team>> {
     public void loadTeams() {
         mDatabase.child(Team.DB_REF)
                 .orderByChild(Team.KEY_FILTERING)
-                .startAt(0 + "_" + System.currentTimeMillis())
+                .startAt(System.currentTimeMillis() + "_0")
                 .addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override

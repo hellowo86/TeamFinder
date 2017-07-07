@@ -92,8 +92,8 @@ public class TeamDetailViewModel extends ViewModel {
         Comment comment = new Comment();
         comment.setDtCreated(System.currentTimeMillis());
         comment.setText(message);
-        comment.setUserName(ConnectedUserLiveData.get().getSnapshot().getNickName());
-        comment.setUserId(ConnectedUserLiveData.get().getSnapshot().getId());
+        comment.setUserName(ConnectedUserLiveData.get().getValue().getNickName());
+        comment.setUserId(ConnectedUserLiveData.get().getValue().getId());
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Comment.DB_REF).child(teamId);
         String key = ref.push().getKey();

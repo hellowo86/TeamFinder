@@ -27,11 +27,11 @@ import gun0912.tedbottompicker.TedBottomPicker;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
+import static com.hellowo.teamfinder.AppConst.EXTRA_USER_ID;
 
 public class MainActivity extends LifecycleActivity {
     ActivityMainBinding binding;
     MainViewModel viewModel;
-    ProgressDialog progressDialog;
     TeamListAdapter teamListAdapter;
 
     @Override
@@ -52,7 +52,7 @@ public class MainActivity extends LifecycleActivity {
                 getResources().getColor(R.color.colorAccent));
         binding.swipeRefreshLy.setOnRefreshListener(() -> viewModel.teamsLiveData.loadTeams());
         binding.menuBtn.setOnClickListener(v->binding.drawerLy.openDrawer(Gravity.LEFT));
-        binding.accountPhotoImg.setOnClickListener(viewModel::checkExternalStoragePermission);
+        binding.accountPhotoImg.setOnClickListener(this::startUserAcivity);
         binding.fab.setOnClickListener(this::clickFab);
         binding.signOutBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, SignInActivity.class));
@@ -74,9 +74,14 @@ public class MainActivity extends LifecycleActivity {
         startActivity(intent);
     }
 
+    private void startUserAcivity(View view) {
+        Intent intent = new Intent(this, UserActivity.class);
+        intent.putExtra(EXTRA_USER_ID, viewModel.connectedUserLiveData.getValue().getId());
+        startActivity(intent);
+    }
+
     private void initObserve() {
         viewModel.connectedUserLiveData.observe(this, this::updateUserUI);
-        viewModel.status.observe(this, this::updatePhotoUI);
         viewModel.viewMode.observe(this, this::updateUI);
         viewModel.teamsLiveData.observe(this, teams -> {
             binding.swipeRefreshLy.setRefreshing(false);
@@ -95,56 +100,13 @@ public class MainActivity extends LifecycleActivity {
         }
     }
 
-    private void updatePhotoUI(MainViewModel.Status status) {
-        switch (status){
-            case ShowPhotoPicker:
-                showPhotoPicker();
-                break;
-            case UploadPhoto:
-                showProgressDialog();
-                break;
-            case CompleteUpload:
-                hideProgressDialog();
-                break;
-            case FailedUpload:
-                Toast.makeText(App.context, R.string.failed_upload, Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void showProgressDialog() {
-        hideProgressDialog();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.plz_wait));
-        progressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if(progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
-    }
-
     private void updateUserUI(User user) {
-        if(user != null) {
-            Glide.with(this)
-                    .load(!TextUtils.isEmpty(user.getPhotoUrl()) ? user.getPhotoUrl() : R.drawable.default_profile)
-                    .bitmapTransform(new CropCircleTransformation(this))
-                    .thumbnail(0.1f)
-                    .into(binding.accountPhotoImg);
-            binding.accountNameText.setText(user.getNickName());
-        }
-    }
-
-    private void showPhotoPicker() {
-        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(MainActivity.this)
-                .setOnImageSelectedListener(viewModel::uploadPhoto)
-                .setMaxCount(100)
-                .create();
-        bottomSheetDialogFragment.show(getSupportFragmentManager());
+        Glide.with(this)
+                .load(!TextUtils.isEmpty(user.getPhotoUrl()) ? user.getPhotoUrl() : R.drawable.default_profile)
+                .bitmapTransform(new CropCircleTransformation(this))
+                .thumbnail(0.1f)
+                .into(binding.accountPhotoImg);
+        binding.accountNameText.setText(user.getNickName());
     }
 
     private void clickFab(View view) {
