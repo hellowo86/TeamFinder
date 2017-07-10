@@ -72,21 +72,14 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
         final Game game = GameData.get().getGame(team.getGameId());
         final ListItemTeamBinding binding = holder.binding;
 
-        binding.titleText.setText(team.getTitle());
+        binding.contentsText.setText(team.getTitle());
         binding.nameText.setText(organizer.getName());
         binding.memberCountText.setText(team.makeMemberText());
         binding.activeTimeText.setText(team.makeActiveTimeText());
         binding.commentCountText.setText(String.valueOf(team.getCommentCount()));
 
         HashTagHelper tagHelper = HashTagHelper.Creator.create(hashTagColor, null);
-        tagHelper.handle(binding.subText);
-
-        if(!TextUtils.isEmpty(team.getDescription())) {
-            binding.subText.setVisibility(View.VISIBLE);
-            binding.subText.setText(team.getDescription());
-        }else {
-            binding.subText.setVisibility(View.GONE);
-        }
+        tagHelper.handle(binding.contentsText);
 
         Glide.with(context)
                 .load(game.getIconId())

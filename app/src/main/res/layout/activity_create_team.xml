@@ -2,235 +2,211 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:background="@color/backgroundDark"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/contents_start_pos"
-                android:layout_marginBottom="@dimen/contents_start_pos"
+            <android.support.v4.widget.NestedScrollView
+                android:paddingTop="@dimen/top_menu_bar_height"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:background="@color/background">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/gameSelectBtn"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ripple_button"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/gameIconImg"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_margin="@dimen/normal_margin" />
-
-                    <TextView
-                        android:id="@+id/gameTitleText"
-                        style="@style/TitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/backgroundDark"/>
-
-                <EditText
-                    android:id="@+id/titleInput"
-                    android:layout_marginTop="@dimen/big_margin"
                     android:layout_marginStart="@dimen/normal_margin"
                     android:layout_marginEnd="@dimen/normal_margin"
-                    android:layout_marginBottom="@dimen/big_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/enter_title"
-                    style="@style/TitleEditText"/>
+                    android:background="@color/background">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/backgroundDark"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/TitleText"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/gameSelectBtn"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:layout_margin="@dimen/normal_margin"
-                        android:text="@string/active_time"
-                        android:textColor="@color/disableText"/>
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ripple_button"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        <ImageView
+                            android:id="@+id/gameIconImg"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="@dimen/normal_margin" />
 
                         <TextView
-                            android:id="@+id/activeTimeText"
+                            android:id="@+id/gameTitleText"
                             style="@style/TitleText"
-                            android:background="@drawable/ripple_button"
-                            android:layout_gravity="center_vertical"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/backgroundDark"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TitleText"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/active_infinity" />
+                            android:layout_weight="1"
+                            android:layout_margin="@dimen/normal_margin"
+                            android:text="@string/active_time"
+                            android:textColor="@color/disableText"/>
 
-                        <View
-                            android:layout_gravity="bottom"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/backgroundDark"/>
+                        <FrameLayout
+                            android:id="@+id/activeTimeBtn"
+                            android:background="@drawable/ripple_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
 
-                    </FrameLayout>
+                            <TextView
+                                android:id="@+id/activeTimeText"
+                                style="@style/TitleText"
+                                android:layout_margin="@dimen/normal_margin"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/active_infinity" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/backgroundDark"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TitleText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="@dimen/normal_margin"
+                            android:text="@string/need_member"
+                            android:textColor="@color/disableText"/>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/memberSizeText"
+                                style="@style/TitleText"
+                                android:background="@drawable/ripple_button"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginEnd="62dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2" />
+
+                            <ImageView
+                                android:id="@+id/addMemberBtn"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginEnd="@dimen/normal_margin"
+                                android:src="@drawable/ic_add_black_48dp"
+                                android:padding="5dp"
+                                android:background="@drawable/accent_ripple_button"
+                                android:tint="@color/white" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rolesRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
+                    </android.support.v7.widget.RecyclerView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/backgroundDark"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TitleText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_margin="@dimen/normal_margin"
+                            android:text="@string/contens_and_tag"
+                            android:textColor="@color/disableText"/>
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/addTagBtn"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginEnd="@dimen/normal_margin"
+                                android:src="@drawable/ic_add_black_48dp"
+                                android:padding="5dp"
+                                android:background="@drawable/accent_ripple_button"
+                                android:tint="@color/white" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/contentsInput"
+                        android:layout_margin="@dimen/normal_margin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="100dp"
+                        android:gravity="top"
+                        android:hint="@string/enter_contents"
+                        style="@style/TitleEditText"/>
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rolesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false">
-                </android.support.v7.widget.RecyclerView>
+            </android.support.v4.widget.NestedScrollView>
 
-                <FrameLayout
-                    android:layout_marginTop="@dimen/big_margin"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/confirmBtn"
+                android:layout_gravity="bottom"
+                style="@style/FullButton"
+                android:text="@string/confirm"/>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/SubText"
-                            android:text="@string/members"/>
-
-                        <TextView
-                            android:id="@+id/memberSizeText"
-                            android:layout_marginLeft="5dp"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            style="@style/SubText"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/addMemberBtn"
-                        android:background="@color/colorPrimary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="6dp"
-                        android:layout_gravity="end"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:src="@drawable/ic_add_black_48dp"
-                            android:tint="@color/white" />
-
-                        <TextView
-                            style="@style/SubText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/add_member"
-                            android:textColor="@color/white" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_marginTop="@dimen/big_margin"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/SubText"
-                            android:text="@string/description"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/addTagBtn"
-                        android:background="@color/colorPrimary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="6dp"
-                        android:layout_gravity="end"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:src="@drawable/ic_add_black_48dp"
-                            android:tint="@color/white" />
-
-                        <TextView
-                            style="@style/SubText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/add_tag"
-                            android:textColor="@color/white" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <EditText
-                    android:id="@+id/descriptionInput"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_marginBottom="@dimen/big_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/enter_description"
-                    android:maxLines="100"
-                    style="@style/NormalEditText"/>
-
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -245,6 +221,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/recruiting_team_member"
                 android:textColor="@color/primaryText"
+                android:textStyle="bold"
                 android:textSize="@dimen/title_text_size" />
 
             <ImageButton
@@ -271,12 +248,6 @@
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/confirmBtn"
-            android:layout_gravity="bottom"
-            style="@style/FullButton"
-            android:text="@string/confirm"/>
-
-    </android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
 
 </layout>

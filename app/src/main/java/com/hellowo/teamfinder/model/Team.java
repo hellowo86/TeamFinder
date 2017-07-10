@@ -9,6 +9,7 @@ import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.data.GameData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,10 @@ public class Team {
     public final static String KEY_FILTERING = "filteringKey";
 
     List<Member> members = new ArrayList<>();
-    Map<String, Integer> roles = new ArrayMap<>();
+    Map<String, Integer> roles = new HashMap<>();
     String id;
     long dtCreated;
     String title;
-    String description;
     int gameId;
     long dtActive;
     int status;
@@ -53,14 +53,6 @@ public class Team {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getGameId() {

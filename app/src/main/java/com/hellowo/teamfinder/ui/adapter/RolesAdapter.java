@@ -13,18 +13,42 @@ import android.widget.TextView;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ListItemRoleBinding;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.ViewHolder> {
     private Context context;
     private ArrayMap<String, Integer> mContentsList;
     private AdapterInterface adapterInterface;
+    private boolean isEditable;
+    private boolean isFullMember;
+    private boolean isOnlyOneMember;
 
-    public RolesAdapter(Context context, ArrayMap<String, Integer> items, AdapterInterface adapterInterface) {
+    public RolesAdapter(Context context, boolean isEditable, Map<String, Integer> items,
+                        AdapterInterface adapterInterface) {
         this.context = context;
+        this.isEditable = isEditable;
         this.adapterInterface = adapterInterface;
-        mContentsList = items;
+        mContentsList = new ArrayMap<>();
+        mContentsList.putAll(items);
+    }
+
+    public void refresh(Map<String, Integer> roles) {
+        mContentsList.clear();
+        mContentsList.putAll(roles);
+        notifyDataSetChanged();
+    }
+
+    public void setIsFullMember(Boolean isFullMember) {
+        this.isFullMember = isFullMember;
+        notifyDataSetChanged();
+    }
+
+    public void setIsOnlyOneMember(Boolean isOnlyOneMember) {
+        this.isOnlyOneMember = isOnlyOneMember;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,9 +76,26 @@ public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.ViewHolder> 
         final ListItemRoleBinding binding = holder.binding;
 
         binding.roloText.setText(role);
-        binding.countText.setText(String.valueOf(count));
-        holder.container.setOnClickListener(v ->
-                adapterInterface.onItemClicked(role, count));
+        binding.countText.setText(String.format(context.getString(R.string.need_member_count), count));
+        binding.minusBtn.setOnClickListener(v ->
+                adapterInterface.onItemClicked(role, -1));
+        binding.plusBtn.setOnClickListener(v ->
+                adapterInterface.onItemClicked(role, 1));
+
+        binding.plusBtn.setEnabled(!isFullMember);
+        binding.minusBtn.setEnabled(!isOnlyOneMember);
+
+        if(isFullMember) {
+            binding.plusBtn.setAlpha(0.2f);
+        }else {
+            binding.plusBtn.setAlpha(1f);
+        }
+
+        if(isOnlyOneMember) {
+            binding.minusBtn.setAlpha(0.2f);
+        }else {
+            binding.minusBtn.setAlpha(1f);
+        }
     }
 
     @Override
@@ -68,6 +109,6 @@ public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.ViewHolder> 
     }
 
     public interface AdapterInterface {
-        void onItemClicked(String item, int count);
+        void onItemClicked(String role, int count);
     }
 }

@@ -60,7 +60,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/titleText"
+                    android:id="@+id/contentsText"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="@dimen/big_margin"
                     android:layout_marginRight="@dimen/big_margin"
@@ -70,17 +70,6 @@
                     android:text="name"
                     android:textColor="@color/primaryText"
                     android:textSize="13dp"/>
-
-                <TextView
-                    android:id="@+id/subText"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="name"
-                    android:textSize="13dp"
-                    android:textColor="@color/secondaryText"/>
 
                 <View
                     android:layout_marginTop="20dp"

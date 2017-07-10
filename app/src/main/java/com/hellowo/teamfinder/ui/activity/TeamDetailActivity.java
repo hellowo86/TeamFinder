@@ -77,21 +77,15 @@ public class TeamDetailActivity extends LifecycleActivity {
         final Game game = GameData.get().getGame(team.getGameId());
         final Member organizer = team.getOrganizer();
 
-        binding.titleText.setText(team.getTitle());
+        binding.contentsText.setText(team.getTitle());
         binding.nameText.setText(team.getOrganizer().getName());
         //binding.memberCountText.setText(team.makeMemberText());
         //binding.activeTimeText.setText(team.makeActiveTimeText());
         //binding.commentCountText.setText(String.valueOf(team.getCommentCount()));
 
         HashTagHelper tagHelper = HashTagHelper.Creator.create(getColor(R.color.primaryText), null);
-        tagHelper.handle(binding.subText);
+        tagHelper.handle(binding.contentsText);
 
-        if(!TextUtils.isEmpty(team.getDescription())) {
-            binding.subText.setVisibility(View.VISIBLE);
-            binding.subText.setText(team.getDescription());
-        }else {
-            binding.subText.setVisibility(View.GONE);
-        }
 /*
         Glide.with(this)
                 .load(game.getIconId())
