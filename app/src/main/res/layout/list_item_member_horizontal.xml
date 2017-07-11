@@ -41,22 +41,22 @@
 
             <TextView
                 android:id="@+id/titleText"
+                style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/primaryText"
+                android:textColor="@color/disableText"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="10dp" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/subText"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondaryText"
+                android:textColor="@color/primaryText"
                 android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="10dp" />
+                android:ellipsize="end"/>
         </LinearLayout>
 
     </LinearLayout>

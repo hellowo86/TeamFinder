@@ -6,32 +6,105 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:background="@color/backgroundDark"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/top_menu_bar_height">
-
-            <ImageButton
-                android:id="@+id/backBtn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ripple_circle_button"
-                android:padding="14dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_arrow_back_black_48dp"
-                android:tint="@color/colorPrimaryDark" />
-
-        </FrameLayout>
-
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/top_menu_bar_height">
+            android:background="@color/white">
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/memberRecyclerView"
+                    android:layout_margin="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginLeft="@dimen/normal_margin"
+                    android:layout_marginRight="@dimen/normal_margin">
+
+                    <TextView
+                        android:background="@color/colorPrimary"
+                        android:layout_width="30dp"
+                        android:layout_height="3dp"
+                        android:layout_marginLeft="30dp"/>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        style="@style/TitleText"
+                        android:text="@string/info"/>
+
+                    <TextView
+                        android:id="@+id/contentsText"
+                        android:layout_margin="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TitleText"
+                        android:textColor="@color/secondaryText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginLeft="@dimen/normal_margin"
+                    android:layout_marginRight="@dimen/normal_margin">
+
+                    <TextView
+                        android:background="@color/colorPrimary"
+                        android:layout_width="30dp"
+                        android:layout_height="3dp"
+                        android:layout_marginLeft="30dp"/>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        style="@style/TitleText"
+                        android:text="@string/comments"/>
+
+                    <TextView
+                        android:id="@+id/enterCommentBtn"
+                        android:background="@drawable/ripple_button"
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/normal_button_height"
+                        style="@style/TitleText"
+                        android:gravity="center_vertical"
+                        android:text="@string/enter_comment"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/backgroundDark"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:background="@color/white"
+                        android:id="@+id/commentRecyclerView"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginEnd="@dimen/normal_margin"
+                        android:layout_marginBottom="80dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -59,75 +132,26 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/contentsText"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="name"
-                    android:textColor="@color/primaryText"
-                    android:textSize="13dp"/>
-
-                <View
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/backgroundDark"/>
-
-                <TextView
-                    android:id="@+id/enterCommentBtn"
-                    android:background="@drawable/ripple_button"
-                    android:layout_marginLeft="@dimen/big_margin"
-                    android:layout_marginRight="@dimen/big_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/normal_button_height"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/primaryText"
-                    android:text="@string/enter_comment"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/backgroundDark"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/commentRecyclerView"
-                    android:layout_marginBottom="80dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
-
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
-        <LinearLayout
-            android:background="@color/backgroundDark"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_height="@dimen/top_menu_bar_height"
+            android:background="@color/backgroundAlpha">
 
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/big_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:textColor="@color/secondaryText"
-                android:textSize="20dp"/>
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back_black_48dp"
+                android:tint="@color/primaryText" />
 
-            <TextView
-                android:id="@+id/joinBtn"
-                android:layout_margin="@dimen/small_margin"
-                style="@style/BasicButton"
-                android:layout_gravity="center_vertical"
-                android:text="@string/do_join"/>
-
-        </LinearLayout>
+        </FrameLayout>
 
         <ProgressBar
             android:id="@+id/progressBar"

@@ -101,12 +101,14 @@ public class MainActivity extends LifecycleActivity {
     }
 
     private void updateUserUI(User user) {
-        Glide.with(this)
-                .load(!TextUtils.isEmpty(user.getPhotoUrl()) ? user.getPhotoUrl() : R.drawable.default_profile)
-                .bitmapTransform(new CropCircleTransformation(this))
-                .thumbnail(0.1f)
-                .into(binding.accountPhotoImg);
-        binding.accountNameText.setText(user.getNickName());
+        if(user != null) {
+            Glide.with(this)
+                    .load(!TextUtils.isEmpty(user.getPhotoUrl()) ? user.getPhotoUrl() : R.drawable.default_profile)
+                    .bitmapTransform(new CropCircleTransformation(this))
+                    .thumbnail(0.1f)
+                    .into(binding.accountPhotoImg);
+            binding.accountNameText.setText(user.getNickName());
+        }
     }
 
     private void clickFab(View view) {

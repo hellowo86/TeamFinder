@@ -4,10 +4,6 @@ import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,24 +16,21 @@ import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.ui.adapter.CommentListAdapter;
+import com.hellowo.teamfinder.ui.adapter.MemberListAdapter;
 import com.hellowo.teamfinder.ui.adapter.decoration.VerticalSpaceDecoration;
 import com.hellowo.teamfinder.ui.dialog.EnterCommentDialog;
-import com.hellowo.teamfinder.ui.fragment.CommentListFragment;
-import com.hellowo.teamfinder.ui.fragment.MemberListFragment;
-import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment;
-import com.hellowo.teamfinder.utils.ViewUtil;
 import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-import jp.wasabeef.glide.transformations.GrayscaleTransformation;
 
 import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
 
 public class TeamDetailActivity extends LifecycleActivity {
     ActivityTeamDetailBinding binding;
     TeamDetailViewModel viewModel;
-    CommentListAdapter adapter;
+    MemberListAdapter memberListAdapter;
+    CommentListAdapter commentListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +47,42 @@ public class TeamDetailActivity extends LifecycleActivity {
         binding.progressBar.getIndeterminateDrawable().setColorFilter(getColor(R.color.colorPrimary),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
         binding.enterCommentBtn.setOnClickListener(v->showEnterCommentDialog());
+        initMemberRecyclerView();
         initCommentRecyclerView();
+    }
+
+    private void initMemberRecyclerView() {
+        binding.memberRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        memberListAdapter = new MemberListAdapter(
+                this,
+                false,
+                viewModel.members.getValue(),
+                R.layout.list_item_member_horizontal,
+                new MemberListAdapter.AdapterInterface() {
+                    @Override
+                    public void onDeleteClicked(Member member) {}
+                    @Override
+                    public void onItemClicked(Member member) {}
+                });
+        binding.memberRecyclerView.setAdapter(memberListAdapter);
     }
 
     private void initCommentRecyclerView() {
         binding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommentListAdapter(
+        commentListAdapter = new CommentListAdapter(
                 this,
                 viewModel.comments.getValue(),
                 userId -> {});
-        binding.commentRecyclerView.setAdapter(adapter);
+        binding.commentRecyclerView.setAdapter(commentListAdapter);
         binding.commentRecyclerView.addItemDecoration(new VerticalSpaceDecoration(this));
     }
 
     private void initObserve() {
         viewModel.team.observe(this, this::updateUI);
-        viewModel.comments.observe(this, teamList->adapter.notifyDataSetChanged());
-        viewModel.loading.observe(this, loading -> {binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);});
+        viewModel.members.observe(this, members -> memberListAdapter.notifyDataSetChanged());
+        viewModel.comments.observe(this, teamList-> commentListAdapter.notifyDataSetChanged());
+        viewModel.loading.observe(this, loading -> binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE));
     }
 
     private void updateUI(Team team) {

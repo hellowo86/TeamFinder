@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
-        android:background="@color/backgroundDark"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <LinearLayout
             android:orientation="vertical"
@@ -21,10 +21,7 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/normal_margin"
-                    android:layout_marginEnd="@dimen/normal_margin"
-                    android:background="@color/background">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/gameSelectBtn"
@@ -141,6 +138,8 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rolesRecyclerView"
+                        android:layout_marginStart="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/normal_margin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false">
@@ -188,7 +187,10 @@
 
                     <EditText
                         android:id="@+id/contentsInput"
-                        android:layout_margin="@dimen/normal_margin"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_marginLeft="@dimen/normal_margin"
+                        android:layout_marginRight="@dimen/normal_margin"
+                        android:layout_marginBottom="@dimen/normal_margin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="100dp"
@@ -211,7 +213,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/top_menu_bar_height"
-            android:background="@color/backgroundDarkAlpha">
+            android:background="@color/backgroundAlpha">
 
             <TextView
                 android:id="@+id/mainTopTitle"

@@ -46,7 +46,7 @@
     <string name="active_time_finish_soon">마감임박</string>
     <string name="do_join">참가신청</string>
     <string name="team_info">팀 정보</string>
-    <string name="comments">코멘트</string>
+    <string name="comments">댓글</string>
     <string name="enter_comment">댓글 입력하기</string>
     <string name="send">전송</string>
     <string name="just_before">방금 전</string>
@@ -56,4 +56,7 @@
     <string name="contens_and_tag">내용 및 태그</string>
     <string name="need_member_count">%1$d명</string>
     <string name="total_need_member_count">총 %1$d명</string>
+    <string name="recruit_status">팀 모집 현황</string>
+    <string name="recruiting">모집 중</string>
+    <string name="info">정보</string>
 </resources>
