@@ -7,6 +7,7 @@
     <color name="background">#FFFFFF</color>
     <color name="backgroundAlpha">#EEFFFFFF</color>
     <color name="backgroundDark">#f2f2f2</color>
+    <color name="backgroundDeepDark">#b4b7bc</color>
     <color name="backgroundDarkAlpha">#EEf2f2f2</color>
     <color name="disableIcon">#b4b7bc</color>
 
@@ -25,6 +26,7 @@
     <color name="secondaryWhiteText">#b3FFFFFF</color>
     <color name="disableWhiteText">#80FFFFFF</color>
      -->
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#434957</color>
     <color name="red">#F74444</color>

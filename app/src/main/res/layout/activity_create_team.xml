@@ -24,34 +24,6 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/gameSelectBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/ripple_button"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/gameIconImg"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_margin="@dimen/normal_margin" />
-
-                        <TextView
-                            android:id="@+id/gameTitleText"
-                            style="@style/TitleText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/backgroundDark"/>
-
-                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -59,96 +31,53 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/TitleText"
+                            style="@style/NormalSubText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_margin="@dimen/normal_margin"
-                            android:text="@string/active_time"
-                            android:textColor="@color/disableText"/>
+                            android:layout_weight="0.5"
+                            android:layout_marginTop="@dimen/normal_margin"
+                            android:layout_marginBottom="@dimen/normal_margin"
+                            android:layout_marginStart="@dimen/extra_margin"
+                            android:text="@string/game"/>
 
                         <FrameLayout
-                            android:id="@+id/activeTimeBtn"
-                            android:background="@drawable/ripple_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/activeTimeText"
-                                style="@style/TitleText"
-                                android:layout_margin="@dimen/normal_margin"
-                                android:layout_gravity="center_vertical|end"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/active_infinity" />
-
-                        </FrameLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/backgroundDark"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/TitleText"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_margin="@dimen/normal_margin"
-                            android:text="@string/need_member"
-                            android:textColor="@color/disableText"/>
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
 
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/memberSizeText"
-                                style="@style/TitleText"
+                            <LinearLayout
+                                android:id="@+id/gameSelectBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
                                 android:background="@drawable/ripple_button"
-                                android:layout_gravity="center_vertical|end"
-                                android:layout_marginEnd="62dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/addMemberBtn"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center_vertical|end"
-                                android:layout_marginEnd="@dimen/normal_margin"
-                                android:src="@drawable/ic_add_black_48dp"
-                                android:padding="5dp"
-                                android:background="@drawable/accent_ripple_button"
-                                android:tint="@color/white" />
+                                <ImageView
+                                    android:id="@+id/gameIconImg"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp" />
+
+                                <TextView
+                                    android:layout_marginStart="@dimen/small_margin"
+                                    android:layout_marginEnd="@dimen/extra_margin"
+                                    android:id="@+id/gameTitleText"
+                                    style="@style/TitleText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_gravity="bottom"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/backgroundDark"/>
 
                         </FrameLayout>
 
                     </LinearLayout>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rolesRecyclerView"
-                        android:layout_marginStart="@dimen/normal_margin"
-                        android:layout_marginBottom="@dimen/normal_margin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false">
-                    </android.support.v7.widget.RecyclerView>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/backgroundDark"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -158,13 +87,158 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/TitleText"
+                            style="@style/NormalSubText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_margin="@dimen/normal_margin"
-                            android:text="@string/contens_and_tag"
-                            android:textColor="@color/disableText"/>
+                            android:layout_weight="0.5"
+                            android:layout_marginTop="@dimen/normal_margin"
+                            android:layout_marginBottom="@dimen/normal_margin"
+                            android:layout_marginStart="@dimen/extra_margin"
+                            android:text="@string/need_member"/>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/ripple_button"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/memberSizeText"
+                                    style="@style/TitleText"
+                                    android:background="@drawable/ripple_button"
+                                    android:layout_gravity="center_vertical|end"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="2" />
+
+                                <ImageView
+                                    android:id="@+id/addMemberBtn"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="@dimen/extra_margin"
+                                    android:src="@drawable/ic_add_black_48dp"
+                                    android:padding="5dp"
+                                    android:background="@drawable/accent_ripple_button"
+                                    android:tint="@color/white" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            style="@style/NormalSubText"
+                            android:layout_marginStart="@dimen/extra_margin"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"/>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rolesRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:nestedScrollingEnabled="false">
+                            </android.support.v7.widget.RecyclerView>
+
+                            <View
+                                android:layout_gravity="bottom"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/backgroundDark"/>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/NormalSubText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:layout_marginTop="@dimen/normal_margin"
+                            android:layout_marginBottom="@dimen/normal_margin"
+                            android:layout_marginStart="@dimen/extra_margin"
+                            android:text="@string/active_time"/>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:id="@+id/activeTimeBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/ripple_button"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/activeTimeText"
+                                    android:layout_marginEnd="@dimen/extra_margin"
+                                    style="@style/TitleText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_gravity="bottom"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/backgroundDark"/>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/NormalSubText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:layout_marginTop="@dimen/normal_margin"
+                            android:layout_marginBottom="@dimen/normal_margin"
+                            android:layout_marginStart="@dimen/extra_margin"
+                            android:text="@string/contens_and_tag"/>
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -175,7 +249,7 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center_vertical|end"
-                                android:layout_marginEnd="@dimen/normal_margin"
+                                android:layout_marginEnd="@dimen/extra_margin"
                                 android:src="@drawable/ic_add_black_48dp"
                                 android:padding="5dp"
                                 android:background="@drawable/accent_ripple_button"
@@ -187,10 +261,9 @@
 
                     <EditText
                         android:id="@+id/contentsInput"
-                        android:layout_marginTop="@dimen/small_margin"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:layout_marginRight="@dimen/normal_margin"
-                        android:layout_marginBottom="@dimen/normal_margin"
+                        android:layout_marginLeft="@dimen/extra_margin"
+                        android:layout_marginRight="@dimen/extra_margin"
+                        android:layout_marginBottom="@dimen/extra_margin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="100dp"
