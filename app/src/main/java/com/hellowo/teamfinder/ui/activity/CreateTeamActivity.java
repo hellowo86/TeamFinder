@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import com.hellowo.teamfinder.R;
@@ -52,7 +53,7 @@ public class CreateTeamActivity extends LifecycleActivity {
         binding.activeTimeBtn.setOnClickListener(v->showAcitveTimeDialog());
         binding.addMemberBtn.setOnClickListener(v ->{
             if(!viewModel.isFullMember.getValue()) {
-                showRoloEditDialog();
+                showRoloEditDialog(null, 1);
             }
         });
         binding.addTagBtn.setOnClickListener(v ->showSelectTagDialog());
@@ -70,7 +71,16 @@ public class CreateTeamActivity extends LifecycleActivity {
                 this,
                 true,
                 viewModel.currentRoles.getValue(),
-                viewModel::setRole);
+                new RolesAdapter.AdapterInterface() {
+                    @Override
+                    public void onChangedRoleCount(String role, int count) {
+                        viewModel.setRole(role, count);
+                    }
+                    @Override
+                    public void onClickedRole(String role, int count) {
+                        showRoloEditDialog(role, count);
+                    }
+                });
         binding.rolesRecyclerView.setAdapter(rolesAdapter);
     }
 
@@ -130,11 +140,16 @@ public class CreateTeamActivity extends LifecycleActivity {
         selectGameDialog.show(getSupportFragmentManager(), selectGameDialog.getTag());
     }
 
-    private void showRoloEditDialog() {
+    private void showRoloEditDialog(String prevRole, int delta) {
         final SelectRoleDialog selectRoleDialog = new SelectRoleDialog();
         selectRoleDialog.setGame(viewModel.selectedGame.getValue());
         selectRoleDialog.setDialogInterface(role -> {
-            viewModel.setRole(role, 1);
+            if(TextUtils.isEmpty(prevRole)) {
+                viewModel.setRole(role, 1);
+            }else {
+                viewModel.setRole(prevRole, -delta);
+                viewModel.setRole(role, delta);
+            }
             selectRoleDialog.dismiss();
         });
         selectRoleDialog.show(getSupportFragmentManager(), selectRoleDialog.getTag());

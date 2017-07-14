@@ -13,7 +13,6 @@
             android:layout_height="match_parent">
 
             <android.support.v4.widget.NestedScrollView
-                android:paddingTop="@dimen/top_menu_bar_height"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
@@ -22,6 +21,10 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/top_menu_bar_height" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -72,7 +75,7 @@
                             <View
                                 android:layout_gravity="bottom"
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="@dimen/line_size"
                                 android:background="@color/backgroundDark"/>
 
                         </FrameLayout>
@@ -160,13 +163,14 @@
                                 android:id="@+id/rolesRecyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/small_margin"
                                 android:nestedScrollingEnabled="false">
                             </android.support.v7.widget.RecyclerView>
 
                             <View
                                 android:layout_gravity="bottom"
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="@dimen/line_size"
                                 android:background="@color/backgroundDark"/>
 
                         </FrameLayout>
@@ -209,14 +213,15 @@
                                     android:layout_marginEnd="@dimen/extra_margin"
                                     style="@style/TitleText"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/active_infinity"/>
 
                             </LinearLayout>
 
                             <View
                                 android:layout_gravity="bottom"
                                 android:layout_width="match_parent"
-                                android:layout_height="1dp"
+                                android:layout_height="@dimen/line_size"
                                 android:background="@color/backgroundDark"/>
 
                         </FrameLayout>
@@ -261,6 +266,7 @@
 
                     <EditText
                         android:id="@+id/contentsInput"
+                        android:layout_marginTop="@dimen/normal_margin"
                         android:layout_marginLeft="@dimen/extra_margin"
                         android:layout_marginRight="@dimen/extra_margin"
                         android:layout_marginBottom="@dimen/extra_margin"

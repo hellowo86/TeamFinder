@@ -2,6 +2,7 @@ package com.hellowo.teamfinder.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.ArrayMap;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,19 +19,23 @@ import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.hellowo.teamfinder.AppConst.DB_KEY_DT_CREATED;
 
 public class TeamDetailViewModel extends ViewModel {
     public MutableLiveData<Team> team = new MutableLiveData<>();
     public MutableLiveData<List<Member>> members = new MutableLiveData<>();
+    public MutableLiveData<Map<String, Integer>> roles = new MutableLiveData<>();
     public MutableLiveData<List<Comment>> comments = new MutableLiveData<>();
     public MutableLiveData<Integer> currentPage = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private String teamId;
     private List<Member> memberList = new ArrayList<>();
     private List<Comment> commentList = new ArrayList<>();
+    private Map<String, Integer> roleMap = new HashMap<>();
 
     public TeamDetailViewModel() {
         currentPage.setValue(0);
@@ -40,6 +45,7 @@ public class TeamDetailViewModel extends ViewModel {
         this.teamId = teamId;
         members.setValue(memberList);
         comments.setValue(commentList);
+        roles.setValue(roleMap);
         getTeam();
         getComments();
     }
@@ -56,6 +62,9 @@ public class TeamDetailViewModel extends ViewModel {
                                  memberList.clear();
                                  memberList.addAll(team.getValue().getMembers());
                                  members.setValue(memberList);
+                                 roleMap.clear();
+                                 roleMap.putAll(team.getValue().getRoles());
+                                 roles.setValue(roleMap);
                                  loading.setValue(false);
                              }
                              @Override

@@ -43,7 +43,7 @@ public class MainActivity extends LifecycleActivity {
         initObserve();
     }
 
-    private void initLayout() {
+    private void initLayout() {/*
         binding.swipeRefreshLy.setProgressViewOffset(false, 0,
                 (int) ViewUtil.dpToPx(this, 100));
         binding.swipeRefreshLy.setColorSchemeColors(
@@ -51,21 +51,21 @@ public class MainActivity extends LifecycleActivity {
                 getResources().getColor(R.color.colorPrimaryDark),
                 getResources().getColor(R.color.colorAccent));
         binding.swipeRefreshLy.setOnRefreshListener(() -> viewModel.teamsLiveData.loadTeams());
-        binding.menuBtn.setOnClickListener(v->binding.drawerLy.openDrawer(Gravity.LEFT));
         binding.accountPhotoImg.setOnClickListener(this::startUserAcivity);
-        binding.fab.setOnClickListener(this::clickFab);
+
         binding.signOutBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             FirebaseAuth.getInstance().signOut();
         });
-        initTeamRecyclerView();
+
+        initTeamRecyclerView(); */
     }
 
-    private void initTeamRecyclerView() {
+    private void initTeamRecyclerView() {/*
         binding.teamRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         teamListAdapter = new TeamListAdapter(this, this::clickTeam);
-        binding.teamRecyclerView.setAdapter(teamListAdapter);
+        binding.teamRecyclerView.setAdapter(teamListAdapter);*/
     }
 
     private void clickTeam(Team team) {
@@ -83,17 +83,17 @@ public class MainActivity extends LifecycleActivity {
     private void initObserve() {
         viewModel.connectedUserLiveData.observe(this, this::updateUserUI);
         viewModel.viewMode.observe(this, this::updateUI);
+        /*
         viewModel.teamsLiveData.observe(this, teams -> {
             binding.swipeRefreshLy.setRefreshing(false);
             teamListAdapter.notifyDataSetChanged();
         });
+        */
     }
 
     private void updateUI(MainViewModel.ViewMope viewMope) {
         switch (viewMope){
             case SearchTeam:
-                binding.mainTopTitle.setText(R.string.search_team);
-                binding.searchTeamLy.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -106,8 +106,7 @@ public class MainActivity extends LifecycleActivity {
                     .load(!TextUtils.isEmpty(user.getPhotoUrl()) ? user.getPhotoUrl() : R.drawable.default_profile)
                     .bitmapTransform(new CropCircleTransformation(this))
                     .thumbnail(0.1f)
-                    .into(binding.accountPhotoImg);
-            binding.accountNameText.setText(user.getNickName());
+                    .into(binding.myTab);
         }
     }
 

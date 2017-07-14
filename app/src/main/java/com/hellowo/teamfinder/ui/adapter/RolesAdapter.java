@@ -76,25 +76,34 @@ public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.ViewHolder> 
         final ListItemRoleBinding binding = holder.binding;
 
         binding.roloText.setText(role);
-        binding.countText.setText(String.format(context.getString(R.string.need_member_count), count));
-        binding.minusBtn.setOnClickListener(v ->
-                adapterInterface.onItemClicked(role, -1));
-        binding.plusBtn.setOnClickListener(v ->
-                adapterInterface.onItemClicked(role, 1));
 
-        binding.plusBtn.setEnabled(!isFullMember);
-        binding.minusBtn.setEnabled(!isOnlyOneMember);
+        if(isEditable) {
+            binding.plusBtn.setVisibility(View.VISIBLE);
+            binding.minusBtn.setVisibility(View.VISIBLE);
+            binding.joinBtn.setVisibility(View.GONE);
+            binding.countText.setText(String.format(context.getString(R.string.need_member_count), count));
+            binding.minusBtn.setOnClickListener(v ->adapterInterface.onChangedRoleCount(role, -1));
+            binding.plusBtn.setOnClickListener(v ->adapterInterface.onChangedRoleCount(role, 1));
+            binding.roloText.setOnClickListener(v->adapterInterface.onClickedRole(role, count));
+            binding.plusBtn.setEnabled(!isFullMember);
+            binding.minusBtn.setEnabled(!isOnlyOneMember);
 
-        if(isFullMember) {
-            binding.plusBtn.setAlpha(0.2f);
+            if(isFullMember) {
+                binding.plusBtn.setAlpha(0.2f);
+            }else {
+                binding.plusBtn.setAlpha(1f);
+            }
+
+            if(isOnlyOneMember) {
+                binding.minusBtn.setAlpha(0.2f);
+            }else {
+                binding.minusBtn.setAlpha(1f);
+            }
         }else {
-            binding.plusBtn.setAlpha(1f);
-        }
-
-        if(isOnlyOneMember) {
-            binding.minusBtn.setAlpha(0.2f);
-        }else {
-            binding.minusBtn.setAlpha(1f);
+            binding.plusBtn.setVisibility(View.GONE);
+            binding.minusBtn.setVisibility(View.GONE);
+            binding.joinBtn.setVisibility(View.VISIBLE);
+            binding.countText.setText(String.format(context.getString(R.string.remain_member_count), count));
         }
     }
 
@@ -109,6 +118,7 @@ public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.ViewHolder> 
     }
 
     public interface AdapterInterface {
-        void onItemClicked(String role, int count);
+        void onChangedRoleCount(String role, int count);
+        void onClickedRole(String role, int count);
     }
 }

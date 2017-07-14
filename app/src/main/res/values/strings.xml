@@ -33,7 +33,7 @@
     <string name="add_member">멤버추가</string>
     <string name="team_member">팀원</string>
     <string name="select_role">역할선택</string>
-    <string name="active_infinity">모집완료시</string>
+    <string name="active_infinity">모집완료 시</string>
     <string name="add_tag">태그추가</string>
     <string name="select_tag">태그선택</string>
     <string name="confirm">완료</string>
@@ -59,4 +59,7 @@
     <string name="recruit_status">팀 모집 현황</string>
     <string name="recruiting">모집 중</string>
     <string name="info">정보</string>
+    <string name="remain_member_count">남은인원 %1$d명</string>
+    <string name="joinable">참가신청 가능</string>
+    <string name="joined_members">팀원</string>
 </resources>

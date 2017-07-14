@@ -108,6 +108,8 @@ public class CreateTeamViewModel extends ViewModel {
             }else {
                 team.getRoles().remove(role);
             }
+        }else {
+
         }
         needMemberSize.setValue(needMemberSize.getValue() + delta);
         currentRoles.setValue(team.getRoles());

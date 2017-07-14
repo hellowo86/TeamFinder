@@ -63,14 +63,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final Member member = mContentsList.get(position);
         ItemViewHolder holder = (ItemViewHolder) viewHolder;
         holder.subText.setText(member.getRole());
-
-        if(!isEditable && member.isJoinable()) {
-            holder.titleText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-            holder.titleText.setText(R.string.do_join);
-        }else {
-            holder.titleText.setTextColor(context.getResources().getColor(R.color.primaryText));
-            holder.titleText.setText(member.getName());
-        }
+        holder.titleText.setText(member.getName());
 
         if(!TextUtils.isEmpty(member.getPhotoUrl())) {
             Glide.with(context).load(member.getPhotoUrl())

@@ -47,9 +47,4 @@ public class Member {
     public boolean isMe() {
         return userId != null && ConnectedUserLiveData.get().getValue().getId().equals(userId);
     }
-
-    @Exclude
-    public boolean isJoinable() {
-        return TextUtils.isEmpty(userId);
-    }
 }

@@ -9,9 +9,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:text="@string/need_member"
-            android:textColor="@color/secondaryText"/>
+            android:text="@string/free_role"
+            android:background="@drawable/ripple_button"
+            style="@style/TitleText"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -24,7 +24,6 @@
             <TextView
                 android:id="@+id/countText"
                 style="@style/NormalText"
-                android:background="@drawable/ripple_button"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="@dimen/normal_margin"
                 android:layout_width="wrap_content"
@@ -45,16 +44,23 @@
                 android:id="@+id/plusBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/extra_margin"
                 android:padding="5dp"
                 android:src="@drawable/ic_add_black_48dp"
                 android:background="@drawable/ripple_circle_button"
                 android:tint="@color/secondaryText" />
+
+            <TextView
+                android:id="@+id/joinBtn"
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/extra_margin"
+                style="@style/SmallButton"
+                android:text="@string/do_join"/>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/sub_line_size"
             android:background="@color/backgroundDark"/>
 
     </FrameLayout>

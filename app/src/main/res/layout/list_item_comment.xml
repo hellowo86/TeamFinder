@@ -6,16 +6,22 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_button"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingLeft="@dimen/extra_margin"
+        android:paddingRight="@dimen/extra_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sub_line_size"
+            android:background="@color/backgroundDark"/>
 
         <LinearLayout
+            android:layout_marginTop="@dimen/small_margin"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/profileImage"
-                android:layout_marginLeft="10dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/default_profile"/>
@@ -36,10 +42,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:gravity="center_vertical"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="@dimen/small_margin"
             android:orientation="horizontal">
 
             <ImageView
@@ -50,13 +54,12 @@
                 android:tint="@color/disableIcon"/>
 
             <TextView
+                android:layout_gravity="center_vertical"
                 android:id="@+id/activeTimeText"
                 style="@style/SubText"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/small_margin"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/thin_margin"
                 android:text="name"
                 android:textColor="@color/disableText" />
 
