@@ -28,12 +28,12 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageButton
-                android:id="@+id/findNowTab"
+                android:id="@+id/findTab"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/ripple_button"
                 android:scaleType="centerInside"
-                android:padding="@dimen/normal_margin"
+                android:padding="@dimen/small_margin"
                 android:src="@drawable/ic_account_circle_black_48dp"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,27 +47,13 @@
                 android:layout_height="0dp"
                 android:background="@drawable/ripple_button"
                 android:scaleType="centerInside"
-                android:padding="@dimen/normal_margin"
+                android:padding="@dimen/small_margin"
                 android:src="@drawable/ic_people_black_48dp"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/findNowTab"
-                app:layout_constraintEnd_toStartOf="@+id/clanTab"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <ImageButton
-                android:id="@+id/clanTab"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/ripple_button"
-                android:scaleType="centerInside"
-                android:padding="@dimen/normal_margin"
-                android:src="@drawable/ic_bookmark_border_black_24dp"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/teamTab"
+                app:layout_constraintStart_toEndOf="@+id/findTab"
                 app:layout_constraintEnd_toStartOf="@+id/myTab"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageButton
                 android:id="@+id/myTab"
@@ -75,9 +61,9 @@
                 android:layout_height="0dp"
                 android:background="@drawable/ripple_button"
                 android:scaleType="centerInside"
-                android:padding="@dimen/normal_margin"
+                android:padding="@dimen/small_margin"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/clanTab"
+                app:layout_constraintStart_toEndOf="@+id/teamTab"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>

@@ -7,13 +7,13 @@ import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 import com.hellowo.teamfinder.data.TeamsLiveData;
 
 public class MainViewModel extends ViewModel {
-    public enum ViewMope{SearchTeam}
+    public enum ViewMope{Find, Team, Profile}
     public ConnectedUserLiveData connectedUserLiveData = ConnectedUserLiveData.get();
     public MutableLiveData<ViewMope> viewMode = new MutableLiveData<>();
     public TeamsLiveData teamsLiveData = TeamsLiveData.get();
 
     public MainViewModel() {
-        viewMode.setValue(ViewMope.SearchTeam);
+        viewMode.setValue(ViewMope.Find);
     }
 
 }

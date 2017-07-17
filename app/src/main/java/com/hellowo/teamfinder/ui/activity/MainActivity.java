@@ -1,38 +1,33 @@
 package com.hellowo.teamfinder.ui.activity;
 
-import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivityMainBinding;
 import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.model.User;
-import com.hellowo.teamfinder.ui.adapter.TeamListAdapter;
-import com.hellowo.teamfinder.utils.ViewUtil;
+import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment;
 import com.hellowo.teamfinder.viewmodel.MainViewModel;
 
-import gun0912.tedbottompicker.TedBottomPicker;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
 import static com.hellowo.teamfinder.AppConst.EXTRA_USER_ID;
+import static com.hellowo.teamfinder.viewmodel.MainViewModel.ViewMope.Find;
 
 public class MainActivity extends LifecycleActivity {
     ActivityMainBinding binding;
     MainViewModel viewModel;
-    TeamListAdapter teamListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +55,7 @@ public class MainActivity extends LifecycleActivity {
         });
 
         initTeamRecyclerView(); */
+        binding.findTab.setOnClickListener(v->viewModel.viewMode.setValue(Find));
     }
 
     private void initTeamRecyclerView() {/*
@@ -92,12 +88,26 @@ public class MainActivity extends LifecycleActivity {
     }
 
     private void updateUI(MainViewModel.ViewMope viewMope) {
+        LifecycleFragment fragment;
+
         switch (viewMope){
-            case SearchTeam:
+            case Find:
+                fragment = new TeamInfoFragment();
+                break;
+            case Team:
+                fragment = new TeamInfoFragment();
+                break;
+            case Profile:
+                fragment = new TeamInfoFragment();
                 break;
             default:
-                break;
+                return;
         }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.commit();
     }
 
     private void updateUserUI(User user) {
@@ -113,5 +123,4 @@ public class MainActivity extends LifecycleActivity {
     private void clickFab(View view) {
         startActivity(new Intent(this, CreateTeamActivity.class));
     }
-
 }
