@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,13 +30,7 @@ class FindFragment : LifecycleFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager.adapter = TeamPagerAdapter(activity.supportFragmentManager)
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(i: Int, v: Float, i1: Int) {}
-            override fun onPageSelected(pos: Int) {}
-            override fun onPageScrollStateChanged(i: Int) {}
-        })
-
+        viewPager.adapter = TeamPagerAdapter(childFragmentManager)
         teamTab.setOnClickListener({viewPager.setCurrentItem(0, true)})
         instantTab.setOnClickListener({viewPager.setCurrentItem(1, true)})
     }

@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,5 +40,9 @@ class TeamListFragment : LifecycleFragment() {
             swipeRefreshLy.setRefreshing(false)
             adapter.notifyDataSetChanged()
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }
