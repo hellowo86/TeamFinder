@@ -38,7 +38,6 @@ public class TeamInfoFragment extends LifecycleFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     private void updateUI(Team team) {

@@ -9,7 +9,7 @@
     <color name="backgroundDark">#f2f2f2</color>
     <color name="backgroundDeepDark">#b4b7bc</color>
     <color name="backgroundDarkAlpha">#EEf2f2f2</color>
-    <color name="disableIcon">#b4b7bc</color>
+    <color name="iconTint">#6a6f7b</color>
 
     <color name="primaryText">#444a59</color>
     <color name="secondaryText">#6a6f7b</color>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundDark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    </android.support.v4.view.ViewPager>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        app:elevation="2dp">
+
+        <FrameLayout
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_menu_bar_height">
+
+            <ImageButton
+                android:id="@+id/searchBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_search_black_48dp"
+                android:tint="@color/iconTint" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/top_menu_bar_height">
+
+            <TextView
+                android:id="@+id/teamTab"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_button"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/normal_text_size"
+                android:text="@string/team_info"
+                android:gravity="center">
+
+            </TextView>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/disableText" />
+
+            <TextView
+                android:id="@+id/instantTab"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_button"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/normal_text_size"
+                android:text="@string/members"
+                android:gravity="center">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone"/>
+
+</android.support.design.widget.CoordinatorLayout>

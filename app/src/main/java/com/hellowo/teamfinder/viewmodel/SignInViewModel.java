@@ -48,7 +48,7 @@ public class SignInViewModel extends ViewModel {
                             }
                             loading.setValue(false);
                         }else {
-                            FirebaseInstanceIDService.sendRegistrationToServer();
+                            FirebaseInstanceIDService.Companion.sendRegistrationToServer();
                             signInStatus.setValue(SignInStatus.CompleteSignIn);
                             loading.setValue(false);
                         }

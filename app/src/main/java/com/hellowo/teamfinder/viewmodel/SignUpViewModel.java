@@ -68,7 +68,7 @@ public class SignUpViewModel extends ViewModel {
                 .child(User.DB_REF)
                 .child(me.getId())
                 .setValue(me, (error, databaseReference)->{
-                    FirebaseInstanceIDService.sendRegistrationToServer();
+                    FirebaseInstanceIDService.Companion.sendRegistrationToServer();
                     signUpStatus.setValue(SignUpStatus.CompleteSignUp);
                     loading.setValue(false);
                 });

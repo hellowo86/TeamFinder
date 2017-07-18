@@ -1,75 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomTabs">
+    </FrameLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/bottomTabs"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/top_menu_bar_height"
+        android:background="@color/white"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <FrameLayout
-            android:id="@+id/container"
+        <ImageButton
+            android:id="@+id/findTab"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/ripple_button"
+            android:scaleType="centerInside"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/look_people_icon"
+            android:tint="@color/grey"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottomTabs">
-        </FrameLayout>
+            app:layout_constraintEnd_toStartOf="@+id/teamTab"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/bottomTabs"
+        <ImageButton
+            android:id="@+id/teamTab"
             android:layout_width="0dp"
-            android:layout_height="@dimen/top_menu_bar_height"
-            android:background="@color/white"
-            android:elevation="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp"
+            android:background="@drawable/ripple_button"
+            android:scaleType="centerInside"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/team_icon"
+            android:tint="@color/grey"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/findTab"
+            app:layout_constraintEnd_toStartOf="@+id/profileTab"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/profileTab"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/ripple_button"
+            android:scaleType="centerInside"
+            android:padding="@dimen/small_margin"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/teamTab"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageButton
-                android:id="@+id/findTab"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/ripple_button"
-                android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_account_circle_black_48dp"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/teamTab"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <ImageButton
-                android:id="@+id/teamTab"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/ripple_button"
-                android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_people_black_48dp"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/findTab"
-                app:layout_constraintEnd_toStartOf="@+id/myTab"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <ImageButton
-                android:id="@+id/myTab"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/ripple_button"
-                android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/teamTab"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-        </android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 
-</layout>
+</android.support.constraint.ConstraintLayout>

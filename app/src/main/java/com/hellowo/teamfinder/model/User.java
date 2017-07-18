@@ -66,12 +66,7 @@ public class User {
 
     @Exclude
     public Member makeMember(String role) {
-        Member member = new Member();
-        member.setName(nickName);
-        member.setPhotoUrl(makePublicPhotoUrl(id));
-        member.setUserId(id);
-        member.setRole(role);
-        return member;
+        return new Member(id, nickName, makePublicPhotoUrl(id), role);
     }
 
     @Exclude

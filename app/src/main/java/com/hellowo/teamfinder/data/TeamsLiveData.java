@@ -18,7 +18,6 @@ public class TeamsLiveData extends LiveData<List<Team>> {
     private static TeamsLiveData sInstance;
     private DatabaseReference mDatabase;
     private List<Team> currentList;
-    int gameId = -1;
 
     @MainThread
     public static TeamsLiveData get() {

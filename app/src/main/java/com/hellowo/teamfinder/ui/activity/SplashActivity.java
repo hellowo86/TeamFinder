@@ -30,9 +30,9 @@ public class SplashActivity extends LifecycleActivity {
     private void initLayout() {}
 
     private void initObserve() {
-        ConnectedUserLiveData.get().observe(this, user -> {
+        ConnectedUserLiveData.INSTANCE.observe(this, user -> {
             if(user != null) {
-                ConnectedUserLiveData.get().removeObservers(this);
+                ConnectedUserLiveData.INSTANCE.removeObservers(this);
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }else{

@@ -9,18 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Option;
+import com.hellowo.teamfinder.model.HashTag;
 
 import java.util.List;
 
 
 public class TagListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    private List<Option> mContentsList;
+    private List<HashTag> mContentsList;
     private boolean isEditable;
     private AdapterInterface adapterInterface;
 
-    public TagListAdapter(Context context, boolean isEditable, List<Option> mContentsList,
+    public TagListAdapter(Context context, boolean isEditable, List<HashTag> mContentsList,
                           AdapterInterface adapterInterface) {
         this.context = context;
         this.mContentsList = mContentsList;
@@ -50,11 +50,11 @@ public class TagListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        final Option option = mContentsList.get(position);
+        final HashTag hashTag = mContentsList.get(position);
         ItemViewHolder holder = (ItemViewHolder)viewHolder;
-        holder.titleText.setText(option.getName());
-        holder.imageView.setImageResource(option.getIconId());
-        holder.container.setOnClickListener(v -> adapterInterface.onItemClicked(option));
+        holder.titleText.setText(hashTag.getName());
+        holder.imageView.setImageResource(hashTag.getIconId());
+        holder.container.setOnClickListener(v -> adapterInterface.onItemClicked(hashTag));
     }
 
     @Override
@@ -68,6 +68,6 @@ public class TagListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public interface AdapterInterface {
-        void onItemClicked(Option option);
+        void onItemClicked(HashTag hashTag);
     }
 }

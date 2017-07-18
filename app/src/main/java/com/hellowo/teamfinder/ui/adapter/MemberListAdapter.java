@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hellowo.teamfinder.R;
+import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 import com.hellowo.teamfinder.model.Member;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .into(holder.imageView);
         }
 
-        if(isEditable && !member.isMe()) {
+        if(isEditable && !ConnectedUserLiveData.INSTANCE.isMe(member)) {
             holder.deleteBtn.setVisibility(View.VISIBLE);
             holder.deleteBtn.setOnClickListener(v -> adapterInterface.onDeleteClicked(member));
         }else {

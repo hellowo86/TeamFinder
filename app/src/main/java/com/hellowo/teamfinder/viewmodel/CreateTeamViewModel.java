@@ -31,7 +31,7 @@ public class CreateTeamViewModel extends ViewModel {
     public CreateTeamViewModel() {
         super();
         team = new Team();
-        team.getMembers().add(ConnectedUserLiveData.get().getValue().makeMember(App.context.getString(R.string.free_role)));
+        team.getMembers().add(ConnectedUserLiveData.INSTANCE.getValue().makeMember(App.context.getString(R.string.free_role)));
         team.setDtActive(Long.MAX_VALUE);
         team.getRoles().put(App.context.getString(R.string.free_role), 1);
         needMemberSize.setValue(1);

@@ -4,18 +4,13 @@ import android.support.annotation.MainThread;
 
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Option;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.hellowo.teamfinder.model.HashTag;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class OptionData {
-    private static OptionData sInstance;
-    ArrayList<Option> options;
+public class HashTagData {
+    private static HashTagData sInstance;
+    ArrayList<HashTag> hashTags;
     int[] iconIds = new int[]{
             R.drawable.ic_face_black_48dp,
             R.drawable.ic_format_quote_black_48dp,
@@ -26,31 +21,28 @@ public class OptionData {
     };
 
     @MainThread
-    public static OptionData get() {
+    public static HashTagData get() {
         if (sInstance == null) {
-            sInstance = new OptionData();
+            sInstance = new HashTagData();
         }
         return sInstance;
     }
 
-    private OptionData() {
-        options = new ArrayList<>();
+    private HashTagData() {
+        hashTags = new ArrayList<>();
         String[] optionArray = App.context.getResources().getStringArray(R.array.options);
         for (int i = 0; i < optionArray.length; i++) {
-            Option option = new Option();
-            option.setId(i);
-            option.setName(optionArray[i]);
-            option.setIconId(iconIds[i]);
-            options.add(option);
+            HashTag hashTag = new HashTag(i, optionArray[i], iconIds[i]);
+            hashTags.add(hashTag);
         }
     }
 
-    public ArrayList<Option> getOptions() {
-        return options;
+    public ArrayList<HashTag> getHashTags() {
+        return hashTags;
     }
 
-    public Option getOption(int id) {
-        return options.get(id);
+    public HashTag getOption(int id) {
+        return hashTags.get(id);
     }
 
 }

@@ -10,8 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.OptionData;
-import com.hellowo.teamfinder.model.Option;
+import com.hellowo.teamfinder.data.HashTagData;
+import com.hellowo.teamfinder.model.HashTag;
 import com.hellowo.teamfinder.ui.adapter.TagListAdapter;
 
 public class SelectTagDialog extends BottomSheetDialog {
@@ -42,10 +42,10 @@ public class SelectTagDialog extends BottomSheetDialog {
             TagListAdapter tagListAdapter = new TagListAdapter(
                     getContext(),
                     false,
-                    OptionData.get().getOptions(),
-                    option -> {
+                    HashTagData.get().getHashTags(),
+                    hashTag -> {
                         if(dialogInterface != null) {
-                            dialogInterface.onSelectItem(option);
+                            dialogInterface.onSelectItem(hashTag);
                             dismiss();
                         }
                     });
@@ -57,6 +57,6 @@ public class SelectTagDialog extends BottomSheetDialog {
     }
 
     public interface DialogInterface{
-        void onSelectItem(Option option);
+        void onSelectItem(HashTag hashTag);
     }
 }

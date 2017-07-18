@@ -51,7 +51,7 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/ic_query_builder_black_48dp"
-                android:tint="@color/disableIcon"/>
+                android:tint="@color/iconTint"/>
 
             <TextView
                 android:layout_gravity="center_vertical"
