@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 public class PagingControlableViewPager extends ViewPager {
-
     private boolean isPagingEnabled;
 
     public PagingControlableViewPager(Context context) {

@@ -62,4 +62,6 @@
     <string name="remain_member_count">남은인원 %1$d명</string>
     <string name="joinable">참가신청 가능</string>
     <string name="joined_members">팀원</string>
+    <string name="team">일반 팀</string>
+    <string name="instant">즉석 팀</string>
 </resources>

@@ -69,7 +69,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Team team = mContentsList.get(position);
         final Member organizer = team.getOrganizer();
-        final Game game = GameData.get().getGame(team.getGameId());
+        final Game game = GameData.INSTANCE.getGames().get(team.getGameId());
         final ListItemTeamBinding binding = holder.binding;
 
         binding.contentsText.setText(team.getTitle());

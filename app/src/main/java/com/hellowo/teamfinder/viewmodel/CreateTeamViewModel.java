@@ -35,7 +35,7 @@ public class CreateTeamViewModel extends ViewModel {
         team.setDtActive(Long.MAX_VALUE);
         team.getRoles().put(App.context.getString(R.string.free_role), 1);
         needMemberSize.setValue(1);
-        selectedGame.setValue(GameData.get().getGame(0));
+        selectedGame.setValue(GameData.INSTANCE.getGames().get(0));
         currentRoles.setValue(team.getRoles());
         checkFullMember();
         checkConfirmable();

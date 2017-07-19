@@ -106,7 +106,7 @@ public class TeamDetailActivity extends LifecycleActivity {
     }
 
     private void updateUI(Team team) {
-        final Game game = GameData.get().getGame(team.getGameId());
+        final Game game = GameData.INSTANCE.getGames().get(team.getGameId());
         final Member organizer = team.getOrganizer();
 
         binding.contentsText.setText(team.getTitle());

@@ -54,7 +54,5 @@ object ConnectedUserLiveData : LiveData<User>() {
         mAuth.removeAuthStateListener(mAuthListener)
     }
 
-    fun isMe(member: Member) : Boolean {
-        return value?.id.equals(member.userId)
-    }
+    fun isMe(member: Member) = value?.id.equals(member.userId)
 }

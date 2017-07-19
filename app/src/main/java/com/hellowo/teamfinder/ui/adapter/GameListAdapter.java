@@ -26,7 +26,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
         this.context = context;
         this.adapterInterface = adapterInterface;
         mContentsList = new ArrayList<>();
-        mContentsList.addAll(GameData.get().getGames());
+        mContentsList.addAll(GameData.INSTANCE.getGames());
         Collections.sort(mContentsList, (l, r) ->
                 l.getTitle().charAt(0) < r.getTitle().charAt(0) ? -1 :
                 l.getTitle().charAt(0) > r.getTitle().charAt(0) ? 1 : 0);

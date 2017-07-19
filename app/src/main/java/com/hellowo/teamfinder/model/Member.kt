@@ -1,7 +1,7 @@
 package com.hellowo.teamfinder.model
 
 data class Member (
-        val userId: String? = null,
-        val name: String? = null,
-        val photoUrl: String? = null,
-        val role: String? = null)
+        var userId: String? = null,
+        var name: String? = null,
+        var photoUrl: String? = null,
+        var role: String? = null)

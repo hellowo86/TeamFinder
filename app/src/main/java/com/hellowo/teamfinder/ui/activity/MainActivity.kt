@@ -9,12 +9,11 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.bumptech.glide.Glide
-import com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID
 import com.hellowo.teamfinder.AppConst.EXTRA_USER_ID
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.ConnectedUserLiveData
-import com.hellowo.teamfinder.model.Team
 import com.hellowo.teamfinder.model.User
+import com.hellowo.teamfinder.ui.fragment.ChatFragment
 import com.hellowo.teamfinder.ui.fragment.FindFragment
 import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment
 import com.hellowo.teamfinder.viewmodel.MainViewModel
@@ -35,24 +34,16 @@ class MainActivity : LifecycleActivity() {
     }
 
     private fun initLayout() {/*
-        binding.accountPhotoImg.setOnClickListener(this::startUserAcivity);
-
         binding.signOutBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             FirebaseAuth.getInstance().signOut();
         });
-
-        initTeamRecyclerView(); */
-        findTab.setOnClickListener{viewModel.bottomTab.value = Find}
-        teamTab.setOnClickListener{viewModel.bottomTab.value = Team}
+*/
+        instantTab.setOnClickListener{viewModel.bottomTab.value = Instant}
+        chatTab.setOnClickListener{viewModel.bottomTab.value = Chat}
+        clanTab.setOnClickListener{viewModel.bottomTab.value = Clan}
         profileTab.setOnClickListener{viewModel.bottomTab.value = Profile}
-    }
-
-    private fun clickTeam(team: Team) {
-        val intent = Intent(this, TeamDetailActivity::class.java)
-        intent.putExtra(EXTRA_TEAM_ID, team.id)
-        startActivity(intent)
     }
 
     private fun startUserAcivity(view: View) {
@@ -65,7 +56,7 @@ class MainActivity : LifecycleActivity() {
         ConnectedUserLiveData.observe(this,
                 Observer { updateUserUI(it) })
         viewModel.bottomTab.observe(this,
-                Observer { updateUI(it) })
+                Observer { moveTab(it) })
     }
 
     private fun updateUserUI(user: User?) {
@@ -78,18 +69,16 @@ class MainActivity : LifecycleActivity() {
         }
     }
 
-    private fun updateUI(viewMope: BottomTab?) {
-        val fragment: LifecycleFragment
-
-        when (viewMope) {
-            Find -> fragment = FindFragment()
-            Team -> fragment = TeamInfoFragment()
-            Profile -> fragment = TeamInfoFragment()
-            else -> return
-        }
-
+    private fun moveTab(tab: BottomTab?) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, fragment)
+        fragmentTransaction.replace(R.id.container,
+                when (tab) {
+                    Instant -> FindFragment()
+                    Chat -> ChatFragment()
+                    Clan -> TeamInfoFragment()
+                    Profile -> TeamInfoFragment()
+                    else -> return
+                })
         fragmentTransaction.commit()
     }
 

@@ -40,9 +40,4 @@ public class HashTagData {
     public ArrayList<HashTag> getHashTags() {
         return hashTags;
     }
-
-    public HashTag getOption(int id) {
-        return hashTags.get(id);
-    }
-
 }
