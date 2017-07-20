@@ -20,11 +20,12 @@ class ChatCreateActivity : LifecycleActivity() {
     }
 
     fun initLayout() {
-        viewFlipper.inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
-        viewFlipper.outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right)
+        viewFlipper.inAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
+        viewFlipper.outAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_out_left)
         confirmBtn.setOnClickListener { viewFlipper.showNext() }
     }
 
     fun initObserve() {
+
     }
 }
