@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 import com.hellowo.teamfinder.fcm.FirebaseInstanceIDService;
 import com.hellowo.teamfinder.model.User;
 import com.hellowo.teamfinder.utils.StringUtil;

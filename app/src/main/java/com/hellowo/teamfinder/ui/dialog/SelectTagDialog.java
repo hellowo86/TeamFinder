@@ -42,7 +42,7 @@ public class SelectTagDialog extends BottomSheetDialog {
             TagListAdapter tagListAdapter = new TagListAdapter(
                     getContext(),
                     false,
-                    HashTagData.get().getHashTags(),
+                    HashTagData.INSTANCE.getHashTags(),
                     hashTag -> {
                         if(dialogInterface != null) {
                             dialogInterface.onSelectItem(hashTag);

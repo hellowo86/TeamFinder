@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 import com.hellowo.teamfinder.databinding.ActivitySignInBinding;
 import com.hellowo.teamfinder.viewmodel.SignInViewModel;
 

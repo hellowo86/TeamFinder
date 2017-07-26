@@ -1,5 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
+import android.app.ProgressDialog
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,7 +9,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel
 import kotlinx.android.synthetic.main.activity_chat_create.*
@@ -17,6 +20,7 @@ import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.*
 
 class ChatCreateActivity : LifecycleActivity() {
     lateinit var viewModel: ChatCreateViewModel
+    internal var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +31,9 @@ class ChatCreateActivity : LifecycleActivity() {
     }
 
     fun initLayout() {
-        viewFlipper.inAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
-        viewFlipper.outAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_out_left)
-        confirmBtn.setOnClickListener { viewModel.goNextProgress() }
+        confirmBtn.setOnClickListener { goNext() }
         backBtn.setOnClickListener{ onBackPressed() }
+
         titleInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -38,6 +41,11 @@ class ChatCreateActivity : LifecycleActivity() {
                 viewModel.setTitle(s)
             }
         })
+        titleInput.setOnEditorActionListener { _, actionId, _ -> when(actionId){
+            EditorInfo.IME_ACTION_DONE -> goNext()
+            else -> false
+        } }
+
         contentsInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -45,6 +53,10 @@ class ChatCreateActivity : LifecycleActivity() {
                 viewModel.setContents(s)
             }
         })
+        contentsInput.setOnEditorActionListener { _, actionId, _ -> when(actionId){
+            EditorInfo.IME_ACTION_DONE -> goNext()
+            else -> false
+        } }
 
         titleInput.postDelayed({
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -55,6 +67,9 @@ class ChatCreateActivity : LifecycleActivity() {
     fun initObserve() {
         viewModel.currentProgress.observe(this, Observer { updateProgressUI(it) })
         viewModel.checkCanGoNextProgress.observe(this, Observer { updateConfirmBtn(it) })
+        viewModel.loading.observe(this, Observer {
+            if(it as Boolean) showProgressDialog() else hideProgressDialog() })
+        viewModel.confirmed.observe(this, Observer { if(it as Boolean) finish() })
     }
 
     private fun updateConfirmBtn(isCanGoNextProgress: Boolean?) {
@@ -76,10 +91,36 @@ class ChatCreateActivity : LifecycleActivity() {
         }
     }
 
+    private fun goNext(): Boolean {
+        if(viewModel.checkCanGoNextProgress.value == true) {
+            viewFlipper.inAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_right)
+            viewFlipper.outAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_out_left)
+            when(viewModel.currentProgress.value) {
+                Options -> viewModel.confirm()
+                else -> viewModel.goNextProgress()
+            }
+        }
+        return true
+    }
+
     override fun onBackPressed() {
+        viewFlipper.inAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_left)
+        viewFlipper.outAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_out_right)
         when(viewModel.currentProgress.value) {
             Title -> finish()
             else -> viewModel.goPreviousProgress()
         }
+    }
+
+    private fun showProgressDialog() {
+        hideProgressDialog()
+        progressDialog = ProgressDialog(this)
+        progressDialog?.setMessage(getString(R.string.plz_wait))
+        progressDialog?.show()
+    }
+
+    private fun hideProgressDialog() {
+        progressDialog?.dismiss()
+        progressDialog = null
     }
 }

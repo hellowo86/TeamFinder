@@ -1,6 +1,5 @@
 package com.hellowo.teamfinder.data
 
-import android.util.Log
 import com.beust.klaxon.JsonArray
 import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R

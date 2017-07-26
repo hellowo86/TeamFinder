@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,12 +15,8 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
-import com.hellowo.teamfinder.databinding.ActivitySplashBinding;
 import com.hellowo.teamfinder.databinding.ActivityUserBinding;
 import com.hellowo.teamfinder.model.User;
-import com.hellowo.teamfinder.viewmodel.MainViewModel;
-import com.hellowo.teamfinder.viewmodel.SplashViewModel;
 import com.hellowo.teamfinder.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
@@ -29,7 +24,6 @@ import java.util.ArrayList;
 import gun0912.tedbottompicker.TedBottomPicker;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
 import static com.hellowo.teamfinder.AppConst.EXTRA_USER_ID;
 
 public class UserActivity extends LifecycleActivity {

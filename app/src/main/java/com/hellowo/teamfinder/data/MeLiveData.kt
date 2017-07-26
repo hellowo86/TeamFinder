@@ -12,16 +12,13 @@ import com.google.firebase.database.ValueEventListener
 import com.hellowo.teamfinder.model.Member
 import com.hellowo.teamfinder.model.User
 
-object ConnectedUserLiveData : LiveData<User>() {
-    val mAuth: FirebaseAuth
+object MeLiveData : LiveData<User>() {
+    val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     val mAuthListener: FirebaseAuth.AuthStateListener
     var valueEventListener: ValueEventListener
-    val mDatabase: DatabaseReference
+    val mDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     init {
-        mAuth = FirebaseAuth.getInstance()
-        mDatabase = FirebaseDatabase.getInstance().reference
-
         valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 value = dataSnapshot.getValue(User::class.java)
@@ -29,14 +26,12 @@ object ConnectedUserLiveData : LiveData<User>() {
             override fun onCancelled(databaseError: DatabaseError) {}
         }
 
-        mAuthListener = object : FirebaseAuth.AuthStateListener {
-            override fun onAuthStateChanged(auth: FirebaseAuth) {
-                mDatabase.removeEventListener(valueEventListener)
-                if(auth.currentUser != null) {
-                    loadCurrentLoginUser(auth.currentUser as FirebaseUser)
-                }else {
-                    value = null
-                }
+        mAuthListener = FirebaseAuth.AuthStateListener { auth ->
+            mDatabase.removeEventListener(valueEventListener)
+            if(auth.currentUser != null) {
+                loadCurrentLoginUser(auth.currentUser as FirebaseUser)
+            }else {
+                value = null
             }
         }
     }

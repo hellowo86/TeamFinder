@@ -2,20 +2,17 @@ package com.hellowo.teamfinder.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.v4.util.ArrayMap;
 import android.text.Editable;
 import android.text.TextUtils;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
+import com.hellowo.teamfinder.data.MeLiveData;
 import com.hellowo.teamfinder.data.GameData;
 import com.hellowo.teamfinder.model.Game;
-import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
 
-import java.util.List;
 import java.util.Map;
 
 public class CreateTeamViewModel extends ViewModel {
@@ -31,7 +28,7 @@ public class CreateTeamViewModel extends ViewModel {
     public CreateTeamViewModel() {
         super();
         team = new Team();
-        team.getMembers().add(ConnectedUserLiveData.INSTANCE.getValue().makeMember(App.context.getString(R.string.free_role)));
+        team.getMembers().add(MeLiveData.INSTANCE.getValue().makeMember(App.context.getString(R.string.free_role)));
         team.setDtActive(Long.MAX_VALUE);
         team.getRoles().put(App.context.getString(R.string.free_role), 1);
         needMemberSize.setValue(1);

@@ -5,13 +5,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.view.View;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
-import com.hellowo.teamfinder.databinding.ActivitySignInBinding;
+import com.hellowo.teamfinder.data.MeLiveData;
 import com.hellowo.teamfinder.databinding.ActivitySplashBinding;
-import com.hellowo.teamfinder.viewmodel.SignInViewModel;
 import com.hellowo.teamfinder.viewmodel.SplashViewModel;
 
 public class SplashActivity extends LifecycleActivity {
@@ -30,9 +27,9 @@ public class SplashActivity extends LifecycleActivity {
     private void initLayout() {}
 
     private void initObserve() {
-        ConnectedUserLiveData.INSTANCE.observe(this, user -> {
+        MeLiveData.INSTANCE.observe(this, user -> {
             if(user != null) {
-                ConnectedUserLiveData.INSTANCE.removeObservers(this);
+                MeLiveData.INSTANCE.removeObservers(this);
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }else{

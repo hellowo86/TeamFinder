@@ -9,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 import com.hellowo.teamfinder.fcm.FirebaseInstanceIDService;
 import com.hellowo.teamfinder.utils.StringUtil;
 

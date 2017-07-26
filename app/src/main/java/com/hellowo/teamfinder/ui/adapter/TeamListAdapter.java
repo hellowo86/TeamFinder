@@ -36,14 +36,14 @@ import okhttp3.Request;
 
 public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHolder> {
     private Context context;
-    private List<Team> mContentsList;
+    private List<? extends Team> mContentsList;
     private AdapterInterface adapterInterface;
     private int hashTagColor;
 
     public TeamListAdapter(Context context, AdapterInterface adapterInterface) {
         this.context = context;
         this.adapterInterface = adapterInterface;
-        mContentsList = TeamsLiveData.get().getValue();
+        mContentsList = TeamsLiveData.INSTANCE.getValue();
         hashTagColor = context.getResources().getColor(R.color.primaryText);
     }
 

@@ -2,7 +2,6 @@ package com.hellowo.teamfinder.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.ArrayMap;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,11 +11,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
+import com.hellowo.teamfinder.data.MeLiveData;
 import com.hellowo.teamfinder.model.Comment;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
-import com.hellowo.teamfinder.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +73,7 @@ public class TeamDetailViewModel extends ViewModel {
     }
 
     public void getComments() {
-        FirebaseDatabase.getInstance().getReference().child(Comment.DB_REF)
+        FirebaseDatabase.getInstance().getReference().child(Comment.Companion.getDB_REF())
                 .child(teamId)
                 .orderByChild(DB_KEY_DT_CREATED)
                 .addListenerForSingleValueEvent(
@@ -98,13 +96,13 @@ public class TeamDetailViewModel extends ViewModel {
 
     public void postComment(String message) {
         loading.setValue(true);
-        Comment comment = new Comment();
-        comment.setDtCreated(System.currentTimeMillis());
-        comment.setText(message);
-        comment.setUserName(ConnectedUserLiveData.INSTANCE.getValue().getNickName());
-        comment.setUserId(ConnectedUserLiveData.INSTANCE.getValue().getId());
+        Comment comment = new Comment(
+                message,
+                MeLiveData.INSTANCE.getValue().getNickName(),
+                MeLiveData.INSTANCE.getValue().getId(),
+                System.currentTimeMillis());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Comment.DB_REF).child(teamId);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Comment.Companion.getDB_REF()).child(teamId);
         String key = ref.push().getKey();
         ref.child(key)
                 .setValue(comment, (error, databaseReference)->{

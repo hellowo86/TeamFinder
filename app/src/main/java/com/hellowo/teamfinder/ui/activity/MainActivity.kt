@@ -1,7 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
 import android.arch.lifecycle.LifecycleActivity
-import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -11,7 +10,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.AppConst.EXTRA_USER_ID
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.ConnectedUserLiveData
+import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.ui.fragment.ChatFragment
 import com.hellowo.teamfinder.ui.fragment.FindFragment
@@ -48,12 +47,12 @@ class MainActivity : LifecycleActivity() {
 
     private fun startUserAcivity(view: View) {
         val intent = Intent(this, UserActivity::class.java)
-        intent.putExtra(EXTRA_USER_ID, ConnectedUserLiveData.value?.id)
+        intent.putExtra(EXTRA_USER_ID, MeLiveData.value?.id)
         startActivity(intent)
     }
 
     private fun initObserve() {
-        ConnectedUserLiveData.observe(this,
+        MeLiveData.observe(this,
                 Observer { updateUserUI(it) })
         viewModel.bottomTab.observe(this,
                 Observer { moveTab(it) })

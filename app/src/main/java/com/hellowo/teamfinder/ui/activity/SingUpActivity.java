@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.ConnectedUserLiveData;
 import com.hellowo.teamfinder.databinding.ActivitySignUpBinding;
 import com.hellowo.teamfinder.viewmodel.SignUpViewModel;
 

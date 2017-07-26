@@ -30,17 +30,17 @@ class TeamListFragment : LifecycleFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLy.setColorSchemeColors(
-                getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.colorPrimaryDark),
-                getResources().getColor(R.color.colorAccent))
-        swipeRefreshLy.setOnRefreshListener({TeamsLiveData.get().loadTeams()})
+                resources.getColor(R.color.colorPrimary),
+                resources.getColor(R.color.colorPrimaryDark),
+                resources.getColor(R.color.colorAccent))
+        swipeRefreshLy.setOnRefreshListener({ TeamsLiveData.loadTeams() })
 
-        adapter = TeamListAdapter(activity, {clickTeam(it)})
-        recyclerView.setLayoutManager(LinearLayoutManager(context))
-        recyclerView.setAdapter(adapter)
+        adapter = TeamListAdapter(activity, { clickTeam(it) })
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
 
-        TeamsLiveData.get().observe(this, Observer {
-            swipeRefreshLy.setRefreshing(false)
+        TeamsLiveData.observe(this, Observer {
+            swipeRefreshLy.isRefreshing = false
             adapter.notifyDataSetChanged()
         })
     }
