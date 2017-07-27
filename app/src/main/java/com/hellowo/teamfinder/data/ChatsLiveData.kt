@@ -2,6 +2,7 @@ package com.hellowo.teamfinder.data
 
 import android.arch.lifecycle.LiveData
 import android.support.annotation.MainThread
+import android.util.Log
 import com.google.firebase.database.*
 
 import com.hellowo.teamfinder.model.Chat
@@ -12,12 +13,24 @@ import java.util.Collections
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-
+import com.hellowo.teamfinder.utils.FirebaseUtils
 
 
 object ChatsLiveData : LiveData<List<Chat>>() {
     internal val mDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
     internal val currentList: MutableList<Chat> = ArrayList()
+    internal val joinedChatEventListener: ValueEventListener = object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            currentList.clear()
+
+            for (postSnapshot in dataSnapshot.children) {
+                val chatId = postSnapshot.getValue(String::class.java)
+            }
+
+            value = currentList
+        }
+        override fun onCancelled(databaseError: DatabaseError) {}
+    }
     internal val childEventListener: ValueEventListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             currentList.clear()
@@ -38,20 +51,24 @@ object ChatsLiveData : LiveData<List<Chat>>() {
         }
         override fun onCancelled(databaseError: DatabaseError) {}
     }
+    internal lateinit var currentUserId: String
 
     init {
         value = currentList
     }
 
     override fun onActive() {
-        mDatabase.child(Chat.DB_REF)
-                .child(MeLiveData.value?.id ?: "_")
-                .addValueEventListener(childEventListener)
+        currentUserId = MeLiveData.value?.id ?: "_"
+        mDatabase.child(FirebaseUtils.KEY_USERS)
+                .child(currentUserId)
+                .child(FirebaseUtils.KEY_JOINED_CHATS)
+                .addValueEventListener(joinedChatEventListener)
     }
 
     override fun onInactive() {
-        mDatabase.child(Chat.DB_REF)
-                .child(MeLiveData.value?.id ?: "_")
-                .removeEventListener(childEventListener)
+        mDatabase.child(FirebaseUtils.KEY_CHAT)
+                .child(currentUserId)
+                .child(FirebaseUtils.KEY_JOINED_CHATS)
+                .removeEventListener(joinedChatEventListener)
     }
 }

@@ -16,6 +16,7 @@ import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ListItemCommentBinding;
 import com.hellowo.teamfinder.model.Comment;
 import com.hellowo.teamfinder.model.User;
+import com.hellowo.teamfinder.utils.FirebaseUtils;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         binding.activeTimeText.setText(comment.makeActiveTimeText());
 
         Glide.with(context)
-                .load(User.makePublicPhotoUrl(comment.getUserId()))
+                .load(FirebaseUtils.INSTANCE.makePublicPhotoUrl(comment.getUserId()))
                 .bitmapTransform(new CropCircleTransformation(context))
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)

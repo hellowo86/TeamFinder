@@ -5,8 +5,6 @@ data class Chat (
         var title: String? = null,
         var description: String? = null,
         var maxMemberCount: Int? = 2,
-        var dtCreated: Long = System.currentTimeMillis()) {
-    companion object {
-        val DB_REF = "chat"
-    }
-}
+        var dtCreated: Long = System.currentTimeMillis(),
+        var king: String? = null,
+        var members: MutableList<String> = ArrayList())

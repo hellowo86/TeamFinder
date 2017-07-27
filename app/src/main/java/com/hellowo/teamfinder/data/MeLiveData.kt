@@ -1,6 +1,7 @@
 package com.hellowo.teamfinder.data
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -9,8 +10,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Member
 import com.hellowo.teamfinder.model.User
+import com.hellowo.teamfinder.utils.FirebaseUtils
 
 object MeLiveData : LiveData<User>() {
     val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -37,7 +40,7 @@ object MeLiveData : LiveData<User>() {
     }
 
     private fun loadCurrentLoginUser(user: FirebaseUser) {
-        mDatabase.child(User.DB_REF).child(user.uid).addValueEventListener(valueEventListener)
+        mDatabase.child(FirebaseUtils.KEY_USERS).child(user.uid).addValueEventListener(valueEventListener)
     }
 
     override fun onActive() {

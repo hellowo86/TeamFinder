@@ -65,4 +65,5 @@
     <string name="team">일반 팀</string>
     <string name="instant">즉석 팀</string>
     <string name="next">다음</string>
+    <string name="enter_message">메세지 입력하기</string>
 </resources>

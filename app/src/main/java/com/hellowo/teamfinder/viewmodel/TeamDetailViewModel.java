@@ -15,6 +15,7 @@ import com.hellowo.teamfinder.data.MeLiveData;
 import com.hellowo.teamfinder.model.Comment;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
+import com.hellowo.teamfinder.utils.FirebaseUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class TeamDetailViewModel extends ViewModel {
 
     public void getTeam(){
          loading.setValue(true);
-         FirebaseDatabase.getInstance().getReference().child(Team.DB_REF)
+         FirebaseDatabase.getInstance().getReference().child(FirebaseUtils.INSTANCE.getKEY_TEAMS())
                  .child(teamId)
                  .addListenerForSingleValueEvent(
                          new ValueEventListener() {
@@ -73,7 +74,7 @@ public class TeamDetailViewModel extends ViewModel {
     }
 
     public void getComments() {
-        FirebaseDatabase.getInstance().getReference().child(Comment.Companion.getDB_REF())
+        FirebaseDatabase.getInstance().getReference().child(FirebaseUtils.INSTANCE.getKEY_COMMENTS())
                 .child(teamId)
                 .orderByChild(DB_KEY_DT_CREATED)
                 .addListenerForSingleValueEvent(
@@ -102,13 +103,13 @@ public class TeamDetailViewModel extends ViewModel {
                 MeLiveData.INSTANCE.getValue().getId(),
                 System.currentTimeMillis());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Comment.Companion.getDB_REF()).child(teamId);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(FirebaseUtils.INSTANCE.getKEY_COMMENTS()).child(teamId);
         String key = ref.push().getKey();
         ref.child(key)
                 .setValue(comment, (error, databaseReference)->{
                     getComments();
 
-                    FirebaseDatabase.getInstance().getReference().child(Team.DB_REF).child(teamId)
+                    FirebaseDatabase.getInstance().getReference().child(FirebaseUtils.INSTANCE.getKEY_TEAMS()).child(teamId)
                             .runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData mutableData) {

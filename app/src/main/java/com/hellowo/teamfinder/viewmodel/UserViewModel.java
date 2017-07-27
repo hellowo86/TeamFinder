@@ -22,6 +22,7 @@ import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.model.User;
 import com.hellowo.teamfinder.utils.BitmapUtil;
 import com.hellowo.teamfinder.utils.FileUtil;
+import com.hellowo.teamfinder.utils.FirebaseUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,7 +41,7 @@ public class UserViewModel extends ViewModel {
 
     public void getUser() {
         loading.setValue(true);
-        FirebaseDatabase.getInstance().getReference().child(User.DB_REF)
+        FirebaseDatabase.getInstance().getReference().child(FirebaseUtils.INSTANCE.getKEY_USERS())
                 .child(userId)
                 .addListenerForSingleValueEvent(
                         new ValueEventListener() {
@@ -80,9 +81,9 @@ public class UserViewModel extends ViewModel {
                 bitmap.recycle();
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 FirebaseDatabase.getInstance().getReference()
-                        .child(User.DB_REF)
+                        .child(FirebaseUtils.INSTANCE.getKEY_USERS())
                         .child(userId)
-                        .child(User.KEY_PHOTO_URL)
+                        .child(FirebaseUtils.INSTANCE.getKEY_PHOTO_URL())
                         .setValue(downloadUrl.toString(),
                                 (error, ref)->{
                                      isUploading.setValue(false);

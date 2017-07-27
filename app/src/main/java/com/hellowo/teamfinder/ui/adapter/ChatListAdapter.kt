@@ -9,9 +9,9 @@ import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.model.Chat
 import kotlinx.android.synthetic.main.list_item_chat.view.*
 
-class ChatListAdapter(private val context: Context,
-                      private val mContentsList: List<Chat>,
-                      private val adapterInterface: (chat: Chat) -> Unit) : RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
+class ChatListAdapter(val context: Context,
+                      val mContentsList: List<Chat>,
+                      val adapterInterface: (chat: Chat) -> Unit) : RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
     private val hashTagColor: Int = context.resources.getColor(R.color.primaryText)
 
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container)
