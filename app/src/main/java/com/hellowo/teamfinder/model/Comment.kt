@@ -7,14 +7,11 @@ import com.hellowo.teamfinder.R
 import java.text.DateFormat
 import java.util.Date
 
-class Comment (var text: String,
-               var userName: String,
-               var userId: String,
-               var dtCreated: Long = 0){
-
-    companion object {
-        val DB_REF = "comments"
-    }
+class Comment (
+        var text: String? = null,
+        var userName: String? = null,
+        var userId: String? = null,
+        var dtCreated: Long = 0){
 
     @Exclude
     fun makeActiveTimeText(): String {

@@ -12,6 +12,7 @@ import com.hellowo.teamfinder.data.MeLiveData;
 import com.hellowo.teamfinder.data.GameData;
 import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.model.Team;
+import com.hellowo.teamfinder.utils.FirebaseUtils;
 
 import java.util.Map;
 
@@ -82,9 +83,9 @@ public class CreateTeamViewModel extends ViewModel {
         team.setCommentCount(0);
         team.setStatus(0);
 
-        String key = FirebaseDatabase.getInstance().getReference().child(Team.DB_REF).push().getKey();
+        String key = FirebaseDatabase.getInstance().getReference().child(FirebaseUtils.INSTANCE.getKEY_TEAMS()).push().getKey();
         FirebaseDatabase.getInstance().getReference()
-                .child(Team.DB_REF)
+                .child(FirebaseUtils.INSTANCE.getKEY_TEAMS())
                 .child(key)
                 .setValue(team, (error, databaseReference)->{
                     loading.setValue(false);

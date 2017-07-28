@@ -24,6 +24,7 @@
         <activity android:name=".ui.activity.TeamDetailActivity"/>
         <activity android:name=".ui.activity.UserActivity"/>
         <activity android:name=".ui.activity.ChatCreateActivity"/>
+        <activity android:name=".ui.activity.ChatingActivity"/>
 
         <service
             android:name=".fcm.MessagingService">

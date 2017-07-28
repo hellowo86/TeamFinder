@@ -12,7 +12,10 @@ import com.hellowo.teamfinder.App;
 import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.fcm.FirebaseInstanceIDService;
 import com.hellowo.teamfinder.model.User;
+import com.hellowo.teamfinder.utils.FirebaseUtils;
 import com.hellowo.teamfinder.utils.StringUtil;
+
+import java.util.ArrayList;
 
 public class SignUpViewModel extends ViewModel {
     public enum SignUpStatus {InvalidNickName, InvalidEmail, InvalidPassword, PolicyUncheck, CompleteSignUp}
@@ -57,14 +60,17 @@ public class SignUpViewModel extends ViewModel {
     }
 
     private void initUserProfile(FirebaseUser user, String nickName) {
-        User me = new User();
-        me.setId(user.getUid());
-        me.setEmail(user.getEmail());
-        me.setNickName(nickName);
-        me.setDtCreated(System.currentTimeMillis());
+        User me = new User(
+                user.getUid(),
+                nickName,
+                user.getEmail(),
+                null,
+                0,
+                System.currentTimeMillis(),
+                new ArrayList<>());
 
         FirebaseDatabase.getInstance().getReference()
-                .child(User.DB_REF)
+                .child(FirebaseUtils.INSTANCE.getKEY_USERS())
                 .child(me.getId())
                 .setValue(me, (error, databaseReference)->{
                     FirebaseInstanceIDService.Companion.sendRegistrationToServer();

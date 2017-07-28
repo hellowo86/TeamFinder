@@ -9,7 +9,7 @@
         <!-- <item name="colorControlHighlight">@color/colorPrimary</item> -->
 
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/backgroundDark</item>
+        <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowContentTransitions">true</item>
 
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>

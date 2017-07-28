@@ -12,7 +12,7 @@ import com.hellowo.teamfinder.AppConst.EXTRA_USER_ID
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.User
-import com.hellowo.teamfinder.ui.fragment.ChatFragment
+import com.hellowo.teamfinder.ui.fragment.ChatListFragment
 import com.hellowo.teamfinder.ui.fragment.FindFragment
 import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment
 import com.hellowo.teamfinder.viewmodel.MainViewModel
@@ -73,15 +73,11 @@ class MainActivity : LifecycleActivity() {
         fragmentTransaction.replace(R.id.container,
                 when (tab) {
                     Instant -> FindFragment()
-                    Chat -> ChatFragment()
+                    Chat -> ChatListFragment()
                     Clan -> TeamInfoFragment()
                     Profile -> TeamInfoFragment()
                     else -> return
                 })
         fragmentTransaction.commit()
-    }
-
-    private fun clickFab(view: View) {
-        startActivity(Intent(this, CreateTeamActivity::class.java))
     }
 }
