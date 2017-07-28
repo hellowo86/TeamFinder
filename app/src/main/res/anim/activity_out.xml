@@ -26,6 +26,6 @@
     </translate>
     <alpha
         android:fromAlpha="1.0"
-        android:toAlpha="0.25"
+        android:toAlpha="0.75"
         android:duration="250"/>
 </set>
