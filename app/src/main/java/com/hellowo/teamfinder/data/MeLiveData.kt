@@ -1,16 +1,9 @@
 package com.hellowo.teamfinder.data
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.hellowo.teamfinder.model.Chat
+import com.google.firebase.database.*
 import com.hellowo.teamfinder.model.Member
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.utils.FirebaseUtils

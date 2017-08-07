@@ -33,7 +33,7 @@ public class SingUpActivity extends LifecycleActivity {
     }
 
     private void initObserve() {
-        viewModel.signUpStatus.observe(this, (status)->{
+        viewModel.getSignUpStatus().observe(this, (status)->{
             switch (status) {
                 case InvalidNickName:
                     binding.nameEdit.setError(getString(R.string.invalid_nick_name));
@@ -56,7 +56,7 @@ public class SingUpActivity extends LifecycleActivity {
             }
         });
 
-        viewModel.loading.observe(this, aBoolean -> {
+        viewModel.getLoading().observe(this, aBoolean -> {
             binding.progressBar.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
             binding.signUpBtn.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
         });
@@ -64,8 +64,8 @@ public class SingUpActivity extends LifecycleActivity {
 
     private void signUp() {
         viewModel.signUp(
-                binding.nameEdit.getText().toString(),
-                binding.emailEdit.getText().toString(),
+                binding.nameEdit.getText().toString().trim(),
+                binding.emailEdit.getText().toString().trim(),
                 binding.passwordEdit.getText().toString(),
                 binding.policyCheck.isChecked()
         );
