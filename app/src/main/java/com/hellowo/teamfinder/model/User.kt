@@ -9,8 +9,7 @@ data class User (
         var email: String? = null,
         var photoUrl: String? = null,
         var gender: Int = 0,
-        var dtCreated: Long = 0,
-        var joinedChats: MutableList<String> = ArrayList()){
+        var dtCreated: Long = 0){
 
     @Exclude
     fun makeMember(role: String): Member {

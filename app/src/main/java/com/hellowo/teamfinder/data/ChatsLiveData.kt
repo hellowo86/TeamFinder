@@ -24,27 +24,10 @@ object ChatsLiveData : LiveData<List<Chat>>() {
             currentList.clear()
 
             for (postSnapshot in dataSnapshot.children) {
-                val chatId = postSnapshot.getValue(String::class.java)
-            }
-
-            value = currentList
-        }
-        override fun onCancelled(databaseError: DatabaseError) {}
-    }
-    internal val childEventListener: ValueEventListener = object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            currentList.clear()
-
-            for (postSnapshot in dataSnapshot.children) {
-                val chat = postSnapshot.getValue(Chat::class.java)
-                chat!!.id = postSnapshot.key
-                currentList.add(0, chat)
-            }
-
-            Collections.sort(currentList) { l, r ->
-                if (l.dtCreated > r.dtCreated) -1
-                else if (l.dtCreated < r.dtCreated) 1
-                else 0
+                postSnapshot.getValue(Chat::class.java)?.let {
+                    it.id = postSnapshot.key
+                    currentList.add(it)
+                }
             }
 
             value = currentList
@@ -61,14 +44,14 @@ object ChatsLiveData : LiveData<List<Chat>>() {
         currentUserId = MeLiveData.value?.id ?: "_"
         mDatabase.child(FirebaseUtils.KEY_USERS)
                 .child(currentUserId)
-                .child(FirebaseUtils.KEY_JOINED_CHATS)
+                .child(FirebaseUtils.KEY_CHAT)
                 .addValueEventListener(joinedChatEventListener)
     }
 
     override fun onInactive() {
-        mDatabase.child(FirebaseUtils.KEY_CHAT)
+        mDatabase.child(FirebaseUtils.KEY_USERS)
                 .child(currentUserId)
-                .child(FirebaseUtils.KEY_JOINED_CHATS)
+                .child(FirebaseUtils.KEY_CHAT)
                 .removeEventListener(joinedChatEventListener)
     }
 }

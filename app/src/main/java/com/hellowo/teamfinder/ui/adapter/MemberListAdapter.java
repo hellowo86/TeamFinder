@@ -46,10 +46,10 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public ItemViewHolder(View v) {
             super(v);
             container = v;
-            titleText = (TextView) v.findViewById(R.id.titleText);
-            subText = (TextView) v.findViewById(R.id.subText);
-            imageView = (ImageView) v.findViewById(R.id.imageView);
-            deleteBtn = (ImageButton) v.findViewById(R.id.deleteBtn);
+            titleText = v.findViewById(R.id.titleText);
+            subText = v.findViewById(R.id.subText);
+            imageView = v.findViewById(R.id.imageView);
+            deleteBtn = v.findViewById(R.id.deleteBtn);
         }
     }
 

@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.ChatsLiveData
 import com.hellowo.teamfinder.ui.activity.ChatCreateActivity
@@ -36,8 +37,11 @@ class ChatListFragment : LifecycleFragment() {
         super.onViewCreated(view, savedInstanceState)
         fab.setOnClickListener { startActivity(Intent(activity, ChatCreateActivity::class.java)) }
 
-        adapter = ChatListAdapter(activity, ChatsLiveData.value!!,
-                { chat -> startActivity(Intent(activity, ChatingActivity::class.java)) })
+        adapter = ChatListAdapter(activity, ChatsLiveData.value!!) {
+            val intent = Intent(activity, ChatingActivity::class.java)
+            intent.putExtra(AppConst.EXTRA_CHAT_ID, it.id)
+            startActivity(intent)
+        }
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 

@@ -62,8 +62,7 @@ class SignUpViewModel : ViewModel() {
                 user.email,
                 null,
                 0,
-                System.currentTimeMillis(),
-                ArrayList<String>())
+                System.currentTimeMillis())
 
         FirebaseDatabase.getInstance().reference
                 .child(FirebaseUtils.KEY_USERS)

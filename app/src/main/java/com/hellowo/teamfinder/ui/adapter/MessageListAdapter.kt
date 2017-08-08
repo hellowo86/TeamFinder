@@ -15,17 +15,12 @@ class MessageListAdapter(val context: Context,
 
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container)
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_chat, parent, false)
-        return ViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int)
+            = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_message, parent, false))
 
     override fun onBindViewHolder(holder: MessageListAdapter.ViewHolder, position: Int) {
         val message = mContentsList[position]
-
         holder.itemView.messageText.text = message.text
-
         holder.itemView.setOnClickListener { adapterInterface.onMessageClicked(message) }
     }
 

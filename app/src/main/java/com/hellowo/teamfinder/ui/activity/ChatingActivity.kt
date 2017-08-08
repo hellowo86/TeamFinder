@@ -1,9 +1,12 @@
 package com.hellowo.teamfinder.ui.activity
 
 import android.arch.lifecycle.LifecycleActivity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.ui.adapter.BasicListAdapter
@@ -20,6 +23,7 @@ class ChatingActivity : LifecycleActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chating)
         viewModel = ViewModelProviders.of(this).get(ChatingViewModel::class.java)
+        viewModel.initChat(intent.getStringExtra(AppConst.EXTRA_CHAT_ID))
         initLayout()
         initObserve()
     }
@@ -38,12 +42,25 @@ class ChatingActivity : LifecycleActivity() {
     }
 
     fun initObserve() {
-
+        viewModel.loading.observe(this, Observer{
+            progressBar.visibility = if(it as Boolean) View.VISIBLE else View.GONE
+        })
+        viewModel.chat.observe(this, Observer {
+            it?.let {
+                titleText.setText(it.title)
+            }
+        })
+        viewModel.newMessage.observe(this, Observer {
+            adapter.notifyItemInserted(viewModel.messageList.indexOf(it))
+            recyclerView.scrollToPosition(viewModel.messageList.indexOf(it))
+        })
     }
 
     private fun enterMessage() {
-        viewModel.postMessage(messageInput.getText().toString())
-        messageInput.setText("")
+        if(!messageInput.getText().toString().isNullOrBlank()) {
+            viewModel.postMessage(messageInput.getText().toString())
+            messageInput.setText("")
+        }
     }
 }
 
