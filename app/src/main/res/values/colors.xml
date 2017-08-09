@@ -27,6 +27,7 @@
     <color name="disableWhiteText">#80FFFFFF</color>
      -->
     <color name="black">#000000</color>
+    <color name="blackAlpha">#b3000000</color>
     <color name="white">#FFFFFF</color>
     <color name="grey">#434957</color>
     <color name="red">#F74444</color>

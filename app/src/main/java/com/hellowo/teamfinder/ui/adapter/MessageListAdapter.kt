@@ -21,6 +21,8 @@ class MessageListAdapter(val context: Context,
                          val adapterInterface: AdapterInterface) : RecyclerView.Adapter<MessageListAdapter.ViewHolder>() {
 
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container)
+    val currentCal = Calendar.getInstance()
+    val nextCal = Calendar.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int)
             = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_message, parent, false))
@@ -30,8 +32,12 @@ class MessageListAdapter(val context: Context,
         val v = holder.itemView
 
         v.messageText.text = message.text
+        currentCal.timeInMillis = message.dtCreated
+        nextCal.timeInMillis = if (position != mContentsList.lastIndex) mContentsList[position + 1].dtCreated else 0
 
-        if(mContentsList.lastIndex != position && message.dtCreated - mContentsList[position + 1].dtCreated < 1000 * 60) {
+        if(position != mContentsList.lastIndex
+                && message.userId.equals(mContentsList[position + 1].userId)
+                && message.dtCreated - mContentsList[position + 1].dtCreated < 1000 * 60) {
             v.nameLy.visibility = View.GONE
             v.profileImage.visibility = View.INVISIBLE
             v.topMargin.visibility = View.GONE
@@ -40,7 +46,7 @@ class MessageListAdapter(val context: Context,
             v.profileImage.visibility = View.VISIBLE
             v.topMargin.visibility = View.VISIBLE
             v.nameText.text = message.userName
-            v.timeText.text = DateFormat.getTimeInstance().format(Date(message.dtCreated))
+            v.timeText.text = DateFormat.getTimeInstance().format(currentCal.time)
 
             Glide.with(context)
                     .load(FirebaseUtils.makePublicPhotoUrl(message.userId))
@@ -50,6 +56,14 @@ class MessageListAdapter(val context: Context,
                     .into(v.profileImage)
 
             v.profileImage.setOnClickListener{ adapterInterface.onProfileClicked(message.userId!!) }
+        }
+
+        if(currentCal.get(Calendar.YEAR) == nextCal.get(Calendar.YEAR)
+                && currentCal.get(Calendar.DAY_OF_YEAR) == nextCal.get(Calendar.DAY_OF_YEAR)) {
+            v.dateDivider.visibility = View.GONE
+        }else {
+            v.dateDivider.visibility = View.VISIBLE
+            v.dateDividerText.text = DateFormat.getDateInstance().format(Date(message.dtCreated))
         }
 
         v.setOnClickListener { adapterInterface.onMessageClicked(message) }

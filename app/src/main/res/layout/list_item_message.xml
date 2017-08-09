@@ -6,6 +6,39 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <LinearLayout
+        android:id="@+id/dateDivider"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/line_size"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="@color/disableText"/>
+
+        <TextView
+            android:id="@+id/dateDividerText"
+            style="@style/SubText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:textColor="@color/disableText" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/line_size"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="@color/disableText"/>
+
+    </LinearLayout>
+
     <android.support.v4.widget.Space
         android:id="@+id/topMargin"
         android:layout_width="match_parent"
@@ -62,6 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/thin_margin"
+                app:cardElevation="0dp"
                 app:cardCornerRadius="@dimen/normal_margin"
                 app:contentPadding="@dimen/small_margin">
 

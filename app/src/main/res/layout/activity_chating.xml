@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,14 +12,15 @@
         android:elevation="2dp">
 
         <ImageButton
-            android:id="@+id/menuBtn"
+            android:id="@+id/backBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ripple_circle_button"
             android:padding="14dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_menu_black_48dp"
+            android:src="@drawable/ic_arrow_back_black_48dp"
             android:tint="@color/iconTint" />
 
         <TextView
@@ -26,19 +28,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TitleText"
-            android:layout_gravity="center"
-            android:layout_marginStart="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="72dp"
             android:layout_marginEnd="50dp"/>
 
         <ImageButton
             android:id="@+id/searchBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_gravity="center_vertical|end"
             android:background="@drawable/ripple_circle_button"
             android:padding="14dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_search_black_48dp"
+            android:tint="@color/iconTint" />
+
+        <ImageButton
+            android:id="@+id/menuBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|end"
+            android:background="@drawable/ripple_circle_button"
+            android:padding="14dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_menu_black_48dp"
             android:tint="@color/iconTint" />
 
     </FrameLayout>
@@ -54,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingBottom="@dimen/big_margin"
+            android:paddingBottom="@dimen/extra_margin"
             android:clipToPadding="false">
         </android.support.v7.widget.RecyclerView>
 
@@ -92,6 +106,31 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/floatingDateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        app:cardBackgroundColor="@color/black"
+        app:cardElevation="1dp"
+        app:cardCornerRadius="@dimen/small_margin"
+        app:contentPadding="@dimen/thin_margin"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/floatingDateText"
+            style="@style/SubText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:textColor="@color/primaryWhiteText"
+            android:textSize="@dimen/normal_text_size" />
+
+    </android.support.v7.widget.CardView>
 
     <ProgressBar
         android:id="@+id/progressBar"

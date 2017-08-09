@@ -11,9 +11,11 @@ import com.hellowo.teamfinder.model.Comment
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.model.Team
 import com.hellowo.teamfinder.utils.FirebaseUtils
+import java.text.DateFormat
+import java.util.*
 
 class ChatingViewModel : ViewModel() {
-    val limit = 10
+    val limit = 100
     val chat = MutableLiveData<Chat>()
     val messageList: MutableList<Message> = ArrayList()
     val loading = MutableLiveData<Boolean>()
@@ -21,6 +23,7 @@ class ChatingViewModel : ViewModel() {
     val newMessage = MutableLiveData<Message>()
     val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     var lastTime: Long = System.currentTimeMillis()
+    var messagesLoading: Boolean = false
 
     init {}
 
@@ -38,21 +41,29 @@ class ChatingViewModel : ViewModel() {
     }
 
     val messageListListener: ValueEventListener = object : ValueEventListener {
-        override fun onCancelled(error: DatabaseError?) {}
+        override fun onCancelled(error: DatabaseError?) { messagesLoading = false }
         override fun onDataChange(snapshot: DataSnapshot) {
+            val currentPos = messageList.size
             for (postSnapshot in snapshot.children) {
                 postSnapshot.getValue(Message::class.java)?.let {
-                    messageList.add(0, it)
+                    messageList.add(currentPos, it)
                 }
             }
+
+            if(snapshot.children.count() > 0) {
+                lastTime = messageList[messageList.size - 1].dtCreated - 1
+            }else {
+                lastTime = 0
+            }
             messages.value = messageList
+            messagesLoading = false
         }
     }
 
     fun initChat(chatId: String) {
         loading.value = true
 
-        loadPrevMessages(chatId, lastTime.toDouble())
+        loadMessages(chatId, lastTime.toDouble())
 
         ref.child(FirebaseUtils.KEY_MESSAGE)
                 .child(chatId)
@@ -75,13 +86,20 @@ class ChatingViewModel : ViewModel() {
                 })
     }
 
-    private fun loadPrevMessages(chatId: String, lastTime: Double) {
+    private fun loadMessages(chatId: String, lastTime: Double) {
+        messagesLoading = true
         ref.child(FirebaseUtils.KEY_MESSAGE)
                 .child(chatId)
                 .orderByChild(FirebaseUtils.KEY_DT_CREATED)
                 .endAt(lastTime)
                 .limitToLast(limit)
                 .addListenerForSingleValueEvent(messageListListener)
+    }
+
+    fun loadMoreMessages() {
+        if(!messagesLoading && lastTime > 0) {
+            chat.value?.id?.let { loadMessages(it, lastTime.toDouble()) }
+        }
     }
 
     fun postMessage(message: String) {
@@ -114,4 +132,6 @@ class ChatingViewModel : ViewModel() {
                     .removeEventListener(messageAddListener)
         }
     }
+
+    fun getlastPostionDate(findLastVisibleItemPosition: Int) = messageList[findLastVisibleItemPosition].dtCreated
 }
