@@ -42,13 +42,16 @@ class ChatingActivity : LifecycleActivity() {
     }
 
     fun initObserve() {
-        viewModel.loading.observe(this, Observer{
+        viewModel.loading.observe(this, Observer {
             progressBar.visibility = if(it as Boolean) View.VISIBLE else View.GONE
         })
         viewModel.chat.observe(this, Observer {
             it?.let {
-                titleText.setText(it.title)
+                titleText.text = it.title
             }
+        })
+        viewModel.messages.observe(this, Observer {
+            adapter.notifyDataSetChanged()
         })
         viewModel.newMessage.observe(this, Observer {
             adapter.notifyItemInserted(viewModel.messageList.indexOf(it))
@@ -57,8 +60,8 @@ class ChatingActivity : LifecycleActivity() {
     }
 
     private fun enterMessage() {
-        if(!messageInput.getText().toString().isNullOrBlank()) {
-            viewModel.postMessage(messageInput.getText().toString())
+        if(!messageInput.text.toString().isNullOrBlank()) {
+            viewModel.postMessage(messageInput.text.toString())
             messageInput.setText("")
         }
     }

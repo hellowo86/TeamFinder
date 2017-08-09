@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.google.firebase.database.*
 import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.TeamsLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Comment
 import com.hellowo.teamfinder.model.Message
@@ -12,38 +13,54 @@ import com.hellowo.teamfinder.model.Team
 import com.hellowo.teamfinder.utils.FirebaseUtils
 
 class ChatingViewModel : ViewModel() {
+    val limit = 10
     val chat = MutableLiveData<Chat>()
     val messageList: MutableList<Message> = ArrayList()
-    var loading = MutableLiveData<Boolean>()
+    val loading = MutableLiveData<Boolean>()
+    val messages = MutableLiveData<List<Message>>()
     val newMessage = MutableLiveData<Message>()
+    val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
+    var lastTime: Long = System.currentTimeMillis()
 
     init {}
 
-    val messageChildListener: ChildEventListener = object : ChildEventListener {
-        override fun onCancelled(p0: DatabaseError?) {}
-
-        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-
-        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-            Log.d("aaa", "onChildChanged" + p0.toString())
-        }
-
-        override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-            Log.d("aaa", "onChildAdded" + p0.toString())
-            p0?.getValue(Message::class.java)?.let {
+    val messageAddListener: ChildEventListener = object : ChildEventListener {
+        override fun onCancelled(error: DatabaseError) {}
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            snapshot.getValue(Message::class.java)?.let {
                 messageList.add(0, it)
                 newMessage.value = it
             }
         }
+        override fun onChildRemoved(snapshot: DataSnapshot) {}
+    }
 
-        override fun onChildRemoved(p0: DataSnapshot?) {
-            Log.d("aaa", "onChildRemoved" + p0.toString())
+    val messageListListener: ValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError?) {}
+        override fun onDataChange(snapshot: DataSnapshot) {
+            for (postSnapshot in snapshot.children) {
+                postSnapshot.getValue(Message::class.java)?.let {
+                    messageList.add(0, it)
+                }
+            }
+            messages.value = messageList
         }
     }
 
-    fun initChat(chatId: String?) {
+    fun initChat(chatId: String) {
         loading.value = true
-        FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_CHAT)
+
+        loadPrevMessages(chatId, lastTime.toDouble())
+
+        ref.child(FirebaseUtils.KEY_MESSAGE)
+                .child(chatId)
+                .orderByChild(FirebaseUtils.KEY_DT_CREATED)
+                .startAt(lastTime.toDouble())
+                .addChildEventListener(messageAddListener)
+
+        ref.child(FirebaseUtils.KEY_CHAT)
                 .child(chatId)
                 .addListenerForSingleValueEvent( object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -52,16 +69,19 @@ class ChatingViewModel : ViewModel() {
                         chat.value = data
                         loading.value = false
                     }
-
                     override fun onCancelled(databaseError: DatabaseError) {
                         loading.value = false
                     }
                 })
+    }
 
-        FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_MESSAGE)
+    private fun loadPrevMessages(chatId: String, lastTime: Double) {
+        ref.child(FirebaseUtils.KEY_MESSAGE)
                 .child(chatId)
                 .orderByChild(FirebaseUtils.KEY_DT_CREATED)
-                .addChildEventListener(messageChildListener)
+                .endAt(lastTime)
+                .limitToLast(limit)
+                .addListenerForSingleValueEvent(messageListListener)
     }
 
     fun postMessage(message: String) {
@@ -77,7 +97,6 @@ class ChatingViewModel : ViewModel() {
             val chatId = chat.value!!.id
 
             if(!chatId.isNullOrBlank()) {
-                Log.d("aaa", message.toString())
                 val ref = FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_MESSAGE).child(chatId)
                 val key = ref.push().key
                 ref.child(key).setValue(message) { error, databaseReference ->
@@ -92,7 +111,7 @@ class ChatingViewModel : ViewModel() {
         chat.value?.id?.let {
             FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_MESSAGE)
                     .child(it)
-                    .removeEventListener(messageChildListener)
+                    .removeEventListener(messageAddListener)
         }
     }
 }

@@ -5,9 +5,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.model.Message
+import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.makeActiveTimeText
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.list_item_message.view.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MessageListAdapter(val context: Context,
                          val mContentsList: List<Message>,
@@ -20,8 +27,32 @@ class MessageListAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: MessageListAdapter.ViewHolder, position: Int) {
         val message = mContentsList[position]
-        holder.itemView.messageText.text = message.text
-        holder.itemView.setOnClickListener { adapterInterface.onMessageClicked(message) }
+        val v = holder.itemView
+
+        v.messageText.text = message.text
+
+        if(mContentsList.lastIndex != position && message.dtCreated - mContentsList[position + 1].dtCreated < 1000 * 60) {
+            v.nameLy.visibility = View.GONE
+            v.profileImage.visibility = View.INVISIBLE
+            v.topMargin.visibility = View.GONE
+        }else {
+            v.nameLy.visibility = View.VISIBLE
+            v.profileImage.visibility = View.VISIBLE
+            v.topMargin.visibility = View.VISIBLE
+            v.nameText.text = message.userName
+            v.timeText.text = DateFormat.getTimeInstance().format(Date(message.dtCreated))
+
+            Glide.with(context)
+                    .load(FirebaseUtils.makePublicPhotoUrl(message.userId))
+                    .bitmapTransform(CropCircleTransformation(context))
+                    .thumbnail(0.1f)
+                    .placeholder(R.drawable.default_profile)
+                    .into(v.profileImage)
+
+            v.profileImage.setOnClickListener{ adapterInterface.onProfileClicked(message.userId!!) }
+        }
+
+        v.setOnClickListener { adapterInterface.onMessageClicked(message) }
     }
 
     override fun getItemId(position: Int) = position.toLong()

@@ -23,7 +23,6 @@ class ChatListAdapter(val context: Context,
         val chat = mContentsList[position]
 
         holder.itemView.titleText.text = chat.title
-
         holder.itemView.setOnClickListener { adapterInterface.invoke(chat) }
     }
 

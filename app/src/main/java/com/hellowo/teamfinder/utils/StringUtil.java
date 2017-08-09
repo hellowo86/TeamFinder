@@ -16,7 +16,7 @@ public class StringUtil {
      * @param list 리스트
      * @return 스트링
      */
-    public final static String ListToString(List<?> list){
+    public static String ListToString(List<?> list){
         String result = "[";
         for (int i = 0; i < list.size(); i++) {
             if(i > 0){
@@ -84,5 +84,4 @@ public class StringUtil {
         }catch (Exception ignore){}
         return result;
     }
-
 }
