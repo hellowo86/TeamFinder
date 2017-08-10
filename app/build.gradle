@@ -51,6 +51,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.0.0'
     compile 'com.android.support:cardview-v7:26.0.0'
     compile 'com.github.danylovolokh:hashtag-helper:1.1.0'
+    compile 'com.wang.avi:library:2.1.3'
 
     // 사진
     compile 'com.github.bumptech.glide:glide:3.7.0'

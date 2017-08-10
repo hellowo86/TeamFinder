@@ -18,14 +18,17 @@ class ChatingViewModel : ViewModel() {
     val limit = 100
     val chat = MutableLiveData<Chat>()
     val messageList: MutableList<Message> = ArrayList()
+    val typingList: MutableList<String> = ArrayList()
     val loading = MutableLiveData<Boolean>()
     val messages = MutableLiveData<List<Message>>()
     val newMessage = MutableLiveData<Message>()
+    val typings = MutableLiveData<List<String>>()
     val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     var lastTime: Long = System.currentTimeMillis()
-    var messagesLoading: Boolean = false
-
-    init {}
+    var messagesLoading = false
+    var isTyping = false
+    val me = MeLiveData.value
+    lateinit var chatId: String
 
     val messageAddListener: ChildEventListener = object : ChildEventListener {
         override fun onCancelled(error: DatabaseError) {}
@@ -60,9 +63,23 @@ class ChatingViewModel : ViewModel() {
         }
     }
 
+    val typingListListener: ValueEventListener = object : ValueEventListener {
+        override fun onCancelled(error: DatabaseError?) {}
+        override fun onDataChange(snapshot: DataSnapshot) {
+            typingList.clear()
+            for (postSnapshot in snapshot.children) {
+                postSnapshot.getValue(Boolean::class.java)?.let {
+                    if(it) { typingList.add(postSnapshot.key) }
+                }
+            }
+            typings.value = typingList
+        }
+    }
+
     fun initChat(chatId: String) {
         loading.value = true
 
+        this.chatId = chatId
         loadMessages(chatId, lastTime.toDouble())
 
         ref.child(FirebaseUtils.KEY_MESSAGE)
@@ -71,7 +88,12 @@ class ChatingViewModel : ViewModel() {
                 .startAt(lastTime.toDouble())
                 .addChildEventListener(messageAddListener)
 
+        ref.child(FirebaseUtils.KEY_TYPING)
+                .child(chatId)
+                .addValueEventListener(typingListListener)
+
         ref.child(FirebaseUtils.KEY_CHAT)
+                .child("all")
                 .child(chatId)
                 .addListenerForSingleValueEvent( object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -98,40 +120,43 @@ class ChatingViewModel : ViewModel() {
 
     fun loadMoreMessages() {
         if(!messagesLoading && lastTime > 0) {
-            chat.value?.id?.let { loadMessages(it, lastTime.toDouble()) }
+            loadMessages(chatId, lastTime.toDouble())
         }
     }
 
-    fun postMessage(message: String) {
-        MeLiveData.value?.id?.let {
-            val message = Message(
-                    message,
-                    MeLiveData.value!!.nickName,
-                    MeLiveData.value!!.id,
-                    MeLiveData.value!!.photoUrl,
-                    System.currentTimeMillis(),
-                    0)
+    fun postMessage(text: String) {
+        val newMessage = Message(
+                text,
+                me?.nickName,
+                me?.id,
+                me?.photoUrl,
+                System.currentTimeMillis(),
+                0)
 
-            val chatId = chat.value!!.id
+        val ref = ref.child(FirebaseUtils.KEY_MESSAGE).child(chatId)
+        val key = ref.push().key
+        ref.child(key).setValue(newMessage) { error, databaseReference ->
 
-            if(!chatId.isNullOrBlank()) {
-                val ref = FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_MESSAGE).child(chatId)
-                val key = ref.push().key
-                ref.child(key).setValue(message) { error, databaseReference ->
-
-                }
-            }
         }
     }
+
+    fun  typingText(text: CharSequence) {
+        if((text.isNotEmpty() && !isTyping) || (text.isEmpty() && isTyping)) {
+            isTyping = !isTyping
+            ref.child(FirebaseUtils.KEY_TYPING).child(chatId).child(me?.nickName).setValue(isTyping)
+        }
+    }
+
+    fun getlastPostionDate(itemPos: Int) = messageList[itemPos].dtCreated
 
     override fun onCleared() {
         super.onCleared()
-        chat.value?.id?.let {
-            FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_MESSAGE)
-                    .child(it)
-                    .removeEventListener(messageAddListener)
-        }
-    }
+        ref.child(FirebaseUtils.KEY_MESSAGE)
+                .child(chatId)
+                .removeEventListener(messageAddListener)
 
-    fun getlastPostionDate(findLastVisibleItemPosition: Int) = messageList[findLastVisibleItemPosition].dtCreated
+        ref.child(FirebaseUtils.KEY_TYPING)
+                .child(chatId)
+                .removeEventListener(typingListListener)
+    }
 }

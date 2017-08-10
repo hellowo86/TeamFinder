@@ -42,16 +42,14 @@ object ChatsLiveData : LiveData<List<Chat>>() {
 
     override fun onActive() {
         currentUserId = MeLiveData.value?.id ?: "_"
-        mDatabase.child(FirebaseUtils.KEY_USERS)
+        mDatabase.child(FirebaseUtils.KEY_CHAT)
                 .child(currentUserId)
-                .child(FirebaseUtils.KEY_CHAT)
                 .addValueEventListener(joinedChatEventListener)
     }
 
     override fun onInactive() {
-        mDatabase.child(FirebaseUtils.KEY_USERS)
+        mDatabase.child(FirebaseUtils.KEY_CHAT)
                 .child(currentUserId)
-                .child(FirebaseUtils.KEY_CHAT)
                 .removeEventListener(joinedChatEventListener)
     }
 }
