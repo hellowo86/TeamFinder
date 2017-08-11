@@ -14,6 +14,7 @@ import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.ChatsLiveData
 import com.hellowo.teamfinder.ui.activity.ChatCreateActivity
+import com.hellowo.teamfinder.ui.activity.ChatFindActivity
 import com.hellowo.teamfinder.ui.activity.ChatingActivity
 import com.hellowo.teamfinder.ui.adapter.ChatListAdapter
 import com.hellowo.teamfinder.viewmodel.ChatListViewModel
@@ -35,7 +36,7 @@ class ChatListFragment : LifecycleFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fab.setOnClickListener { startActivity(Intent(activity, ChatCreateActivity::class.java)) }
+        fab.setOnClickListener { startActivity(Intent(activity, ChatFindActivity::class.java)) }
 
         adapter = ChatListAdapter(activity, ChatsLiveData.value!!) {
             val intent = Intent(activity, ChatingActivity::class.java)

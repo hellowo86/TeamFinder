@@ -66,4 +66,6 @@
     <string name="instant">즉석 팀</string>
     <string name="next">다음</string>
     <string name="enter_message">메세지 입력하기</string>
+    <string name="find_chat_room">채팅방찾기</string>
+    <string name="enter_title_or_tag">제목/태그로 검색</string>
 </resources>
