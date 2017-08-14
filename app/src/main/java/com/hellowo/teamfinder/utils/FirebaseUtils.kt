@@ -10,6 +10,8 @@ object FirebaseUtils {
     val KEY_MESSAGE = "message"
     val KEY_DT_CREATED = "dtCreated"
     val KEY_TYPING = "typing"
+    val KEY_LAST_MESSAGE = "lastMessage"
+    val KEY_LAST_MESSAGE_TIME = "lastMessageTime"
 
     fun makePublicPhotoUrl(userId: String?): String = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
 }

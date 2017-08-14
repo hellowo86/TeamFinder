@@ -5,6 +5,13 @@
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
     </style>
 
+    <style name="TranslucentStatusTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
+    출처: http://indienote.tistory.com/67 [인디노트]
+
     <style name="ActivityAnimation" parent="@android:style/Animation">
         <item name="android:activityOpenEnterAnimation">@anim/activity_in</item>
         <item name="android:activityOpenExitAnimation">@anim/activity_out</item>

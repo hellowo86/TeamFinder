@@ -60,8 +60,8 @@ class ChatCreateViewModel : ViewModel() {
             val childUpdates = HashMap<String, Any>()
             val key = FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_CHAT).push().key
 
-            childUpdates.put("/${FirebaseUtils.KEY_CHAT}/all/${key}", chat)
-            childUpdates.put("/${FirebaseUtils.KEY_CHAT}/${it.id}/${key}", chat)
+            childUpdates.put("/${FirebaseUtils.KEY_CHAT}/${key}", chat)
+            childUpdates.put("/${FirebaseUtils.KEY_USERS}/${it.id}/${FirebaseUtils.KEY_CHAT}/${key}", true)
 
             FirebaseDatabase.getInstance().reference
                     .updateChildren(childUpdates){ _, _ ->

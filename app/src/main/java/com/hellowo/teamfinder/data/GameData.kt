@@ -10,6 +10,8 @@ object GameData {
     val games: MutableList<Game> = mutableListOf()
     val gameIconIds = intArrayOf(
             R.drawable.game_icon_0, R.drawable.game_icon_1, R.drawable.game_icon_2)
+    val gameBackgroundIds = intArrayOf(
+            R.drawable.game_background_0, R.drawable.game_background_0, R.drawable.game_background_0)
 
     init {
         val gamesJson = App.context.resources.getStringArray(R.array.games).toList()
@@ -21,7 +23,8 @@ object GameData {
                             it.getString(0),
                             JsonArray(it.getString(1)).map { it as String },
                             it.getInt(2),
-                            gameIconIds[id++]))
+                            gameIconIds[id],
+                            gameBackgroundIds[id++]))
                 }
     }
 }

@@ -93,7 +93,6 @@ class ChatingViewModel : ViewModel() {
                 .addValueEventListener(typingListListener)
 
         ref.child(FirebaseUtils.KEY_CHAT)
-                .child("all")
                 .child(chatId)
                 .addListenerForSingleValueEvent( object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -133,11 +132,14 @@ class ChatingViewModel : ViewModel() {
                 System.currentTimeMillis(),
                 0)
 
-        val ref = ref.child(FirebaseUtils.KEY_MESSAGE).child(chatId)
-        val key = ref.push().key
-        ref.child(key).setValue(newMessage) { error, databaseReference ->
+        val childUpdates = HashMap<String, Any>()
+        val key = ref.child(FirebaseUtils.KEY_MESSAGE).child(chatId).push().key
 
-        }
+        childUpdates.put("/${FirebaseUtils.KEY_MESSAGE}/${chatId}/${key}", newMessage)
+        childUpdates.put("/${FirebaseUtils.KEY_CHAT}/${chatId}/${FirebaseUtils.KEY_LAST_MESSAGE}", text)
+        childUpdates.put("/${FirebaseUtils.KEY_CHAT}/${chatId}/${FirebaseUtils.KEY_LAST_MESSAGE_TIME}", newMessage.dtCreated)
+
+        ref.updateChildren(childUpdates) { _, _ -> }
     }
 
     fun  typingText(text: CharSequence) {

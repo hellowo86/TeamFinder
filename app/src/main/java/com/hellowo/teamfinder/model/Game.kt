@@ -5,4 +5,5 @@ data class Game (
         val title: String,
         val roles: List<String>,
         val maxMemberCount: Int,
-        val iconId: Int)
+        val iconId: Int,
+        val backgroundId: Int)

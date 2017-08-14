@@ -1,55 +1,73 @@
 package com.hellowo.teamfinder.data
 
 import android.arch.lifecycle.LiveData
-import android.support.annotation.MainThread
+import android.support.v4.util.ArrayMap
 import android.util.Log
 import com.google.firebase.database.*
-
 import com.hellowo.teamfinder.model.Chat
-import com.hellowo.teamfinder.model.Team
-
-import java.util.ArrayList
-import java.util.Collections
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
 import com.hellowo.teamfinder.utils.FirebaseUtils
 
 
-object ChatsLiveData : LiveData<List<Chat>>() {
-    internal val mDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
-    internal val currentList: MutableList<Chat> = ArrayList()
-    internal val joinedChatEventListener: ValueEventListener = object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            currentList.clear()
-
-            for (postSnapshot in dataSnapshot.children) {
-                postSnapshot.getValue(Chat::class.java)?.let {
-                    it.id = postSnapshot.key
-                    currentList.add(it)
+object ChatsLiveData : LiveData<ArrayMap<String, Chat>>() {
+    internal val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
+    internal val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_CHAT)
+    internal val itemsMap: ArrayMap<String, Chat> = ArrayMap()
+    internal val listenerMap: MutableMap<String, ValueEventListener> = HashMap()
+    internal val joinedChatEventListener: ChildEventListener = object : ChildEventListener {
+        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+        override fun onChildChanged(snapshot: DataSnapshot?, p1: String?) {}
+        override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
+            snapshot?.key?.let {
+                val valueEventListener = object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {}
+                    override fun onDataChange(chatSnapshot: DataSnapshot?) {
+                        val chat = chatSnapshot?.getValue(Chat::class.java)
+                        chat?.id = chatSnapshot?.key
+                        chat?.id?.let {
+                            itemsMap.put(it, chat)
+                            value = itemsMap
+                        }
+                    }
                 }
+                listenerMap.put(it, valueEventListener)
+                chatRef.child(it).addValueEventListener(valueEventListener)
             }
-
-            value = currentList
+        }
+        override fun onChildRemoved(snapshot: DataSnapshot?) {
+            val chat = itemsMap[snapshot?.key]
+            chat?.let {
+                chatRef.child(it.id).removeEventListener(listenerMap.remove(it.id))
+                itemsMap.remove(it.id)
+                value = itemsMap
+            }
         }
         override fun onCancelled(databaseError: DatabaseError) {}
     }
     internal lateinit var currentUserId: String
 
     init {
-        value = currentList
+        value = itemsMap
     }
 
     override fun onActive() {
         currentUserId = MeLiveData.value?.id ?: "_"
-        mDatabase.child(FirebaseUtils.KEY_CHAT)
+        ref.child(FirebaseUtils.KEY_USERS)
                 .child(currentUserId)
-                .addValueEventListener(joinedChatEventListener)
+                .child(FirebaseUtils.KEY_CHAT)
+                .addChildEventListener(joinedChatEventListener)
     }
 
     override fun onInactive() {
-        mDatabase.child(FirebaseUtils.KEY_CHAT)
+        ref.child(FirebaseUtils.KEY_USERS)
                 .child(currentUserId)
+                .child(FirebaseUtils.KEY_CHAT)
                 .removeEventListener(joinedChatEventListener)
+
+        listenerMap.forEach {
+            chatRef.child(it.key).removeEventListener(it.value)
+        }
+
+        listenerMap.clear()
+        //itemsMap.clear()
     }
 }

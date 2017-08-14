@@ -12,7 +12,10 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
+import com.hellowo.teamfinder.data.GameData
+import com.hellowo.teamfinder.utils.FirebaseUtils
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel
 import kotlinx.android.synthetic.main.activity_chat_create.*
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress
@@ -31,6 +34,10 @@ class ChatCreateActivity : LifecycleActivity() {
     }
 
     fun initLayout() {
+        Glide.with(this)
+                .load(GameData.games[0].backgroundId)
+                .into(backgroundImg)
+        
         confirmBtn.setOnClickListener { goNext() }
         backBtn.setOnClickListener{ onBackPressed() }
 
