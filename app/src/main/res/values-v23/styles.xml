@@ -14,4 +14,9 @@
 
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
     </style>
+
+    <style name="TranslucentStatusTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
 </resources>

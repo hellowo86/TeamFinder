@@ -9,4 +9,5 @@ data class Chat (
         var king: String? = null,
         var members: MutableList<String> = ArrayList(),
         var lastMessage: String? = null,
-        var lastMessageTime: Long = 0)
+        var lastMessageTime: Long = 0,
+        var gameId: Int = 0)

@@ -69,4 +69,14 @@
     <string name="find_chat_room">채팅방찾기</string>
     <string name="enter_title_or_tag">제목/태그로 검색</string>
     <string name="chat_room">내 그룹 채팅방</string>
+    <string name="ask_select_game">게임을 선택해 주세요.</string>
+    <string name="create_group_chat">그룹 채팅방 개설하기</string>
+    <string name="enter_title">채팅방의 제목을 입력해주세요.</string>
+    <string name="enter_contents_and_tag">채팅방을 소개할 문구를 적어주세요.\n#해쉬태그를 사용해서 홍보효과를 높여보세요.</string>
+    <string name="soon_finish_and_set_options">거의 다 완료되었습니다.\n필요 시 아래 옵션들을 설정해보세요.</string>
+    <string name="option_privacy">채팅방 공개하기</string>
+    <string name="option_privacy_text">채팅방을 공개하지 않으면 설정하신 비밀번호를 입력한 후 채팅방에 입장하실 수 있습니다.</string>
+    <string name="option_max_member_count">최대 인원 설정</string>
+    <string name="option_max_member_count_text">채팅방에 입장할 수 있는 최대 인원수를 설정합니다.</string>
+    <string name="add_popular_tag">인기태그 추가하기</string>
 </resources>

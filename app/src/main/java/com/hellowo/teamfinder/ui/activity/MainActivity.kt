@@ -10,6 +10,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.AppConst.EXTRA_USER_ID
 import com.hellowo.teamfinder.R
+import com.hellowo.teamfinder.data.ChatsLiveData
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.ui.fragment.ChatListFragment
@@ -52,10 +53,9 @@ class MainActivity : LifecycleActivity() {
     }
 
     private fun initObserve() {
-        MeLiveData.observe(this,
-                Observer { updateUserUI(it) })
-        viewModel.bottomTab.observe(this,
-                Observer { moveTab(it) })
+        MeLiveData.observe(this, Observer { updateUserUI(it) })
+        ChatsLiveData.observe(this, Observer {  })
+        viewModel.bottomTab.observe(this, Observer { moveTab(it) })
     }
 
     private fun updateUserUI(user: User?) {
