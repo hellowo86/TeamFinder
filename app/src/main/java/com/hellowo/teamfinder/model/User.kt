@@ -1,7 +1,7 @@
 package com.hellowo.teamfinder.model
 
 import com.google.firebase.database.Exclude
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 
 data class User (
         var id: String ?= null,
@@ -13,6 +13,6 @@ data class User (
 
     @Exclude
     fun makeMember(role: String): Member {
-        return Member(id, nickName, FirebaseUtils.makePublicPhotoUrl(id), role)
+        return Member(id, nickName, makePublicPhotoUrl(id), role)
     }
 }

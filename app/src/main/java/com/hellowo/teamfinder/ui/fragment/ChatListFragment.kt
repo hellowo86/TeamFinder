@@ -41,6 +41,7 @@ class ChatListFragment : LifecycleFragment() {
         adapter = ChatListAdapter(activity, ChatsLiveData.value!!) {
             val intent = Intent(activity, ChatingActivity::class.java)
             intent.putExtra(AppConst.EXTRA_CHAT_ID, it.id)
+            intent.putExtra(AppConst.EXTRA_GAME_ID, it.gameId)
             startActivity(intent)
         }
         recyclerView.layoutManager = LinearLayoutManager(context)

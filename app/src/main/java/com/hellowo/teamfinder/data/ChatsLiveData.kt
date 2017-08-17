@@ -5,12 +5,13 @@ import android.support.v4.util.ArrayMap
 import android.util.Log
 import com.google.firebase.database.*
 import com.hellowo.teamfinder.model.Chat
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.KEY_CHAT
+import com.hellowo.teamfinder.utils.KEY_USERS
 
 
 object ChatsLiveData : LiveData<ArrayMap<String, Chat>>() {
     internal val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    internal val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(FirebaseUtils.KEY_CHAT)
+    internal val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
     internal val itemsMap: ArrayMap<String, Chat> = ArrayMap()
     internal val listenerMap: MutableMap<String, ValueEventListener> = HashMap()
     internal val joinedChatEventListener: ChildEventListener = object : ChildEventListener {
@@ -51,16 +52,16 @@ object ChatsLiveData : LiveData<ArrayMap<String, Chat>>() {
 
     override fun onActive() {
         currentUserId = MeLiveData.value?.id ?: "_"
-        ref.child(FirebaseUtils.KEY_USERS)
+        ref.child(KEY_USERS)
                 .child(currentUserId)
-                .child(FirebaseUtils.KEY_CHAT)
+                .child(KEY_CHAT)
                 .addChildEventListener(joinedChatEventListener)
     }
 
     override fun onInactive() {
-        ref.child(FirebaseUtils.KEY_USERS)
+        ref.child(KEY_USERS)
                 .child(currentUserId)
-                .child(FirebaseUtils.KEY_CHAT)
+                .child(KEY_CHAT)
                 .removeEventListener(joinedChatEventListener)
 
         listenerMap.forEach {

@@ -10,7 +10,7 @@ import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Comment
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.model.Team
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.*
 import java.text.DateFormat
 import java.util.*
 
@@ -82,17 +82,17 @@ class ChatingViewModel : ViewModel() {
         this.chatId = chatId
         loadMessages(chatId, lastTime.toDouble())
 
-        ref.child(FirebaseUtils.KEY_MESSAGE)
+        ref.child(KEY_MESSAGE)
                 .child(chatId)
-                .orderByChild(FirebaseUtils.KEY_DT_CREATED)
+                .orderByChild(KEY_DT_CREATED)
                 .startAt(lastTime.toDouble())
                 .addChildEventListener(messageAddListener)
 
-        ref.child(FirebaseUtils.KEY_TYPING)
+        ref.child(KEY_TYPING)
                 .child(chatId)
                 .addValueEventListener(typingListListener)
 
-        ref.child(FirebaseUtils.KEY_CHAT)
+        ref.child(KEY_CHAT)
                 .child(chatId)
                 .addListenerForSingleValueEvent( object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -109,9 +109,9 @@ class ChatingViewModel : ViewModel() {
 
     private fun loadMessages(chatId: String, lastTime: Double) {
         messagesLoading = true
-        ref.child(FirebaseUtils.KEY_MESSAGE)
+        ref.child(KEY_MESSAGE)
                 .child(chatId)
-                .orderByChild(FirebaseUtils.KEY_DT_CREATED)
+                .orderByChild(KEY_DT_CREATED)
                 .endAt(lastTime)
                 .limitToLast(limit)
                 .addListenerForSingleValueEvent(messageListListener)
@@ -124,28 +124,30 @@ class ChatingViewModel : ViewModel() {
     }
 
     fun postMessage(text: String) {
-        val newMessage = Message(
-                text,
-                me?.nickName,
-                me?.id,
-                me?.photoUrl,
-                System.currentTimeMillis(),
-                0)
+        chat.value?.let {
+            val newMessage = Message(
+                    text,
+                    me?.nickName,
+                    me?.id,
+                    me?.photoUrl,
+                    System.currentTimeMillis(),
+                    0)
 
-        val childUpdates = HashMap<String, Any>()
-        val key = ref.child(FirebaseUtils.KEY_MESSAGE).child(chatId).push().key
+            val childUpdates = HashMap<String, Any>()
+            val key = ref.child(KEY_MESSAGE).child(chatId).push().key
 
-        childUpdates.put("/${FirebaseUtils.KEY_MESSAGE}/${chatId}/${key}", newMessage)
-        childUpdates.put("/${FirebaseUtils.KEY_CHAT}/${chatId}/${FirebaseUtils.KEY_LAST_MESSAGE}", text)
-        childUpdates.put("/${FirebaseUtils.KEY_CHAT}/${chatId}/${FirebaseUtils.KEY_LAST_MESSAGE_TIME}", newMessage.dtCreated)
+            childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
+            childUpdates.put("/$KEY_CHAT/$chatId/$KEY_LAST_MESSAGE", text)
+            childUpdates.put("/$KEY_CHAT/$chatId/$KEY_LAST_MESSAGE_TIME", newMessage.dtCreated)
 
-        ref.updateChildren(childUpdates) { _, _ -> }
+            ref.updateChildren(childUpdates) { _, _ -> }
+        }
     }
 
     fun  typingText(text: CharSequence) {
         if((text.isNotEmpty() && !isTyping) || (text.isEmpty() && isTyping)) {
             isTyping = !isTyping
-            ref.child(FirebaseUtils.KEY_TYPING).child(chatId).child(me?.nickName).setValue(isTyping)
+            ref.child(KEY_TYPING).child(chatId).child(me?.nickName).setValue(isTyping)
         }
     }
 
@@ -153,11 +155,11 @@ class ChatingViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        ref.child(FirebaseUtils.KEY_MESSAGE)
+        ref.child(KEY_MESSAGE)
                 .child(chatId)
                 .removeEventListener(messageAddListener)
 
-        ref.child(FirebaseUtils.KEY_TYPING)
+        ref.child(KEY_TYPING)
                 .child(chatId)
                 .removeEventListener(typingListListener)
     }

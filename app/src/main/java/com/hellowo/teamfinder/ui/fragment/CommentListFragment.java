@@ -49,7 +49,7 @@ public class CommentListFragment extends LifecycleFragment{
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new CommentListAdapter(
                 getContext(),
-                viewModel.comments.getValue(),
+                viewModel.getComments().getValue(),
                 userId -> {});
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(new VerticalSpaceDecoration(getContext()));
@@ -60,7 +60,7 @@ public class CommentListFragment extends LifecycleFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.comments.observe(this, this::updateUI);
+        viewModel.getComments().observe(this, this::updateUI);
     }
 
     private void updateUI(List<Comment> commentList) {

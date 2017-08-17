@@ -60,7 +60,7 @@ public class TeamDetailActivity extends LifecycleActivity {
         memberListAdapter = new MemberListAdapter(
                 this,
                 false,
-                viewModel.members.getValue(),
+                viewModel.getMembers().getValue(),
                 R.layout.list_item_member_horizontal,
                 new MemberListAdapter.AdapterInterface() {
                     @Override
@@ -78,7 +78,7 @@ public class TeamDetailActivity extends LifecycleActivity {
         rolesAdapter = new RolesAdapter(
                 this,
                 false,
-                viewModel.roles.getValue(),
+                viewModel.getRoles().getValue(),
                 new RolesAdapter.AdapterInterface() {
                     @Override
                     public void onChangedRoleCount(String role, int count) {}
@@ -92,18 +92,18 @@ public class TeamDetailActivity extends LifecycleActivity {
         binding.commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         commentListAdapter = new CommentListAdapter(
                 this,
-                viewModel.comments.getValue(),
+                viewModel.getComments().getValue(),
                 userId -> {});
         binding.commentRecyclerView.setAdapter(commentListAdapter);
         binding.commentRecyclerView.addItemDecoration(new VerticalSpaceDecoration(this));
     }
 
     private void initObserve() {
-        viewModel.team.observe(this, this::updateUI);
-        viewModel.members.observe(this, members -> memberListAdapter.notifyDataSetChanged());
-        viewModel.roles.observe(this, roles -> rolesAdapter.refresh(roles));
-        viewModel.comments.observe(this, teamList-> commentListAdapter.notifyDataSetChanged());
-        viewModel.loading.observe(this, loading -> binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE));
+        viewModel.getTeam().observe(this, this::updateUI);
+        viewModel.getMembers().observe(this, members -> memberListAdapter.notifyDataSetChanged());
+        viewModel.getRoles().observe(this, roles -> rolesAdapter.refresh(roles));
+        viewModel.getComments().observe(this, teamList-> commentListAdapter.notifyDataSetChanged());
+        viewModel.getLoading().observe(this, loading -> binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE));
     }
 
     private void updateUI(Team team) {

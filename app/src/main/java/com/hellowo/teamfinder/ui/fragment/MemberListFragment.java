@@ -38,7 +38,7 @@ public class MemberListFragment extends LifecycleFragment{
         adapter = new MemberListAdapter(
                 getContext(),
                 false,
-                viewModel.members.getValue(),
+                viewModel.getMembers().getValue(),
                 R.layout.list_item_member_vertical,
                 new MemberListAdapter.AdapterInterface() {
                     @Override
@@ -54,7 +54,7 @@ public class MemberListFragment extends LifecycleFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.members.observe(this, this::updateUI);
+        viewModel.getMembers().observe(this, this::updateUI);
     }
 
     private void updateUI(List<Member> members) {

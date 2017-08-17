@@ -12,7 +12,7 @@ import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.fcm.FirebaseInstanceIDService
 import com.hellowo.teamfinder.model.User
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.KEY_USERS
 import com.hellowo.teamfinder.utils.StringUtil
 
 import java.util.ArrayList
@@ -65,7 +65,7 @@ class SignUpViewModel : ViewModel() {
                 System.currentTimeMillis())
 
         FirebaseDatabase.getInstance().reference
-                .child(FirebaseUtils.KEY_USERS)
+                .child(KEY_USERS)
                 .child(me.id!!)
                 .setValue(me) { error, databaseReference ->
                     FirebaseInstanceIDService.sendRegistrationToServer()

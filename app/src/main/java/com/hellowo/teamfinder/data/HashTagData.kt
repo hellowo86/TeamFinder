@@ -17,9 +17,6 @@ object HashTagData {
 
     init {
         val optionArray = App.context.resources.getStringArray(R.array.options)
-        for (i in optionArray.indices) {
-            val hashTag = HashTag(i, optionArray[i], iconIds[i])
-            hashTags.add(hashTag)
-        }
+        optionArray.indices.mapTo(hashTags) { HashTag(it, optionArray[it], iconIds[it]) }
     }
 }

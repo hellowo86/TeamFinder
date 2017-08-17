@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.hellowo.teamfinder.model.Member
 import com.hellowo.teamfinder.model.User
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.KEY_USERS
 
 object MeLiveData : LiveData<User>() {
     val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -33,7 +33,7 @@ object MeLiveData : LiveData<User>() {
     }
 
     private fun loadCurrentLoginUser(user: FirebaseUser) {
-        mDatabase.child(FirebaseUtils.KEY_USERS).child(user.uid).addValueEventListener(valueEventListener)
+        mDatabase.child(KEY_USERS).child(user.uid).addValueEventListener(valueEventListener)
     }
 
     override fun onActive() {

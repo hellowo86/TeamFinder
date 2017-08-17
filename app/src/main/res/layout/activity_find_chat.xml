@@ -74,7 +74,7 @@
             android:minHeight="@dimen/top_menu_bar_height">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/searchInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"

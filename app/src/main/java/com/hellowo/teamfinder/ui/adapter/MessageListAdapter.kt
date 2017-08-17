@@ -9,7 +9,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.model.Message
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.list_item_message.view.*
 import kotlinx.android.synthetic.main.list_item_message_typing.view.*
@@ -70,7 +70,7 @@ class MessageListAdapter(val context: Context,
                     v.timeText.text = DateFormat.getTimeInstance().format(currentCal.time)
 
                     Glide.with(context)
-                            .load(FirebaseUtils.makePublicPhotoUrl(message.userId))
+                            .load(makePublicPhotoUrl(message.userId))
                             .bitmapTransform(CropCircleTransformation(context))
                             .thumbnail(0.1f)
                             .placeholder(R.drawable.default_profile)

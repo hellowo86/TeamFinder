@@ -9,7 +9,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.hellowo.teamfinder.model.Team
-import com.hellowo.teamfinder.utils.FirebaseUtils
+import com.hellowo.teamfinder.utils.KEY_FILTERING
+import com.hellowo.teamfinder.utils.KEY_TEAMS
 
 import java.util.ArrayList
 import java.util.Collections
@@ -23,8 +24,8 @@ object TeamsLiveData : LiveData<List<Team>>() {
     }
 
     fun loadTeams() {
-        mDatabase.child(FirebaseUtils.KEY_TEAMS)
-                .orderByChild(FirebaseUtils.KEY_FILTERING)
+        mDatabase.child(KEY_TEAMS)
+                .orderByChild(KEY_FILTERING)
                 .startAt(System.currentTimeMillis().toString() + "_0")
                 .addListenerForSingleValueEvent(
                         object : ValueEventListener {

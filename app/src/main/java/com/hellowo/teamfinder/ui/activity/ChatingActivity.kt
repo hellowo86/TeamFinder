@@ -38,7 +38,7 @@ class ChatingActivity : LifecycleActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chating)
         viewModel = ViewModelProviders.of(this).get(ChatingViewModel::class.java)
-        viewModel.initChat(intent.getStringExtra(AppConst.EXTRA_CHAT_ID))
+        viewModel.initChat(intent.getStringExtra(AppConst.EXTRA_CHAT_ID), intent.getIntExtra(AppConst.EXTRA_GAME_ID, 0))
         initLayout()
         initObserve()
     }

@@ -4,9 +4,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import com.hellowo.teamfinder.data.MeLiveData
 
-class ChatListViewModel : ViewModel() {
+class ChatFindViewModel : ViewModel() {
 
     init {
 
+    }
+
+    fun  search(toString: String): Boolean {
+        return true
     }
 }

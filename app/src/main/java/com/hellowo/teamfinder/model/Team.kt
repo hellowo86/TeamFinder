@@ -10,8 +10,8 @@ import java.util.ArrayList
 import java.util.HashMap
 
 data class Team (
-        val members:List<Member> = ArrayList(),
-        val roles:Map<String, Int> = HashMap(),
+        val members:MutableList<Member> = ArrayList(),
+        val roles:MutableMap<String, Int> = HashMap(),
         var id:String? = null,
         var dtCreated:Long = 0,
         var title:String? = null,

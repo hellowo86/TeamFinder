@@ -52,13 +52,13 @@ public class CreateTeamActivity extends LifecycleActivity {
         binding.gameSelectBtn.setOnClickListener(v->showSelectGameDialog());
         binding.activeTimeBtn.setOnClickListener(v->showAcitveTimeDialog());
         binding.addMemberBtn.setOnClickListener(v ->{
-            if(!viewModel.isFullMember.getValue()) {
+            if(!viewModel.isFullMember().getValue()) {
                 showRoloEditDialog(null, 1);
             }
         });
         binding.addTagBtn.setOnClickListener(v ->showSelectTagDialog());
         binding.confirmBtn.setOnClickListener(v->{
-            if(viewModel.isConfirmable.getValue()) {
+            if(viewModel.isConfirmable().getValue()) {
                 viewModel.saveTeam();
             }
         });
@@ -70,7 +70,7 @@ public class CreateTeamActivity extends LifecycleActivity {
         rolesAdapter = new RolesAdapter(
                 this,
                 true,
-                viewModel.currentRoles.getValue(),
+                viewModel.getCurrentRoles().getValue(),
                 new RolesAdapter.AdapterInterface() {
                     @Override
                     public void onChangedRoleCount(String role, int count) {
@@ -85,12 +85,12 @@ public class CreateTeamActivity extends LifecycleActivity {
     }
 
     private void initObserve() {
-        viewModel.selectedGame.observe(this, game -> {
+        viewModel.getSelectedGame().observe(this, game -> {
             binding.gameTitleText.setText(game.getTitle());
             binding.gameIconImg.setImageResource(game.getIconId());
         });
 
-        viewModel.isFullMember.observe(this, isFullMember -> {
+        viewModel.isFullMember().observe(this, isFullMember -> {
             if(isFullMember) {
                 binding.addMemberBtn.setBackgroundResource(R.color.disableText);
             }else {
@@ -99,7 +99,7 @@ public class CreateTeamActivity extends LifecycleActivity {
             rolesAdapter.setIsFullMember(isFullMember);
         });
 
-        viewModel.isConfirmable.observe(this, isConfirmable -> {
+        viewModel.isConfirmable().observe(this, isConfirmable -> {
             if(isConfirmable) {
                 binding.confirmBtn.setBackgroundResource(R.drawable.primary_ripple_button);
             }else {
@@ -107,7 +107,7 @@ public class CreateTeamActivity extends LifecycleActivity {
             }
         });
 
-        viewModel.loading.observe(this, loading -> {
+        viewModel.getLoading().observe(this, loading -> {
             if(loading) {
                 showProgressDialog();
             }else {
@@ -115,17 +115,17 @@ public class CreateTeamActivity extends LifecycleActivity {
             }
         });
 
-        viewModel.confirmed.observe(this, confirmed -> {
+        viewModel.getConfirmed().observe(this, confirmed -> {
             if(confirmed) {
                 finish();
             }
         });
 
-        viewModel.currentRoles.observe(this, roles->{
+        viewModel.getCurrentRoles().observe(this, roles->{
             rolesAdapter.refresh(roles);
         });
 
-        viewModel.needMemberSize.observe(this, size->{
+        viewModel.getNeedMemberSize().observe(this, size->{
             binding.memberSizeText.setText(String.format(getString(R.string.total_need_member_count), size));
             rolesAdapter.setIsOnlyOneMember(size <= 1);
         });
@@ -142,7 +142,7 @@ public class CreateTeamActivity extends LifecycleActivity {
 
     private void showRoloEditDialog(String prevRole, int delta) {
         final SelectRoleDialog selectRoleDialog = new SelectRoleDialog();
-        selectRoleDialog.setGame(viewModel.selectedGame.getValue());
+        selectRoleDialog.setGame(viewModel.getSelectedGame().getValue());
         selectRoleDialog.setDialogInterface(role -> {
             if(TextUtils.isEmpty(prevRole)) {
                 viewModel.setRole(role, 1);

@@ -46,15 +46,15 @@ public class UserActivity extends LifecycleActivity {
     }
 
     private void initObserve() {
-        viewModel.user.observe(this, this::updateUserUI);
-        viewModel.isUploading.observe(this, isUploading->{
+        viewModel.getUser().observe(this, this::updateUserUI);
+        viewModel.isUploading().observe(this, isUploading->{
             if(isUploading) {
                 showProgressDialog();
             }else{
                 hideProgressDialog();
             }
         });
-        viewModel.showToast.observe(this, this::showToast);
+        viewModel.getShowToast().observe(this, this::showToast);
     }
 
     private void updateUserUI(User user) {
