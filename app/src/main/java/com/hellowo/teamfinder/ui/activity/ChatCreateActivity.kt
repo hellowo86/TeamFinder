@@ -76,8 +76,7 @@ class ChatCreateActivity : LifecycleActivity() {
     fun initObserve() {
         viewModel.currentProgress.observe(this, Observer { updateProgressUI(it) })
         viewModel.checkCanGoNextProgress.observe(this, Observer { updateConfirmBtn(it) })
-        viewModel.loading.observe(this, Observer {
-            if(it as Boolean) showProgressDialog() else hideProgressDialog() })
+        viewModel.loading.observe(this, Observer { if(it as Boolean) showProgressDialog() else hideProgressDialog() })
         viewModel.confirmed.observe(this, Observer { if(it as Boolean) finish() })
         viewModel.gameId.observe(this, Observer { updateGameUI(it) })
     }

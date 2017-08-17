@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.ui.activity
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_join_chat.*
 
 class ChatJoinActivity : LifecycleActivity() {
     lateinit var viewModel: ChatJoinViewModel
+    internal var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +38,14 @@ class ChatJoinActivity : LifecycleActivity() {
 
     private fun initObserve() {
         viewModel.loading.observe(this, Observer { progressBar.visibility = if(it as Boolean) View.VISIBLE else View.GONE })
+        viewModel.isJoining.observe(this, Observer { if(it as Boolean) showProgressDialog() else hideProgressDialog() })
         viewModel.chat.observe(this, Observer { it?.let { updateChatUI(it) } })
+        viewModel.joined.observe(this, Observer {
+            if(it as Boolean) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        })
     }
 
     private fun  updateChatUI(chat: Chat) {
@@ -48,5 +58,17 @@ class ChatJoinActivity : LifecycleActivity() {
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)
                 .into(chatImage)
+    }
+
+    private fun showProgressDialog() {
+        hideProgressDialog()
+        progressDialog = ProgressDialog(this)
+        progressDialog?.setMessage(getString(R.string.plz_wait))
+        progressDialog?.show()
+    }
+
+    private fun hideProgressDialog() {
+        progressDialog?.dismiss()
+        progressDialog = null
     }
 }

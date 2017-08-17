@@ -1,5 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
+import android.app.Activity
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -17,6 +18,7 @@ import com.hellowo.teamfinder.viewmodel.ChatFindViewModel
 import kotlinx.android.synthetic.main.activity_find_chat.*
 
 class ChatFindActivity : LifecycleActivity() {
+    val RC_JOIN = 1111
     lateinit var viewModel: ChatFindViewModel
     lateinit var adapter: ChatListAdapter
 
@@ -50,7 +52,7 @@ class ChatFindActivity : LifecycleActivity() {
         adapter = ChatListAdapter(this, viewModel.chatList) {
             val intent = Intent(this, ChatJoinActivity::class.java)
             intent.putExtra(AppConst.EXTRA_CHAT_ID, it.id)
-            startActivity(intent)
+            startActivityForResult(intent, RC_JOIN)
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -64,5 +66,12 @@ class ChatFindActivity : LifecycleActivity() {
         viewModel.chats.observe(this, Observer {
             swipeRefreshLy.isRefreshing = false
             adapter.notifyDataSetChanged() })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == RC_JOIN && resultCode == Activity.RESULT_OK) {
+            finish()
+        }
     }
 }

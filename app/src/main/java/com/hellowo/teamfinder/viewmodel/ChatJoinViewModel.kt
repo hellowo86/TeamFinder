@@ -13,6 +13,7 @@ import java.util.HashMap
 class ChatJoinViewModel : ViewModel() {
     val chat = MutableLiveData<Chat>()
     val loading = MutableLiveData<Boolean>()
+    val isJoining = MutableLiveData<Boolean>()
     val joined = MutableLiveData<Boolean>()
     lateinit var chatId: String
 
@@ -41,7 +42,7 @@ class ChatJoinViewModel : ViewModel() {
     }
 
     fun joinChat() {
-        loading.value =  true
+        isJoining.value =  true
         val ref = FirebaseDatabase.getInstance().reference
         ref.child(KEY_CHAT).child(chatId).child(KEY_MEMBERS).runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
@@ -54,7 +55,7 @@ class ChatJoinViewModel : ViewModel() {
                 if(databaseError == null) {
                     MeLiveData.value?.let {
                         val newMessage = Message(
-                                null,
+                                "",
                                 it.nickName,
                                 it.id,
                                 it.photoUrl,
@@ -64,12 +65,12 @@ class ChatJoinViewModel : ViewModel() {
                         val childUpdates = HashMap<String, Any>()
                         val key = ref.child(KEY_MESSAGE).child(chatId).push().key
 
-                        //
-                        childUpdates.put("/${KEY_MESSAGE}/$chatId/$key", newMessage)
+                        childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", true)
+                        childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
 
                         ref.updateChildren(childUpdates) { error, _ ->
                             if(error == null) {
-                                loading.value = false
+                                isJoining.value = false
                                 joined.value = true
                             }
                         }
