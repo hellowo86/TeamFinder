@@ -8,9 +8,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.hellowo.teamfinder.AppConst.EXTRA_USER_ID
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.ChatsLiveData
+import com.hellowo.teamfinder.data.MyChatLiveData
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.ui.fragment.ChatListFragment
@@ -33,13 +34,13 @@ class MainActivity : LifecycleActivity() {
         initObserve()
     }
 
-    private fun initLayout() {/*
-        binding.signOutBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            FirebaseAuth.getInstance().signOut();
-        });
-*/
+    private fun initLayout() {
+        profileTab.setOnLongClickListener {
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+            FirebaseAuth.getInstance().signOut()
+            return@setOnLongClickListener false
+        }
         instantTab.setOnClickListener{viewModel.bottomTab.value = Instant}
         chatTab.setOnClickListener{viewModel.bottomTab.value = Chat}
         clanTab.setOnClickListener{viewModel.bottomTab.value = Clan}
@@ -54,7 +55,7 @@ class MainActivity : LifecycleActivity() {
 
     private fun initObserve() {
         MeLiveData.observe(this, Observer { updateUserUI(it) })
-        ChatsLiveData.observe(this, Observer {  })
+        MyChatLiveData.observe(this, Observer {  })
         viewModel.bottomTab.observe(this, Observer { moveTab(it) })
     }
 

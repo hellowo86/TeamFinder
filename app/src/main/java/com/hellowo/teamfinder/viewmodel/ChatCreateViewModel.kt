@@ -83,7 +83,7 @@ class ChatCreateViewModel : ViewModel() {
                 })
             }
 
-            childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(allHashTags))
+            childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(tagMap))
             childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key", true)
 
             ref.updateChildren(childUpdates){ _, _ ->

@@ -27,6 +27,7 @@ object MeLiveData : LiveData<User>() {
             if(auth.currentUser != null) {
                 loadCurrentLoginUser(auth.currentUser as FirebaseUser)
             }else {
+                MyChatLiveData.clear()
                 value = null
             }
         }

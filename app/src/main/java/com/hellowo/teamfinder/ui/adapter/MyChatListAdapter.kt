@@ -12,24 +12,23 @@ import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.utils.makeMessageLastTimeText
 import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import jp.wasabeef.glide.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.list_item_big_chat.view.*
+import kotlinx.android.synthetic.main.list_item_chat.view.*
 
-class ChatListAdapter(val context: Context,
+class MyChatListAdapter(val context: Context,
                         val mContentsList: ArrayMap<String, Chat>,
-                        val adapterInterface: (chat: Chat) -> Unit) : RecyclerView.Adapter<ChatListAdapter.ViewHolder>() {
+                        val adapterInterface: (chat: Chat) -> Unit) : RecyclerView.Adapter<MyChatListAdapter.ViewHolder>() {
     private val hashTagColor: Int = context.resources.getColor(R.color.primaryText)
 
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container)
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int)
-            = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_big_chat, parent, false))
+            = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_chat, parent, false))
 
-    override fun onBindViewHolder(holder: ChatListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyChatListAdapter.ViewHolder, position: Int) {
         val chat = mContentsList.valueAt(position)
         val v = holder.itemView
 
         v.titleText.text = chat.title
-        v.contentsText.text = chat.description
         v.lastMessageText.text = chat.lastMessage ?: ""
         v.lastTimeText.text = if(chat.lastMessageTime > 0) makeMessageLastTimeText(chat.lastMessageTime) else ""
 

@@ -12,6 +12,7 @@ val KEY_TYPING = "typing"
 val KEY_LAST_MESSAGE = "lastMessage"
 val KEY_LAST_MESSAGE_TIME = "lastMessageTime"
 val KEY_HASH_TAG = "hashTag"
+val KEY_MEMBERS = "members"
 
 fun makePublicPhotoUrl(userId: String?): String = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
 /*

@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:layout_marginStart="@dimen/normal_margin"
             android:layout_gravity="center_vertical">
 
             <TextView
@@ -57,5 +58,11 @@
         android:layout_marginTop="20dp"
         android:background="@color/disableText"
         android:id="@+id/view" />
+
+    <TextView
+        android:id="@+id/contentsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </FrameLayout>

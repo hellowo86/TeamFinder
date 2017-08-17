@@ -9,7 +9,7 @@ import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_USERS
 
 
-object ChatsLiveData : LiveData<ArrayMap<String, Chat>>() {
+object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     internal val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     internal val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
     internal val itemsMap: ArrayMap<String, Chat> = ArrayMap()
@@ -69,6 +69,9 @@ object ChatsLiveData : LiveData<ArrayMap<String, Chat>>() {
         }
 
         listenerMap.clear()
-        //itemsMap.clear()
+    }
+
+    fun clear(){
+        itemsMap.clear()
     }
 }

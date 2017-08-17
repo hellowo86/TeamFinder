@@ -12,7 +12,7 @@ data class Chat (
         var lastMessageTime: Long = 0,
         var gameId: Int = 0) {
 
-    fun  makeMap(hashTag: MutableList<String>): HashMap<String, Any?> {
+    fun  makeMap(hashTag: HashMap<String, Boolean>): HashMap<String, Any?> {
         val resultMap = HashMap<String, Any?>()
         resultMap.put("id", id)
         resultMap.put("title", title)

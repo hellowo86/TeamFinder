@@ -44,10 +44,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/normal_margin" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -60,14 +59,14 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/nameLy"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp">
 
                 <TextView
                     android:id="@+id/nameText"
@@ -94,6 +93,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="@dimen/thin_margin"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="@dimen/normal_margin"
@@ -113,6 +113,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
