@@ -33,7 +33,7 @@ class MyChatListAdapter(val context: Context,
         v.lastTimeText.text = if(chat.lastMessageTime > 0) makeMessageLastTimeText(chat.lastMessageTime) else ""
 
         Glide.with(context)
-                .load(makePublicPhotoUrl(chat.members[0]))
+                .load(makePublicPhotoUrl(chat.king))
                 .bitmapTransform(CropCircleTransformation(context))
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)

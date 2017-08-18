@@ -44,39 +44,24 @@ class ChatJoinViewModel : ViewModel() {
     fun joinChat() {
         isJoining.value =  true
         val ref = FirebaseDatabase.getInstance().reference
-        ref.child(KEY_CHAT).child(chatId).child(KEY_MEMBERS).runTransaction(object : Transaction.Handler {
-            override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                MeLiveData.value?.let {
-                    mutableData.child(mutableData.childrenCount.toString()).value = it.id
-                }
-                return Transaction.success(mutableData)
-            }
-            override fun onComplete(databaseError: DatabaseError?, b: Boolean, dataSnapshot: DataSnapshot) {
-                if(databaseError == null) {
-                    MeLiveData.value?.let {
-                        val newMessage = Message(
-                                "",
-                                it.nickName,
-                                it.id,
-                                it.photoUrl,
-                                System.currentTimeMillis(),
-                                1)
+        MeLiveData.value?.let {
+            ref.child(KEY_CHAT_MEMBERS).child(chatId).child(it.id).setValue(it.makeChatMember()) { e,_->
+                if(e == null) {
+                    val newMessage = Message("", it.nickName, it.id, it.photoUrl, System.currentTimeMillis(), 1)
+                    val childUpdates = HashMap<String, Any>()
+                    val key = ref.child(KEY_MESSAGE).child(chatId).push().key
 
-                        val childUpdates = HashMap<String, Any>()
-                        val key = ref.child(KEY_MESSAGE).child(chatId).push().key
+                    childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", true)
+                    childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
 
-                        childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", true)
-                        childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
-
-                        ref.updateChildren(childUpdates) { error, _ ->
-                            if(error == null) {
-                                isJoining.value = false
-                                joined.value = true
-                            }
+                    ref.updateChildren(childUpdates) { error, _ ->
+                        if(error == null) {
+                            isJoining.value = false
+                            joined.value = true
                         }
                     }
                 }
             }
-        })
+        }
     }
 }

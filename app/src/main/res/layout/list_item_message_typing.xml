@@ -19,7 +19,7 @@
         android:id="@+id/typingIndicator"
         android:layout_width="40dp"
         android:layout_height="20dp"
-        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginStart="@dimen/thin_margin"
         app:indicatorName="BallPulseIndicator"
         app:indicatorColor="@color/grey"/>
 

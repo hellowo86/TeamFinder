@@ -80,4 +80,5 @@
     <string name="option_max_member_count_text">채팅방에 입장할 수 있는 최대 인원수를 설정합니다.</string>
     <string name="add_popular_tag">인기태그 추가하기</string>
     <string name="join_group_chat">그룹 채팅방 참가</string>
+    <string name="who_joined_chat">%1$s님이 입장하셨습니다.</string>
 </resources>

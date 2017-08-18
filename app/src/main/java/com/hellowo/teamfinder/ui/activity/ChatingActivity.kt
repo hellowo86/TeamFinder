@@ -18,6 +18,7 @@ import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Message
+import com.hellowo.teamfinder.ui.adapter.ChatMemberListAdapter
 import com.hellowo.teamfinder.ui.adapter.MessageListAdapter
 import com.hellowo.teamfinder.ui.adapter.MessageListAdapter.AdapterInterface
 import com.hellowo.teamfinder.utils.startFadeOutAnimation
@@ -31,6 +32,7 @@ import java.util.*
 class ChatingActivity : LifecycleActivity() {
     lateinit var viewModel: ChatingViewModel
     lateinit var adapter: MessageListAdapter
+    lateinit var memberAdapter: ChatMemberListAdapter
     val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
     var floatingDateViewFlag = false
 
@@ -40,11 +42,37 @@ class ChatingActivity : LifecycleActivity() {
         viewModel = ViewModelProviders.of(this).get(ChatingViewModel::class.java)
         viewModel.initChat(intent.getStringExtra(AppConst.EXTRA_CHAT_ID))
         initLayout()
+        initListViews()
         initObserve()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loginChat()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.logoutChat()
+    }
+
     fun initLayout() {
-        adapter = MessageListAdapter(this, viewModel.messageList, viewModel.typingList, object : AdapterInterface{
+        messageInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
+                viewModel.typingText(text)
+            }
+        })
+
+        menuBtn.setOnClickListener{ drawerLy.openDrawer(chatMenuLy) }
+        sendBtn.setOnClickListener { enterMessage() }
+        backBtn.setOnClickListener{ finish() }
+    }
+
+    fun initListViews() {
+        adapter = MessageListAdapter(this, viewModel.currentChat, viewModel.memberMap,
+                viewModel.messageList, viewModel.typingList, object : AdapterInterface{
             override fun onProfileClicked(userId: String) { startUserActivity(userId) }
             override fun onMessageClicked(message: Message) {}
         })
@@ -66,26 +94,24 @@ class ChatingActivity : LifecycleActivity() {
             }
         })
 
-        messageInput.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
-                viewModel.typingText(text)
-            }
-        })
-
-        menuBtn.setOnClickListener{ drawerLy.openDrawer(chatMenuLy) }
-        sendBtn.setOnClickListener { enterMessage() }
-        backBtn.setOnClickListener{ finish() }
+        memberAdapter = ChatMemberListAdapter(this, viewModel.memberMap) {
+            chatMember ->
+        }
+        memberRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        memberRecyclerView.adapter = memberAdapter
     }
 
     fun initObserve() {
-        viewModel.loading.observe(this, Observer { progressBar.visibility = if(it as Boolean) View.VISIBLE else View.GONE })
+        viewModel.isReady.observe(this, Observer { progressBar.visibility = if(it as Boolean) View.GONE else View.VISIBLE })
         viewModel.chat.observe(this, Observer { it?.let { updateChatUI(it) } })
         viewModel.messages.observe(this, Observer { adapter.notifyDataSetChanged() })
         viewModel.newMessage.observe(this, Observer {
             adapter.notifyItemInserted(1)
             recyclerView.scrollToPosition(0)
+        })
+        viewModel.members.observe(this, Observer {
+            adapter.notifyDataSetChanged()
+            memberAdapter.notifyDataSetChanged()
         })
         viewModel.typings.observe(this, Observer { adapter.refreshTypingList() })
     }

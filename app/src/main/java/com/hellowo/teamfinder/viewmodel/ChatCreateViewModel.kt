@@ -7,6 +7,7 @@ import com.google.firebase.database.*
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
+import com.hellowo.teamfinder.utils.KEY_CHAT_MEMBERS
 import com.hellowo.teamfinder.utils.KEY_HASH_TAG
 import com.hellowo.teamfinder.utils.KEY_USERS
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.Contents
@@ -62,7 +63,6 @@ class ChatCreateViewModel : ViewModel() {
             chat.dtCreated = System.currentTimeMillis()
             chat.maxMemberCount = 2
             chat.king = it.id
-            chat.members.add(it.id!!)
 
             val childUpdates = HashMap<String, Any>()
             val tagMap = HashMap<String, Boolean>()
@@ -84,6 +84,7 @@ class ChatCreateViewModel : ViewModel() {
             }
 
             childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(tagMap))
+            childUpdates.put("/$KEY_CHAT_MEMBERS/$key/${it.id}", it.makeChatMember())
             childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key", true)
 
             ref.updateChildren(childUpdates){ _, _ ->

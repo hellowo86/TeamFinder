@@ -43,6 +43,7 @@ public class SignInActivity extends LifecycleActivity {
                     binding.passwordEdit.setError(getString(R.string.invalid_password));
                     break;
                 case CompleteSignIn:
+                    //TODO MeLiveData가 User데이타 까지 가져온 후에 메인으로 넘어가야함..
                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                     finish();
                     break;

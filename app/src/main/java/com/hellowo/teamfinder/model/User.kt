@@ -15,4 +15,9 @@ data class User (
     fun makeMember(role: String): Member {
         return Member(id, nickName, makePublicPhotoUrl(id), role)
     }
+
+    @Exclude
+    fun makeChatMember(): ChatMember {
+        return ChatMember(id, nickName, makePublicPhotoUrl(id), null, 0)
+    }
 }

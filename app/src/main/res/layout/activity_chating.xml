@@ -155,148 +155,72 @@
         android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/background">
 
-        <ScrollView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/top_menu_bar_height">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                style="@style/NormalSubText"
+                android:text="@string/members"
+                android:layout_margin="@dimen/normal_margin"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="40dp"
-                    android:paddingBottom="40dp"
-                    android:gravity="center_horizontal">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/memberRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
 
-                    <ImageView
-                        android:id="@+id/accountPhotoImg"
-                        android:src="@drawable/ic_account_circle_black_48dp"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp" />
+        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/accountNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/TitleText"
-                        android:textColor="@color/primaryWhiteText"
-                        android:layout_marginTop="@dimen/big_margin"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_menu_bar_height"
+            android:background="@color/backgroundDark"
+            android:layout_gravity="bottom"
+            android:elevation="2dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+            <ImageButton
+                android:id="@+id/logoutBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_power_settings_new_black_24dp"
+                android:tint="@color/iconTint" />
 
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:src="@drawable/ic_bookmark_border_black_24dp"
-                            android:tint="@color/primaryWhiteText"/>
+            <ImageButton
+                android:id="@+id/alarmBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_add_alert_black_48dp"
+                android:tint="@color/iconTint" />
 
-                        <TextView
-                            android:id="@+id/accountClanText"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginRight="3dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/SubText"
-                            android:textColor="@color/primaryWhiteText"
-                            android:text="@string/no_clan"/>
+            <ImageButton
+                android:id="@+id/createBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/ripple_circle_button"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_settings_black_48dp"
+                android:tint="@color/iconTint" />
 
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/searchTeamMenuBtn"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ripple_button"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:src="@drawable/ic_account_circle_black_48dp"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:tint="@color/primaryWhiteText"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp" />
-
-                    <TextView
-                        style="@style/NormalText"
-                        android:text="@string/search_team"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:layout_marginRight="@dimen/normal_margin"
-                        android:textColor="@color/primaryWhiteText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ripple_button"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:src="@drawable/ic_settings_black_48dp"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:tint="@color/primaryWhiteText"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp" />
-
-                    <TextView
-                        style="@style/NormalText"
-                        android:text="@string/settings"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:layout_marginRight="@dimen/normal_margin"
-                        android:textColor="@color/primaryWhiteText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/signOutBtn"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ripple_button"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:src="@drawable/ic_power_settings_new_black_24dp"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:tint="@color/primaryWhiteText"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp" />
-
-                    <TextView
-                        style="@style/NormalText"
-                        android:text="@string/sign_out"
-                        android:layout_marginLeft="@dimen/normal_margin"
-                        android:layout_marginRight="@dimen/normal_margin"
-                        android:textColor="@color/primaryWhiteText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </ScrollView>
+        </FrameLayout>
 
     </FrameLayout>
 

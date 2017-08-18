@@ -53,7 +53,7 @@ class ChatJoinActivity : LifecycleActivity() {
         contentsText.text = chat.description
 
         Glide.with(this)
-                .load(makePublicPhotoUrl(chat.members[0]))
+                .load(makePublicPhotoUrl(chat.king))
                 .bitmapTransform(CropCircleTransformation(this))
                 .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)

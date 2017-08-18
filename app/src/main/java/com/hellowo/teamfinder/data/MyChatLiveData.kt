@@ -51,14 +51,18 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     }
 
     override fun onActive() {
-        currentUserId = MeLiveData.value?.id ?: "_"
-        ref.child(KEY_USERS)
-                .child(currentUserId)
-                .child(KEY_CHAT)
-                .addChildEventListener(joinedChatEventListener)
+        MeLiveData.value?.id?.let {
+            Log.d("aaa", "!!!!!!!!!!!!!!!!!!!!!")
+            currentUserId = it
+            ref.child(KEY_USERS)
+                    .child(currentUserId)
+                    .child(KEY_CHAT)
+                    .addChildEventListener(joinedChatEventListener)
+        }
     }
 
     override fun onInactive() {
+        Log.d("aaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         ref.child(KEY_USERS)
                 .child(currentUserId)
                 .child(KEY_CHAT)
