@@ -14,6 +14,7 @@ import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.data.TeamsLiveData
 import com.hellowo.teamfinder.model.*
 import com.hellowo.teamfinder.utils.*
+import org.json.JSONObject
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
@@ -274,7 +275,7 @@ class ChatingViewModel : ViewModel() {
             try {
                 isUploading.value = true
                 val filePath = FileUtil.getPath(App.context, uri)
-                val bitmap = BitmapUtil.makeProfileBitmapFromFile(filePath)
+                val bitmap = BitmapUtil.makePhotoBitmapFromFile(filePath)
 
                 val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(
                         "gs://teamfinder-32133.appspot.com/chatPhoto/$chatId/${System.currentTimeMillis()}.jpg")
@@ -290,7 +291,11 @@ class ChatingViewModel : ViewModel() {
                     isUploading.value = false
                 }.addOnSuccessListener { taskSnapshot ->
                     bitmap.recycle()
-                    taskSnapshot.downloadUrl?.let{ postMessage(it.toString(), 3) }
+                    val json = JSONObject()
+                    json.put("url", it.toString())
+                    json.put("w", bitmap.width)
+                    json.put("h", bitmap.height)
+                    taskSnapshot.downloadUrl?.let{ postMessage(json.toString(), 3) }
                     isUploading.value = false
                 }
             } catch (e: Exception) {

@@ -9,7 +9,7 @@ import android.util.Log;
 import java.io.IOException;
 
 public class BitmapUtil {
-    public static Bitmap makeProfileBitmapFromFile(String filePath) throws Exception {
+       public static Bitmap makeProfileBitmapFromFile(String filePath) throws Exception {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         options.inJustDecodeBounds = true;
@@ -17,6 +17,40 @@ public class BitmapUtil {
 
         float widthScale = options.outWidth / 128;
         float heightScale = options.outHeight / 128;
+        float scale = widthScale > heightScale ? widthScale : heightScale;
+
+        /*if(scale >= 16) {
+            options.inSampleSize = 16;
+        }else if(scale >= 14) {
+            options.inSampleSize = 14;
+        }else if(scale >= 12) {
+            options.inSampleSize = 12;
+        }else if(scale >= 10) {
+            options.inSampleSize = 10;
+        }else */if(scale >= 8) {
+            options.inSampleSize = 8;
+        }else if(scale >= 4) {
+            options.inSampleSize = 4;
+        }else if(scale >= 2) {
+            options.inSampleSize = 2;
+        }else {
+            options.inSampleSize = 1;
+        }
+
+        options.inJustDecodeBounds = false;
+
+        int degree = GetExifOrientation(filePath);
+        return GetRotatedBitmap(BitmapFactory.decodeFile(filePath, options), degree);
+    }
+
+    public static Bitmap makePhotoBitmapFromFile(String filePath) throws Exception {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+
+        float widthScale = options.outWidth / 512;
+        float heightScale = options.outHeight / 512;
         float scale = widthScale > heightScale ? widthScale : heightScale;
 
         /*if(scale >= 16) {

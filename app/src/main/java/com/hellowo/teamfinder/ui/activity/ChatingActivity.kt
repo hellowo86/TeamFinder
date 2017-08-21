@@ -4,6 +4,7 @@ import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -38,6 +39,7 @@ class ChatingActivity : LifecycleActivity() {
     lateinit var memberAdapter: ChatMemberListAdapter
     val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
     var floatingDateViewFlag = false
+    internal var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +122,7 @@ class ChatingActivity : LifecycleActivity() {
         viewModel.outOfChat.observe(this, Observer {
             if(it as Boolean) finish()
         })
+        viewModel.isUploading.observe(this, Observer { if(it as Boolean) showProgressDialog() else hideProgressDialog() })
     }
 
     private fun enterMessage() {
@@ -198,6 +201,22 @@ class ChatingActivity : LifecycleActivity() {
                 .setMaxCount(100)
                 .create()
         bottomSheetDialogFragment.show(supportFragmentManager)
+    }
+
+    private fun showProgressDialog() {
+        hideProgressDialog()
+        progressDialog = ProgressDialog(this)
+        progressDialog?.let {
+            it.setTitle(getString(R.string.plz_wait))
+            it.setMessage(getString(R.string.uploading_image))
+            it.setCancelable(false)
+            it.show()
+        }
+    }
+
+    private fun hideProgressDialog() {
+        progressDialog?.dismiss()
+        progressDialog = null
     }
 
     private fun startUserActivity(userId: String) {}

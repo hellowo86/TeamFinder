@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.beust.klaxon.JsonObject
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MeLiveData
@@ -17,6 +18,7 @@ import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.list_item_message.view.*
 import kotlinx.android.synthetic.main.list_item_message_typing.view.*
+import org.json.JSONObject
 import java.text.DateFormat
 import java.util.*
 
@@ -66,13 +68,12 @@ class MessageListAdapter(val context: Context,
                             && message.userId.equals(nextMessage.userId)
                             && message.dtCreated - nextMessage.dtCreated < 1000 * 60
 
-                    v.nameLy.visibility = if(isContinueMessage) View.GONE else View.VISIBLE
                     v.topMargin.visibility = if(isContinueMessage) View.GONE else View.VISIBLE
 
                     var uncheckCount = 0
                     memberMap.forEach { if(!it.value.live && it.value.lastConnectedTime < message.dtCreated) uncheckCount++ }
 
-                    v.timeText.text = DateFormat.getTimeInstance().format(currentCal.time)
+                    v.timeText.text = if(isContinueMessage) "" else DateFormat.getTimeInstance(DateFormat.SHORT).format(currentCal.time)
                     v.uncheckText.text = if(uncheckCount == 0) "" else uncheckCount.toString()
 
                     when (message.type){
@@ -85,7 +86,8 @@ class MessageListAdapter(val context: Context,
                         3 -> {
                             v.messageText.visibility = View.GONE
                             v.photoImg.visibility = View.VISIBLE
-                            Glide.with(context).load(message.text).into(v.photoImg)
+                            val json = JSONObject(message.text)
+                            Glide.with(context).load(json.getString("url")).into(v.photoImg)
                         }
                     }
 
@@ -128,8 +130,10 @@ class MessageListAdapter(val context: Context,
     private fun setYouView(v: View, message: Message, isContinueMessage: Boolean) {
         if(isContinueMessage) {
             v.profileImage.visibility = View.INVISIBLE
+            v.nameLy.visibility = View.GONE
         }else {
             v.profileImage.visibility = View.VISIBLE
+            v.nameLy.visibility = View.VISIBLE
             v.nameText.text = message.userName
 
             Glide.with(context)
