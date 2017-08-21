@@ -68,4 +68,9 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
         }
         listenerMap.clear()
     }
+
+    fun clear() {
+        itemsMap.clear()
+        value = itemsMap
+    }
 }
