@@ -8,41 +8,39 @@ import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_USERS
 
-
 object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     internal val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     internal val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
     internal val itemsMap: ArrayMap<String, Chat> = ArrayMap()
     internal val listenerMap: MutableMap<String, ValueEventListener> = HashMap()
-    internal val joinedChatEventListener: ChildEventListener = object : ChildEventListener {
-        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-        override fun onChildChanged(snapshot: DataSnapshot?, p1: String?) {}
-        override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
-            snapshot?.key?.let {
-                val valueEventListener = object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {}
-                    override fun onDataChange(chatSnapshot: DataSnapshot?) {
-                        val chat = chatSnapshot?.getValue(Chat::class.java)
-                        chat?.id = chatSnapshot?.key
-                        chat?.id?.let {
-                            itemsMap.put(it, chat)
-                            value = itemsMap
+    internal val joinedChatEventListener: ValueEventListener = object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError?) {}
+        override fun onDataChange(chatListSnapshot: DataSnapshot?) {
+            itemsMap.clear()
+            if(chatListSnapshot?.children?.count() as Int > 0) {
+                chatListSnapshot.children?.forEach {
+                    val chatId = it.key
+                    if(!listenerMap.containsKey(chatId)) {
+                        val dtEntered = it.value as Long
+                        val valueEventListener = object : ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError?) {}
+                            override fun onDataChange(chatSnapshot: DataSnapshot?) {
+                                chatSnapshot?.getValue(Chat::class.java)?.let { chat ->
+                                    chat.id = it.key
+                                    chat.dtEntered = dtEntered
+                                    itemsMap.put(chat.id, chat)
+                                    value = itemsMap
+                                }
+                            }
                         }
+                        listenerMap.put(chatId, valueEventListener)
+                        chatRef.child(chatId).addValueEventListener(valueEventListener)
                     }
                 }
-                listenerMap.put(it, valueEventListener)
-                chatRef.child(it).addValueEventListener(valueEventListener)
-            }
-        }
-        override fun onChildRemoved(snapshot: DataSnapshot?) {
-            val chat = itemsMap[snapshot?.key]
-            chat?.let {
-                chatRef.child(it.id).removeEventListener(listenerMap.remove(it.id))
-                itemsMap.remove(it.id)
+            }else{
                 value = itemsMap
             }
         }
-        override fun onCancelled(databaseError: DatabaseError) {}
     }
     internal lateinit var currentUserId: String
 
@@ -52,30 +50,22 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
 
     override fun onActive() {
         MeLiveData.value?.id?.let {
-            Log.d("aaa", "!!!!!!!!!!!!!!!!!!!!!")
             currentUserId = it
             ref.child(KEY_USERS)
                     .child(currentUserId)
                     .child(KEY_CHAT)
-                    .addChildEventListener(joinedChatEventListener)
+                    .addValueEventListener(joinedChatEventListener)
         }
     }
 
     override fun onInactive() {
-        Log.d("aaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         ref.child(KEY_USERS)
                 .child(currentUserId)
                 .child(KEY_CHAT)
                 .removeEventListener(joinedChatEventListener)
-
         listenerMap.forEach {
             chatRef.child(it.key).removeEventListener(it.value)
         }
-
         listenerMap.clear()
-    }
-
-    fun clear(){
-        itemsMap.clear()
     }
 }

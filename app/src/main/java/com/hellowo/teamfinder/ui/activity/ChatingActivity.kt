@@ -1,5 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
@@ -8,12 +9,14 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.model.Chat
@@ -21,10 +24,10 @@ import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.ui.adapter.ChatMemberListAdapter
 import com.hellowo.teamfinder.ui.adapter.MessageListAdapter
 import com.hellowo.teamfinder.ui.adapter.MessageListAdapter.AdapterInterface
+import com.hellowo.teamfinder.utils.startFadeInAnimation
 import com.hellowo.teamfinder.utils.startFadeOutAnimation
-import com.hellowo.teamfinder.utils.startScaleHideAnimation
-import com.hellowo.teamfinder.utils.startScaleShowAnimation
 import com.hellowo.teamfinder.viewmodel.ChatingViewModel
+import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.activity_chating.*
 import java.text.DateFormat
 import java.util.*
@@ -40,7 +43,7 @@ class ChatingActivity : LifecycleActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chating)
         viewModel = ViewModelProviders.of(this).get(ChatingViewModel::class.java)
-        viewModel.initChat(intent.getStringExtra(AppConst.EXTRA_CHAT_ID))
+        viewModel.initChat(intent.getStringExtra(AppConst.EXTRA_CHAT_ID), intent.getLongExtra(AppConst.EXTRA_DT_ENTERED, 0))
         initLayout()
         initListViews()
         initObserve()
@@ -68,6 +71,8 @@ class ChatingActivity : LifecycleActivity() {
         menuBtn.setOnClickListener{ drawerLy.openDrawer(chatMenuLy) }
         sendBtn.setOnClickListener { enterMessage() }
         backBtn.setOnClickListener{ finish() }
+        outBtn.setOnClickListener{ showOutChatAlert() }
+        sendImageBtn.setOnClickListener { checkExternalStoragePermission() }
     }
 
     fun initListViews() {
@@ -79,10 +84,8 @@ class ChatingActivity : LifecycleActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var deltaY = 0
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                deltaY += dy
                 if(layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1) {
                     viewModel.loadMoreMessages()
                 }
@@ -90,7 +93,7 @@ class ChatingActivity : LifecycleActivity() {
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                setFloatingDateView(newState, deltaY)
+                setFloatingDateView(newState)
             }
         })
 
@@ -114,11 +117,14 @@ class ChatingActivity : LifecycleActivity() {
             memberAdapter.notifyDataSetChanged()
         })
         viewModel.typings.observe(this, Observer { adapter.refreshTypingList() })
+        viewModel.outOfChat.observe(this, Observer {
+            if(it as Boolean) finish()
+        })
     }
 
     private fun enterMessage() {
         if(!messageInput.text.toString().isNullOrBlank()) {
-            viewModel.postMessage(messageInput.text.toString())
+            viewModel.postMessage(messageInput.text.toString(), 0)
             messageInput.setText("")
         }
     }
@@ -142,16 +148,16 @@ class ChatingActivity : LifecycleActivity() {
         }
     }
 
-    private fun setFloatingDateView(newState: Int, deltaY: Int) {
+    private fun setFloatingDateView(newState: Int) {
         if(newState == 0/*scroll stop*/) {
             floatingDateViewFlag = true
             floatingDateViewHandler.removeMessages(0)
             floatingDateViewHandler.sendEmptyMessageDelayed(0, 1000)
         }else {
             floatingDateViewFlag = false
-            if(Math.abs(deltaY) > 10 && floatingDateView.visibility == View.GONE) {
+            if(floatingDateView.visibility == View.GONE) {
                 floatingDateView.visibility = View.VISIBLE
-                startScaleShowAnimation(floatingDateView)
+                startFadeInAnimation(floatingDateView)
             }
         }
     }
@@ -162,6 +168,36 @@ class ChatingActivity : LifecycleActivity() {
             floatingDateText.text = DateFormat.getDateInstance(DateFormat.FULL).format(
                     Date(viewModel.getlastPostionDate(itemPos - 1)))
         }
+    }
+
+    private fun showOutChatAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.out_of_chat)
+        builder.setCancelable(true)
+        builder.setMessage(R.string.out_of_chat_sub)
+        builder.setPositiveButton(R.string.ok) { _,_ -> viewModel.outOfChat() }
+        builder.setNegativeButton(R.string.cancel, null)
+        builder.show()
+    }
+
+    private val permissionlistener = object : PermissionListener {
+        override fun onPermissionGranted() { showPhotoPicker() }
+        override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {}
+    }
+
+    fun checkExternalStoragePermission() {
+        TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check()
+    }
+
+    private fun showPhotoPicker() {
+        val bottomSheetDialogFragment = TedBottomPicker.Builder(this)
+                .setOnImageSelectedListener { uri -> viewModel.sendPhotoMessage(uri) }
+                .setMaxCount(100)
+                .create()
+        bottomSheetDialogFragment.show(supportFragmentManager)
     }
 
     private fun startUserActivity(userId: String) {}

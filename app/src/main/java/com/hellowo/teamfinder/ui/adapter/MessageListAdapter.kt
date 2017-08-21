@@ -30,6 +30,8 @@ class MessageListAdapter(val context: Context,
     private val VIEW_TYPE_YOU = 1
     private val VIEW_TYPE_ME = 2
     private val VIEW_TYPE_NOTICE = 3
+    private val VIEW_TYPE_PHOTO_YOU = 4
+    private val VIEW_TYPE_PHOTO_ME = 5
     private val currentCal: Calendar = Calendar.getInstance()
     private val nextCal: Calendar = Calendar.getInstance()
     private val myId = MeLiveData.value?.id
@@ -70,13 +72,26 @@ class MessageListAdapter(val context: Context,
                     var uncheckCount = 0
                     memberMap.forEach { if(!it.value.live && it.value.lastConnectedTime < message.dtCreated) uncheckCount++ }
 
-                    v.messageText.text = message.text
                     v.timeText.text = DateFormat.getTimeInstance().format(currentCal.time)
                     v.uncheckText.text = if(uncheckCount == 0) "" else uncheckCount.toString()
 
+                    when (message.type){
+                        0 -> {
+                            v.messageText.text = message.text
+                            v.messageText.visibility = View.VISIBLE
+                            v.photoImg.visibility = View.GONE
+                            v.photoImg.setImageDrawable(null)
+                        }
+                        3 -> {
+                            v.messageText.visibility = View.GONE
+                            v.photoImg.visibility = View.VISIBLE
+                            Glide.with(context).load(message.text).into(v.photoImg)
+                        }
+                    }
+
                     when (viewType) {
-                        VIEW_TYPE_YOU -> setYouView(v, message, isContinueMessage)
-                        VIEW_TYPE_ME -> setMeView(v, message, isContinueMessage)
+                        VIEW_TYPE_YOU, VIEW_TYPE_PHOTO_YOU -> setYouView(v, message, isContinueMessage)
+                        VIEW_TYPE_ME, VIEW_TYPE_PHOTO_ME -> setMeView(v, message)
                     }
                 }
 
@@ -85,7 +100,7 @@ class MessageListAdapter(val context: Context,
                     v.dateDivider.visibility = View.GONE
                 }else {
                     v.dateDivider.visibility = View.VISIBLE
-                    v.dateDividerText.text = DateFormat.getDateInstance().format(Date(message.dtCreated))
+                    v.dateDividerText.text = DateFormat.getDateInstance(DateFormat.FULL).format(Date(message.dtCreated))
                 }
             }
         }
@@ -120,7 +135,6 @@ class MessageListAdapter(val context: Context,
             Glide.with(context)
                     .load(makePublicPhotoUrl(message.userId))
                     .bitmapTransform(CropCircleTransformation(context))
-                    .thumbnail(0.1f)
                     .placeholder(R.drawable.default_profile)
                     .into(v.profileImage)
             v.profileImage.setOnClickListener{ adapterInterface.onProfileClicked(message.userId!!) }
@@ -129,13 +143,14 @@ class MessageListAdapter(val context: Context,
         v.setOnClickListener { adapterInterface.onMessageClicked(message) }
     }
 
-    private fun setMeView(v: View, message: Message, isContinueMessage: Boolean) {
+    private fun setMeView(v: View, message: Message) {
         v.setOnClickListener { adapterInterface.onMessageClicked(message) }
     }
 
     private fun setNoticeView(v: View, message: Message) {
         when (message.type) {
             1 -> v.messageText.text = String.format(context.getString(R.string.who_joined_chat), message.userName)
+            2 -> v.messageText.text = String.format(context.getString(R.string.who_out_of_chat), message.userName)
             else -> v.messageText.text = message.text
         }
     }
@@ -153,11 +168,13 @@ class MessageListAdapter(val context: Context,
             VIEW_TYPE_TYPING
         } else {
             getItem(position)?.let{
-                if(it.type == 0 && it.userId.equals(myId)) {
-                    return VIEW_TYPE_ME
-                }else if(it.type == 0 && !it.userId.equals(myId)){
-                    return VIEW_TYPE_YOU
-                }else {
+                if(it.type == 0 || it.type == 3) {
+                    if(it.userId.equals(myId)) {
+                        return VIEW_TYPE_ME
+                    }else if(!it.userId.equals(myId)){
+                        return VIEW_TYPE_YOU
+                    }
+                }else if(it.type == 1 || it.type == 2) {
                     return VIEW_TYPE_NOTICE
                 }
             }

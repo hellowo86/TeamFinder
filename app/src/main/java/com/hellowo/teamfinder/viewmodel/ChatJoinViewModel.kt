@@ -47,11 +47,12 @@ class ChatJoinViewModel : ViewModel() {
         MeLiveData.value?.let {
             ref.child(KEY_CHAT_MEMBERS).child(chatId).child(it.id).setValue(it.makeChatMember()) { e,_->
                 if(e == null) {
-                    val newMessage = Message("", it.nickName, it.id, it.photoUrl, System.currentTimeMillis(), 1)
+                    val dtEntered = System.currentTimeMillis()
+                    val newMessage = Message("", it.nickName, it.id, dtEntered, 1)
                     val childUpdates = HashMap<String, Any>()
                     val key = ref.child(KEY_MESSAGE).child(chatId).push().key
 
-                    childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", true)
+                    childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", dtEntered)
                     childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
 
                     ref.updateChildren(childUpdates) { error, _ ->

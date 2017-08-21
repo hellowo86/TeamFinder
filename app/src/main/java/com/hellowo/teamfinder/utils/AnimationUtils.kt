@@ -33,7 +33,7 @@ fun startScaleHideAnimation(view: View, adapter: AnimatorListenerAdapter) {
 fun startFadeInAnimation(view: View) {
     val animSet = AnimatorSet()
     animSet.playTogether(
-            ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).setDuration(250)
+            ObjectAnimator.ofFloat(view, "alpha", 0f, 1f).setDuration(1000)
     )
     animSet.interpolator = FastOutSlowInInterpolator()
     animSet.start()
@@ -42,7 +42,7 @@ fun startFadeInAnimation(view: View) {
 fun startFadeOutAnimation(view: View, adapter: AnimatorListenerAdapter) {
     val animSet = AnimatorSet()
     animSet.playTogether(
-            ObjectAnimator.ofFloat(view, "alpha", 1f, 0f).setDuration(250)
+            ObjectAnimator.ofFloat(view, "alpha", 1f, 0f).setDuration(1000)
     )
     animSet.interpolator = FastOutSlowInInterpolator()
     animSet.addListener(adapter)

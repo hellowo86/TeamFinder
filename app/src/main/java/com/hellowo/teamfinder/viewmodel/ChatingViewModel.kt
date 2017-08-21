@@ -2,13 +2,20 @@ package com.hellowo.teamfinder.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.graphics.Bitmap
+import android.net.Uri
 import android.support.v4.util.ArrayMap
 import android.util.Log
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.hellowo.teamfinder.App
+import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.data.TeamsLiveData
 import com.hellowo.teamfinder.model.*
 import com.hellowo.teamfinder.utils.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.util.*
 
@@ -24,6 +31,8 @@ class ChatingViewModel : ViewModel() {
     val newMessage = MutableLiveData<Message>()
     val typings = MutableLiveData<List<String>>()
     val members = MutableLiveData<ArrayMap<String, ChatMember>>()
+    val isUploading = MutableLiveData<Boolean>()
+    val outOfChat = MutableLiveData<Boolean>()
 
     val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     val me = MeLiveData.value
@@ -32,8 +41,10 @@ class ChatingViewModel : ViewModel() {
     var messagesLoading = false
     var membersLoading = false
     var isTyping = false
+    var isOut = false
     val limit = 100
-    lateinit var chatId: String
+    var chatId: String = ""
+    var dtEntered: Long = 0
 
     val chatValueListener: ValueEventListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -127,15 +138,16 @@ class ChatingViewModel : ViewModel() {
         }
     }
 
-    fun initChat(chatId: String) {
+    fun initChat(chatId: String, dtEntered: Long) {
         isReady.value = false
         messagesLoading = true
         chatLoading = true
         membersLoading = true
 
         this.chatId = chatId
-        loadMessages(chatId, lastTime.toDouble())
+        this.dtEntered = dtEntered
 
+        loadMessages(chatId, lastTime.toDouble())
         ref.child(KEY_MESSAGE).child(chatId).orderByChild(KEY_DT_CREATED).startAt(lastTime.toDouble())
                 .addChildEventListener(messageAddListener)
         ref.child(KEY_TYPING).child(chatId).addValueEventListener(typingListListener)
@@ -148,6 +160,7 @@ class ChatingViewModel : ViewModel() {
         ref.child(KEY_MESSAGE)
                 .child(chatId)
                 .orderByChild(KEY_DT_CREATED)
+                .startAt(dtEntered.toDouble())
                 .endAt(lastTime)
                 .limitToLast(limit)
                 .addListenerForSingleValueEvent(messageListListener)
@@ -159,21 +172,15 @@ class ChatingViewModel : ViewModel() {
         }
     }
 
-    fun postMessage(text: String) {
+    fun postMessage(text: String, type: Int) {
         chat.value?.let {
-            val newMessage = Message(
-                    text,
-                    me?.nickName,
-                    me?.id,
-                    me?.photoUrl,
-                    System.currentTimeMillis(),
-                    0)
+            val newMessage = Message(text, me?.nickName, me?.id, System.currentTimeMillis(), type)
 
             val childUpdates = HashMap<String, Any>()
             val key = ref.child(KEY_MESSAGE).child(chatId).push().key
 
             childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
-            childUpdates.put("/$KEY_CHAT/$chatId/$KEY_LAST_MESSAGE", text)
+            childUpdates.put("/$KEY_CHAT/$chatId/$KEY_LAST_MESSAGE", if(type == 0) text else App.context.getString(R.string.photo))
             childUpdates.put("/$KEY_CHAT/$chatId/$KEY_LAST_MESSAGE_TIME", newMessage.dtCreated)
 
             ref.updateChildren(childUpdates) { e, _ ->
@@ -219,13 +226,15 @@ class ChatingViewModel : ViewModel() {
     }
 
     fun logoutChat() {
-        isTyping = false
-        me?.let {
-            val childUpdates = HashMap<String, Any>()
-            childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LIVE", false)
-            childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LAST_CONNECTED_TIME", System.currentTimeMillis())
-            childUpdates.put("/$KEY_TYPING/$chatId/${it.id}", isTyping)
-            ref.updateChildren(childUpdates) { _, _ -> }
+        if(!isOut) {
+            isTyping = false
+            me?.let {
+                val childUpdates = HashMap<String, Any>()
+                childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LIVE", false)
+                childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LAST_CONNECTED_TIME", System.currentTimeMillis())
+                childUpdates.put("/$KEY_TYPING/$chatId/${it.id}", isTyping)
+                ref.updateChildren(childUpdates) { _, _ -> }
+            }
         }
     }
 
@@ -239,5 +248,55 @@ class ChatingViewModel : ViewModel() {
         ref.child(KEY_TYPING).child(chatId).removeEventListener(typingListListener)
         ref.child(KEY_CHAT).child(chatId).removeEventListener(chatValueListener)
         ref.child(KEY_CHAT_MEMBERS).child(chatId).removeEventListener(membersListener)
+    }
+
+    fun outOfChat() {
+        me?.let {
+            val newMessage = Message("", it.nickName, it.id, System.currentTimeMillis(), 2)
+            val key = ref.child(KEY_MESSAGE).child(chatId).push().key
+            val childUpdates = HashMap<String, Any?>()
+            childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
+            childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}", null)
+            childUpdates.put("/$KEY_TYPING/$chatId/${it.id}", null)
+            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", null)
+
+            ref.updateChildren(childUpdates) { error, _ ->
+                if(error == null) {
+                    isOut = true
+                    outOfChat.value = isOut
+                }
+            }
+        }
+    }
+
+    fun sendPhotoMessage(uri: Uri?) {
+        uri?.let {
+            try {
+                isUploading.value = true
+                val filePath = FileUtil.getPath(App.context, uri)
+                val bitmap = BitmapUtil.makeProfileBitmapFromFile(filePath)
+
+                val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(
+                        "gs://teamfinder-32133.appspot.com/chatPhoto/$chatId/${System.currentTimeMillis()}.jpg")
+
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                val bis = ByteArrayInputStream(data)
+                val uploadTask = storageRef.putStream(bis)
+
+                uploadTask.addOnFailureListener { e ->
+                    bitmap.recycle()
+                    isUploading.value = false
+                }.addOnSuccessListener { taskSnapshot ->
+                    bitmap.recycle()
+                    taskSnapshot.downloadUrl?.let{ postMessage(it.toString(), 3) }
+                    isUploading.value = false
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                isUploading.value = false
+            }
+        }
     }
 }

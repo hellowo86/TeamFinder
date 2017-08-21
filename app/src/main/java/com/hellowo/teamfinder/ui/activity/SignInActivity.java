@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.hellowo.teamfinder.R;
+import com.hellowo.teamfinder.data.MeLiveData;
 import com.hellowo.teamfinder.databinding.ActivitySignInBinding;
 import com.hellowo.teamfinder.viewmodel.SignInViewModel;
 
@@ -42,11 +43,6 @@ public class SignInActivity extends LifecycleActivity {
                 case InvalidPassword:
                     binding.passwordEdit.setError(getString(R.string.invalid_password));
                     break;
-                case CompleteSignIn:
-                    //TODO MeLiveData가 User데이타 까지 가져온 후에 메인으로 넘어가야함..
-                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                    finish();
-                    break;
                 default:
                     break;
             }
@@ -55,6 +51,13 @@ public class SignInActivity extends LifecycleActivity {
         viewModel.loading.observe(this, aBoolean -> {
             binding.progressBar.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
             binding.signInBtn.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
+        });
+
+        MeLiveData.INSTANCE.observe(this, user -> {
+            if(user != null) {
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                finish();
+            }
         });
     }
 

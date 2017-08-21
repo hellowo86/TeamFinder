@@ -18,7 +18,10 @@ val KEY_CHAT_MEMBERS = "chatMembers"
 val KEY_LIVE = "live"
 val KEY_LAST_CONNECTED_TIME = "lastConnectedTime"
 
-fun makePublicPhotoUrl(userId: String?): String = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
+fun makePublicPhotoUrl(userId: String?): String
+        = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
+
+
 /*
 쿼리하는법
 databaseReference.orderByChild('_searchLastName')

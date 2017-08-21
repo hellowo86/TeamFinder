@@ -13,7 +13,7 @@ import com.hellowo.teamfinder.fcm.FirebaseInstanceIDService;
 import com.hellowo.teamfinder.utils.StringUtil;
 
 public class SignInViewModel extends ViewModel {
-    public enum SignInStatus {InvalidEmail, InvalidPassword, CompleteSignIn}
+    public enum SignInStatus {InvalidEmail, InvalidPassword}
     private FirebaseAuth mAuth;
     public MutableLiveData<SignInStatus> signInStatus = new MutableLiveData<>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<>();
@@ -48,8 +48,6 @@ public class SignInViewModel extends ViewModel {
                             loading.setValue(false);
                         }else {
                             FirebaseInstanceIDService.Companion.sendRegistrationToServer();
-                            signInStatus.setValue(SignInStatus.CompleteSignIn);
-                            loading.setValue(false);
                         }
                     });
         }

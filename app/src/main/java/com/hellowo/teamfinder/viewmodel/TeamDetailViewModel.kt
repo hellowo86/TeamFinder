@@ -44,11 +44,11 @@ class TeamDetailViewModel : ViewModel() {
         members.value = memberList
         comments.value = commentList
         roles.value = roleMap
-        getTeam()
+        loadTeam()
         loadComments()
     }
 
-    fun getTeam() {
+    fun loadTeam() {
         loading.setValue(true)
         FirebaseDatabase.getInstance().reference.child(KEY_TEAMS)
                 .child(teamId!!)

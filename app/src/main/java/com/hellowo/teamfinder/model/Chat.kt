@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.model
 
+import com.google.firebase.database.Exclude
+
 data class Chat (
         var id: String? = null,
         var title: String? = null,
@@ -12,7 +14,9 @@ data class Chat (
         var gameId: Int = 0,
         var messageCount: Int = 0) {
 
-    fun  makeMap(hashTag: HashMap<String, Boolean>): HashMap<String, Any?> {
+    @Exclude var dtEntered: Long = 0
+
+    fun makeMap(hashTag: HashMap<String, Boolean>): HashMap<String, Any?> {
         val resultMap = HashMap<String, Any?>()
         resultMap.put("id", id)
         resultMap.put("title", title)
