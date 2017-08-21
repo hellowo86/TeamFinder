@@ -8,6 +8,7 @@ import android.app.ProgressDialog
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
@@ -82,6 +83,7 @@ class ChatingActivity : LifecycleActivity() {
                 viewModel.messageList, viewModel.typingList, object : AdapterInterface{
             override fun onProfileClicked(userId: String) { startUserActivity(userId) }
             override fun onMessageClicked(message: Message) {}
+            override fun onPhotoClicked(photoUrl: String) { startPhotoActivity(photoUrl) }
         })
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
@@ -220,5 +222,11 @@ class ChatingActivity : LifecycleActivity() {
     }
 
     private fun startUserActivity(userId: String) {}
+
+    private fun startPhotoActivity(photoUrl: String) {
+        val intent = Intent(this, PhotoActivity::class.java)
+        intent.putExtra(AppConst.EXTRA_PHOTO_URL, photoUrl)
+        startActivity(intent)
+    }
 }
 

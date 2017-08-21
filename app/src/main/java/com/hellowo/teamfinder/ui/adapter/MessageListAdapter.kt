@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.beust.klaxon.JsonObject
 import com.bumptech.glide.Glide
@@ -68,28 +69,14 @@ class MessageListAdapter(val context: Context,
                             && message.userId.equals(nextMessage.userId)
                             && message.dtCreated - nextMessage.dtCreated < 1000 * 60
 
-                    v.topMargin.visibility = if(isContinueMessage) View.GONE else View.VISIBLE
-
                     var uncheckCount = 0
                     memberMap.forEach { if(!it.value.live && it.value.lastConnectedTime < message.dtCreated) uncheckCount++ }
 
+                    v.topMargin.visibility = if(isContinueMessage) View.GONE else View.VISIBLE
                     v.timeText.text = if(isContinueMessage) "" else DateFormat.getTimeInstance(DateFormat.SHORT).format(currentCal.time)
                     v.uncheckText.text = if(uncheckCount == 0) "" else uncheckCount.toString()
 
-                    when (message.type){
-                        0 -> {
-                            v.messageText.text = message.text
-                            v.messageText.visibility = View.VISIBLE
-                            v.photoImg.visibility = View.GONE
-                            v.photoImg.setImageDrawable(null)
-                        }
-                        3 -> {
-                            v.messageText.visibility = View.GONE
-                            v.photoImg.visibility = View.VISIBLE
-                            val json = JSONObject(message.text)
-                            Glide.with(context).load(json.getString("url")).into(v.photoImg)
-                        }
-                    }
+                    setContents(v, message)
 
                     when (viewType) {
                         VIEW_TYPE_YOU, VIEW_TYPE_PHOTO_YOU -> setYouView(v, message, isContinueMessage)
@@ -104,6 +91,29 @@ class MessageListAdapter(val context: Context,
                     v.dateDivider.visibility = View.VISIBLE
                     v.dateDividerText.text = DateFormat.getDateInstance(DateFormat.FULL).format(Date(message.dtCreated))
                 }
+            }
+        }
+    }
+
+    private fun setContents(v: View, message: Message) {
+        when (message.type){
+            0 -> {
+                v.messageText.text = message.text
+                v.messageText.visibility = View.VISIBLE
+                v.photoImg.visibility = View.GONE
+                v.photoImg.setImageDrawable(null)
+                v.setOnClickListener { adapterInterface.onMessageClicked(message) }
+            }
+            3 -> {
+                v.messageText.visibility = View.GONE
+                v.photoImg.visibility = View.VISIBLE
+                val json = JSONObject(message.text)
+                val photoUrl = json.getString("url")
+                val w = json.getInt("w")
+                val h = json.getInt("h")
+                v.photoImg.layoutParams = FrameLayout.LayoutParams(w, h)
+                Glide.with(context).load(photoUrl).into(v.photoImg)
+                v.setOnClickListener { adapterInterface.onPhotoClicked(photoUrl) }
             }
         }
     }
@@ -143,13 +153,9 @@ class MessageListAdapter(val context: Context,
                     .into(v.profileImage)
             v.profileImage.setOnClickListener{ adapterInterface.onProfileClicked(message.userId!!) }
         }
-
-        v.setOnClickListener { adapterInterface.onMessageClicked(message) }
     }
 
-    private fun setMeView(v: View, message: Message) {
-        v.setOnClickListener { adapterInterface.onMessageClicked(message) }
-    }
+    private fun setMeView(v: View, message: Message) {}
 
     private fun setNoticeView(v: View, message: Message) {
         when (message.type) {
@@ -192,6 +198,7 @@ class MessageListAdapter(val context: Context,
 
     interface AdapterInterface {
         fun onMessageClicked(message: Message)
+        fun onPhotoClicked(photoUrl: String)
         fun onProfileClicked(userId: String)
     }
 

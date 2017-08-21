@@ -27,6 +27,7 @@
         <activity android:name=".ui.activity.ChatingActivity"/>
         <activity android:name=".ui.activity.ChatFindActivity"/>
         <activity android:name=".ui.activity.ChatJoinActivity" android:theme="@style/TranslucentStatusTheme"/>
+        <activity android:name=".ui.activity.PhotoActivity" android:theme="@style/TranslucentStatusTheme"/>
 
         <service
             android:name=".fcm.MessagingService">
