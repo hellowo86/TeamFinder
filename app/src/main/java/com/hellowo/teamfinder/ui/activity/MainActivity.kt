@@ -55,7 +55,6 @@ class MainActivity : LifecycleActivity() {
 
     private fun initObserve() {
         MeLiveData.observe(this, Observer { updateUserUI(it) })
-        MyChatLiveData.observe(this, Observer {  })
         viewModel.bottomTab.observe(this, Observer { moveTab(it) })
     }
 
