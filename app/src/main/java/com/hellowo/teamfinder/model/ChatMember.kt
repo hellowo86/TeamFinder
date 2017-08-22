@@ -6,4 +6,5 @@ data class ChatMember (
         var photoUrl: String? = null,
         var role: String? = null,
         var lastConnectedTime: Long = 0,
-        var live: Boolean = false)
+        var live: Boolean = false,
+        var pushToken: String? = null)

@@ -18,6 +18,10 @@ val KEY_CHAT_MEMBERS = "chatMembers"
 val KEY_LIVE = "live"
 val KEY_LAST_CONNECTED_TIME = "lastConnectedTime"
 
+val PUSH_TYPE_CHAT_MESSAGE = 0
+
+val KEY_PUSH_AUTH = "key=AAAAf48YPzE:APA91bHTTAW9NmbxcijSrey7FCMYt20PvO-hKl23ge5ZnPrGCTUlLiArHxu3_g_P20Vi91eT7ym_1UAYBnBbkLOMoM8gm-eRkBPrSxmRy-bv47usBC_MliCjjSCzkqnpj7sSSWIWHWAB"
+
 fun makePublicPhotoUrl(userId: String?): String
         = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
 

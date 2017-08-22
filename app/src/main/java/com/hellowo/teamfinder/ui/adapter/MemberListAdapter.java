@@ -68,7 +68,6 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         if(!TextUtils.isEmpty(member.getPhotoUrl())) {
             Glide.with(context).load(member.getPhotoUrl())
-                    .thumbnail(0.1f)
                     .bitmapTransform(new CropCircleTransformation(context))
                     .placeholder(R.drawable.default_profile)
                     .into(holder.imageView);

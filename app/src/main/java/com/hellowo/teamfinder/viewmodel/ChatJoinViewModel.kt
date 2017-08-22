@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.google.firebase.database.*
+import com.google.firebase.iid.FirebaseInstanceId
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Message
@@ -45,7 +46,9 @@ class ChatJoinViewModel : ViewModel() {
         isJoining.value =  true
         val ref = FirebaseDatabase.getInstance().reference
         MeLiveData.value?.let {
-            ref.child(KEY_CHAT_MEMBERS).child(chatId).child(it.id).setValue(it.makeChatMember()) { e,_->
+            val chatMember = it.makeChatMember()
+            chatMember.pushToken = FirebaseInstanceId.getInstance().token
+            ref.child(KEY_CHAT_MEMBERS).child(chatId).child(it.id).setValue(chatMember) { e,_->
                 if(e == null) {
                     val dtEntered = System.currentTimeMillis()
                     val newMessage = Message("", it.nickName, it.id, dtEntered, 1)

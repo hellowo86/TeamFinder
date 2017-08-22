@@ -99,7 +99,7 @@ class ChatingActivity : LifecycleActivity() {
                 if(layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 50) {
                     viewModel.loadMoreMessages()
                 }
-                if(layoutManager.findFirstVisibleItemPosition() >= 10) {
+                if(layoutManager.findFirstVisibleItemPosition() >= 2) {
                     upScrolledLayout.visibility = View.VISIBLE
                 }else {
                     upScrolledLayout.visibility = View.GONE
@@ -129,8 +129,10 @@ class ChatingActivity : LifecycleActivity() {
         viewModel.messages.observe(this, Observer { adapter.notifyDataSetChanged() })
         viewModel.newMessage.observe(this, Observer {
             adapter.notifyItemInserted(0)
-            if(layoutManager.findFirstVisibleItemPosition() <= 2) {
+            if(layoutManager.findFirstVisibleItemPosition() <= 1) {
                 recyclerView.scrollToPosition(0)
+            }else {
+
             }
         })
         viewModel.members.observe(this, Observer {

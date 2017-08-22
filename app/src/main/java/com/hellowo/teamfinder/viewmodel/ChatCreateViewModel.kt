@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.text.Editable
 import com.google.firebase.database.*
+import com.google.firebase.iid.FirebaseInstanceId
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
@@ -67,6 +68,8 @@ class ChatCreateViewModel : ViewModel() {
             val childUpdates = HashMap<String, Any>()
             val tagMap = HashMap<String, Boolean>()
             val key = ref.child(KEY_CHAT).push().key
+            val chatMember = it.makeChatMember()
+            chatMember.pushToken = FirebaseInstanceId.getInstance().token
 
             allHashTags.forEach {
                 tagMap.put(it, true)
@@ -84,7 +87,7 @@ class ChatCreateViewModel : ViewModel() {
             }
 
             childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(tagMap))
-            childUpdates.put("/$KEY_CHAT_MEMBERS/$key/${it.id}", it.makeChatMember())
+            childUpdates.put("/$KEY_CHAT_MEMBERS/$key/${it.id}", chatMember)
             childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key", System.currentTimeMillis())
 
             ref.updateChildren(childUpdates){ _, _ ->

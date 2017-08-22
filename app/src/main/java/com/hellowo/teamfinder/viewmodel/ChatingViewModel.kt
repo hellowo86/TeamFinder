@@ -7,6 +7,7 @@ import android.net.Uri
 import android.support.v4.util.ArrayMap
 import android.util.Log
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R
@@ -14,6 +15,10 @@ import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.data.TeamsLiveData
 import com.hellowo.teamfinder.model.*
 import com.hellowo.teamfinder.utils.*
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -187,6 +192,38 @@ class ChatingViewModel : ViewModel() {
             ref.updateChildren(childUpdates) { e, _ ->
                 if(e == null) {
                     increaseMessageCount()
+                    sendPushMessage(newMessage)
+                }
+            }
+        }
+    }
+
+    private fun sendPushMessage(message: Message) {
+        memberMap.forEach {
+            if(!it.value.live && !(it.value.userId?.equals(me?.id) as Boolean)) {
+                it.value.pushToken?.let{ pushToken->
+                    Thread {
+                        try {
+                            val data = JSONObject()
+                            data.put("pushType", PUSH_TYPE_CHAT_MESSAGE)
+                            data.put("userId", message.userId)
+                            data.put("userName", message.userName)
+                            data.put("message", message.text)
+                            data.put("chatId", chatId)
+
+                            val bodyBuilder = FormBody.Builder()
+                            bodyBuilder.add("to", pushToken)
+                            bodyBuilder.add("data", data.toString())
+                            val request = Request.Builder()
+                                    .url("https://fcm.googleapis.com/fcm/send")
+                                    .addHeader("Authorization", KEY_PUSH_AUTH)
+                                    .post(bodyBuilder.build())
+                                    .build()
+                            val result = OkHttpClient().newCall(request).execute()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }.start()
                 }
             }
         }
@@ -222,7 +259,10 @@ class ChatingViewModel : ViewModel() {
             val childUpdates = HashMap<String, Any>()
             childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LIVE", true)
             childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LAST_CONNECTED_TIME", System.currentTimeMillis())
-            ref.updateChildren(childUpdates) { _, _ -> }
+            FirebaseMessaging.getInstance().subscribeToTopic("news")
+            ref.updateChildren(childUpdates) { e, _ ->
+                if(e == null) {}
+            }
         }
     }
 
@@ -234,7 +274,11 @@ class ChatingViewModel : ViewModel() {
                 childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LIVE", false)
                 childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LAST_CONNECTED_TIME", System.currentTimeMillis())
                 childUpdates.put("/$KEY_TYPING/$chatId/${it.id}", isTyping)
-                ref.updateChildren(childUpdates) { _, _ -> }
+                ref.updateChildren(childUpdates) { e, _ ->
+                    if(e == null) {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(chatId)
+                    }
+                }
             }
         }
     }
@@ -263,6 +307,7 @@ class ChatingViewModel : ViewModel() {
 
             ref.updateChildren(childUpdates) { error, _ ->
                 if(error == null) {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(chatId)
                     isOut = true
                     outOfChat.value = isOut
                 }
@@ -292,10 +337,12 @@ class ChatingViewModel : ViewModel() {
                 }.addOnSuccessListener { taskSnapshot ->
                     bitmap.recycle()
                     val json = JSONObject()
-                    json.put("url", it.toString())
                     json.put("w", bitmap.width)
                     json.put("h", bitmap.height)
-                    taskSnapshot.downloadUrl?.let{ postMessage(json.toString(), 3) }
+                    taskSnapshot.downloadUrl?.let{
+                        json.put("url", it.toString())
+                        postMessage(json.toString(), 3)
+                    }
                     isUploading.value = false
                 }
             } catch (e: Exception) {

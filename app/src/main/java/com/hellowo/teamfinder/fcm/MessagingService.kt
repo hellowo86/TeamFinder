@@ -4,14 +4,22 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.media.RingtoneManager
 import android.net.Uri
 import android.support.v4.app.NotificationCompat
 import android.util.Log
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.animation.GlideAnimation
+import com.bumptech.glide.request.target.SimpleTarget
 
 import com.google.firebase.messaging.RemoteMessage
+import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.ui.activity.MainActivity
+import com.hellowo.teamfinder.utils.PUSH_TYPE_CHAT_MESSAGE
+import com.hellowo.teamfinder.utils.makePublicPhotoUrl
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 import org.json.JSONException
 import org.json.JSONObject
@@ -22,18 +30,27 @@ class MessagingService : com.google.firebase.messaging.FirebaseMessagingService(
         if (remoteMessage?.data!!.isNotEmpty()) {
             try {
                 val data = JSONObject(remoteMessage.data["data"])
-                val subject = data.getString("subject")
-                val message = data.getString("message")
-                Log.d("aaa", subject + "/" + message)
-                sendNotification(subject, message)
+                val pushType = data.getInt("pushType")
+                when(pushType) {
+                    PUSH_TYPE_CHAT_MESSAGE -> makeChatMessageNoti(data)
+                }
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-
         }
     }
 
-    private fun sendNotification(subject: String, message: String) {
+    private fun makeChatMessageNoti(data: JSONObject) {
+        val userId = data.getString("userId")
+        val userName = data.getString("userName")
+        val message = data.getString("message")
+        val chatId = data.getString("chatId")
+        val resource = Glide.with(this).load(makePublicPhotoUrl(userId))
+                .asBitmap().transform(CropCircleTransformation(this)).into(100, 100).get()
+        sendNotification(userName, message, resource)
+    }
+
+    private fun sendNotification(subject: String, message: String, icon: Bitmap?) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -48,6 +65,8 @@ class MessagingService : com.google.firebase.messaging.FirebaseMessagingService(
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
+
+        icon?.let { notificationBuilder.setLargeIcon(it) }
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
