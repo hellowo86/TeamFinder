@@ -85,7 +85,7 @@ class ChatCreateViewModel : ViewModel() {
 
             childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(tagMap))
             childUpdates.put("/$KEY_CHAT_MEMBERS/$key/${it.id}", it.makeChatMember())
-            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key", true)
+            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key", System.currentTimeMillis())
 
             ref.updateChildren(childUpdates){ _, _ ->
                 loading.value = false

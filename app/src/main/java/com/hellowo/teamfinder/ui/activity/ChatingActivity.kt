@@ -16,20 +16,25 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
+import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.ui.adapter.ChatMemberListAdapter
 import com.hellowo.teamfinder.ui.adapter.MessageListAdapter
 import com.hellowo.teamfinder.ui.adapter.MessageListAdapter.AdapterInterface
-import com.hellowo.teamfinder.utils.startFadeInAnimation
-import com.hellowo.teamfinder.utils.startFadeOutAnimation
+import com.hellowo.teamfinder.utils.*
 import com.hellowo.teamfinder.viewmodel.ChatingViewModel
 import gun0912.tedbottompicker.TedBottomPicker
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_chating.*
 import java.text.DateFormat
 import java.util.*
@@ -76,6 +81,7 @@ class ChatingActivity : LifecycleActivity() {
         backBtn.setOnClickListener{ finish() }
         outBtn.setOnClickListener{ showOutChatAlert() }
         sendImageBtn.setOnClickListener { checkExternalStoragePermission() }
+        scrollToBottomBtn.setOnClickListener{ recyclerView.scrollToPosition(0) }
     }
 
     fun initListViews() {
@@ -90,8 +96,13 @@ class ChatingActivity : LifecycleActivity() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if(layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1) {
+                if(layoutManager.findLastVisibleItemPosition() >= layoutManager.itemCount - 50) {
                     viewModel.loadMoreMessages()
+                }
+                if(layoutManager.findFirstVisibleItemPosition() >= 10) {
+                    upScrolledLayout.visibility = View.VISIBLE
+                }else {
+                    upScrolledLayout.visibility = View.GONE
                 }
                 setFloatingDateViewText()
             }
@@ -106,24 +117,27 @@ class ChatingActivity : LifecycleActivity() {
         }
         memberRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         memberRecyclerView.adapter = memberAdapter
+
+        typingIndicator.hide()
+        upScrolledLayout.visibility = View.GONE
     }
 
     fun initObserve() {
         viewModel.isReady.observe(this, Observer { progressBar.visibility = if(it as Boolean) View.GONE else View.VISIBLE })
         viewModel.chat.observe(this, Observer { it?.let { updateChatUI(it) } })
+        viewModel.typings.observe(this, Observer { updateTypingUI(it) })
         viewModel.messages.observe(this, Observer { adapter.notifyDataSetChanged() })
         viewModel.newMessage.observe(this, Observer {
-            adapter.notifyItemInserted(1)
-            recyclerView.scrollToPosition(0)
+            adapter.notifyItemInserted(0)
+            if(layoutManager.findFirstVisibleItemPosition() <= 2) {
+                recyclerView.scrollToPosition(0)
+            }
         })
         viewModel.members.observe(this, Observer {
             adapter.notifyDataSetChanged()
             memberAdapter.notifyDataSetChanged()
         })
-        viewModel.typings.observe(this, Observer { adapter.refreshTypingList() })
-        viewModel.outOfChat.observe(this, Observer {
-            if(it as Boolean) finish()
-        })
+        viewModel.outOfChat.observe(this, Observer { if(it as Boolean) finish() })
         viewModel.isUploading.observe(this, Observer { if(it as Boolean) showProgressDialog() else hideProgressDialog() })
     }
 
@@ -136,6 +150,28 @@ class ChatingActivity : LifecycleActivity() {
 
     private fun updateChatUI(chat: Chat) {
         titleText.text = chat.title
+    }
+
+    private fun updateTypingUI(typingList: List<String>?) {
+        userChipLy.removeAllViews()
+        if(typingList?.isEmpty() as Boolean) {
+            typingIndicator.smoothToHide()
+            //startToBottomSlideDisappearAnimation(typingView, ViewUtil.dpToPx(this, 40f))
+        }else {
+            typingIndicator.smoothToShow()
+            typingList.forEach {
+                val imageView = ImageView(this)
+                imageView.layoutParams = ViewGroup.LayoutParams(40, 40)
+                Glide.with(this)
+                        .load(makePublicPhotoUrl(it))
+                        .bitmapTransform(CropCircleTransformation(this))
+                        .placeholder(R.drawable.default_profile)
+                        .into(imageView)
+                userChipLy.addView(imageView)
+            }
+            typingView.visibility = View.VISIBLE
+            //startFromBottomSlideAppearAnimation(typingView, ViewUtil.dpToPx(this, 40f))
+        }
     }
 
     val floatingDateViewHandler = @SuppressLint("HandlerLeak")
@@ -169,9 +205,9 @@ class ChatingActivity : LifecycleActivity() {
 
     private fun setFloatingDateViewText() {
         val itemPos = layoutManager.findLastVisibleItemPosition()
-        if(itemPos > 0) {
+        if(itemPos >= 0) {
             floatingDateText.text = DateFormat.getDateInstance(DateFormat.FULL).format(
-                    Date(viewModel.getlastPostionDate(itemPos - 1)))
+                    Date(viewModel.getlastPostionDate(itemPos)))
         }
     }
 

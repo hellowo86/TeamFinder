@@ -78,8 +78,69 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:paddingBottom="30dp"
+                    android:clipToPadding="false">
                 </android.support.v7.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/typingView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="@dimen/small_margin"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/userChipLy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/typingIndicator"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/thin_margin"
+                        app:indicatorColor="@color/grey"
+                        app:indicatorName="BallPulseIndicator" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/upScrolledLayout"
+                    android:layout_margin="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="@dimen/thin_margin"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/scrollToBottomBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/ripple_circle_button"
+                            android:padding="5dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_arrow_down"
+                            android:tint="@color/iconTint" />
+
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
 
             </FrameLayout>
 

@@ -44,8 +44,7 @@ class ChatListFragment : LifecycleFragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapterMy
 
-        MyChatLiveData.observe(this, Observer {
-            adapterMy.notifyDataSetChanged()
-        })
+        MyChatLiveData.observe(this, Observer { adapterMy.notifyDataSetChanged() })
+        MyChatLiveData.loading.observe(this, Observer { progressBar.visibility = if(it as Boolean) View.VISIBLE else View.GONE })
     }
 }

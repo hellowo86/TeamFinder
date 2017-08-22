@@ -59,6 +59,16 @@ fun startFromBottomSlideAppearAnimation(view: View, offset: Float) {
     animSet.start()
 }
 
+fun startToBottomSlideDisappearAnimation(view: View, offset: Float) {
+    val animSet = AnimatorSet()
+    animSet.playTogether(
+            ObjectAnimator.ofFloat(view, "translationY", 0f, offset).setDuration(250),
+            ObjectAnimator.ofFloat(view, "alpha", 1f, 0f).setDuration(250)
+    )
+    animSet.interpolator = FastOutSlowInInterpolator()
+    animSet.start()
+}
+
 fun startToTopDisappearAnimation(view: View, offset: Float) {
     val animSet = AnimatorSet()
     animSet.playTogether(

@@ -29,7 +29,6 @@ class MessageListAdapter(val context: Context,
                          val messageList: List<Message>,
                          val typingList: List<String>,
                          val adapterInterface: AdapterInterface) : RecyclerView.Adapter<MessageListAdapter.ViewHolder>() {
-    private val VIEW_TYPE_TYPING = 0
     private val VIEW_TYPE_YOU = 1
     private val VIEW_TYPE_ME = 2
     private val VIEW_TYPE_NOTICE = 3
@@ -43,7 +42,6 @@ class MessageListAdapter(val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(LayoutInflater.from(parent.context).inflate(
             when (viewType) {
-                VIEW_TYPE_TYPING -> R.layout.list_item_message_typing
                 VIEW_TYPE_YOU -> R.layout.list_item_message
                 VIEW_TYPE_ME -> R.layout.list_item_message_me
                 else -> R.layout.list_item_message_notice
@@ -52,45 +50,41 @@ class MessageListAdapter(val context: Context,
     override fun onBindViewHolder(holder: MessageListAdapter.ViewHolder, position: Int) {
         val v = holder.itemView
         val viewType = getItemViewType(position)
-        if(viewType == VIEW_TYPE_TYPING) {
-            setTypingView(v)
-        }else {
-            val message = getItem(position)
-            val nextMessage = getItem(position + 1)
-            message?.let {
-                currentCal.timeInMillis = message.dtCreated
-                nextCal.timeInMillis = nextMessage?.dtCreated ?: 0
+        val message = getItem(position)
+        val nextMessage = getItem(position + 1)
+        message?.let {
+            currentCal.timeInMillis = message.dtCreated
+            nextCal.timeInMillis = nextMessage?.dtCreated ?: 0
 
-                if(viewType == VIEW_TYPE_NOTICE) {
-                    setNoticeView(v, message)
-                }else {
-                    val isContinueMessage = nextMessage != null
-                            && nextMessage.type == 0
-                            && message.userId.equals(nextMessage.userId)
-                            && message.dtCreated - nextMessage.dtCreated < 1000 * 60
+            if(viewType == VIEW_TYPE_NOTICE) {
+                setNoticeView(v, message)
+            }else {
+                val isContinueMessage = nextMessage != null
+                        && nextMessage.type == 0
+                        && message.userId.equals(nextMessage.userId)
+                        && message.dtCreated - nextMessage.dtCreated < 1000 * 60
 
-                    var uncheckCount = 0
-                    memberMap.forEach { if(!it.value.live && it.value.lastConnectedTime < message.dtCreated) uncheckCount++ }
+                var uncheckCount = 0
+                memberMap.forEach { if(!it.value.live && it.value.lastConnectedTime < message.dtCreated) uncheckCount++ }
 
-                    v.topMargin.visibility = if(isContinueMessage) View.GONE else View.VISIBLE
-                    v.timeText.text = if(isContinueMessage) "" else DateFormat.getTimeInstance(DateFormat.SHORT).format(currentCal.time)
-                    v.uncheckText.text = if(uncheckCount == 0) "" else uncheckCount.toString()
+                v.topMargin.visibility = if(isContinueMessage) View.GONE else View.VISIBLE
+                v.timeText.text = if(isContinueMessage) "" else DateFormat.getTimeInstance(DateFormat.SHORT).format(currentCal.time)
+                v.uncheckText.text = if(uncheckCount == 0) "" else uncheckCount.toString()
 
-                    setContents(v, message)
+                setContents(v, message)
 
-                    when (viewType) {
-                        VIEW_TYPE_YOU, VIEW_TYPE_PHOTO_YOU -> setYouView(v, message, isContinueMessage)
-                        VIEW_TYPE_ME, VIEW_TYPE_PHOTO_ME -> setMeView(v, message)
-                    }
+                when (viewType) {
+                    VIEW_TYPE_YOU, VIEW_TYPE_PHOTO_YOU -> setYouView(v, message, isContinueMessage)
+                    VIEW_TYPE_ME, VIEW_TYPE_PHOTO_ME -> setMeView(v, message)
                 }
+            }
 
-                if(currentCal.get(Calendar.YEAR) == nextCal.get(Calendar.YEAR)
-                        && currentCal.get(Calendar.DAY_OF_YEAR) == nextCal.get(Calendar.DAY_OF_YEAR)) {
-                    v.dateDivider.visibility = View.GONE
-                }else {
-                    v.dateDivider.visibility = View.VISIBLE
-                    v.dateDividerText.text = DateFormat.getDateInstance(DateFormat.FULL).format(Date(message.dtCreated))
-                }
+            if(currentCal.get(Calendar.YEAR) == nextCal.get(Calendar.YEAR)
+                    && currentCal.get(Calendar.DAY_OF_YEAR) == nextCal.get(Calendar.DAY_OF_YEAR)) {
+                v.dateDivider.visibility = View.GONE
+            }else {
+                v.dateDivider.visibility = View.VISIBLE
+                v.dateDividerText.text = DateFormat.getDateInstance(DateFormat.FULL).format(Date(message.dtCreated))
             }
         }
     }
@@ -114,25 +108,6 @@ class MessageListAdapter(val context: Context,
                 v.photoImg.layoutParams = FrameLayout.LayoutParams(w, h)
                 Glide.with(context).load(photoUrl).into(v.photoImg)
                 v.setOnClickListener { adapterInterface.onPhotoClicked(photoUrl) }
-            }
-        }
-    }
-
-    private fun setTypingView(v: View) {
-        v.userChipLy.removeAllViews()
-        if(typingList.isEmpty()) {
-            v.typingIndicator.smoothToHide()
-        }else {
-            v.typingIndicator.smoothToShow()
-            typingList.forEach {
-                val imageView = ImageView(context)
-                imageView.layoutParams = ViewGroup.LayoutParams(40, 40)
-                Glide.with(context)
-                        .load(makePublicPhotoUrl(it))
-                        .bitmapTransform(CropCircleTransformation(context))
-                        .placeholder(R.drawable.default_profile)
-                        .into(imageView)
-                v.userChipLy.addView(imageView)
             }
         }
     }
@@ -167,34 +142,30 @@ class MessageListAdapter(val context: Context,
 
     private fun getItem(position: Int): Message? {
         try{
-            return messageList[position - 1]
+            return messageList[position]
         }catch (e: Exception) {
             return null
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            VIEW_TYPE_TYPING
-        } else {
-            getItem(position)?.let{
-                if(it.type == 0 || it.type == 3) {
-                    if(it.userId.equals(myId)) {
-                        return VIEW_TYPE_ME
-                    }else if(!it.userId.equals(myId)){
-                        return VIEW_TYPE_YOU
-                    }
-                }else if(it.type == 1 || it.type == 2) {
-                    return VIEW_TYPE_NOTICE
+        getItem(position)?.let{
+            if(it.type == 0 || it.type == 3) {
+                if(it.userId.equals(myId)) {
+                    return VIEW_TYPE_ME
+                }else if(!it.userId.equals(myId)){
+                    return VIEW_TYPE_YOU
                 }
+            }else if(it.type == 1 || it.type == 2) {
+                return VIEW_TYPE_NOTICE
             }
-            return -1
         }
+        return -1
     }
 
     override fun getItemId(position: Int) = position.toLong()
 
-    override fun getItemCount() = messageList.size + 1
+    override fun getItemCount() = messageList.size
 
     interface AdapterInterface {
         fun onMessageClicked(message: Message)
