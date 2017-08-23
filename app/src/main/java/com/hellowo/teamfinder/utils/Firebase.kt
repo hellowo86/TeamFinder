@@ -17,6 +17,8 @@ val KEY_MESSAGE_COUNT = "messageCount"
 val KEY_CHAT_MEMBERS = "chatMembers"
 val KEY_LIVE = "live"
 val KEY_LAST_CONNECTED_TIME = "lastConnectedTime"
+val KEY_DT_ENTERED = "dtEntered"
+val KEY_LAST_CHECK_INDEX = "lastCheckIndex"
 
 val PUSH_TYPE_CHAT_MESSAGE = 0
 

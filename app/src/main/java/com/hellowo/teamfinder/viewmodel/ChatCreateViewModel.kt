@@ -7,10 +7,7 @@ import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
-import com.hellowo.teamfinder.utils.KEY_CHAT
-import com.hellowo.teamfinder.utils.KEY_CHAT_MEMBERS
-import com.hellowo.teamfinder.utils.KEY_HASH_TAG
-import com.hellowo.teamfinder.utils.KEY_USERS
+import com.hellowo.teamfinder.utils.*
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.Contents
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.Title
 
@@ -88,7 +85,8 @@ class ChatCreateViewModel : ViewModel() {
 
             childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(tagMap))
             childUpdates.put("/$KEY_CHAT_MEMBERS/$key/${it.id}", chatMember)
-            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key", System.currentTimeMillis())
+            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key/$KEY_DT_ENTERED", System.currentTimeMillis())
+            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key/$KEY_LAST_CHECK_INDEX", 0)
 
             ref.updateChildren(childUpdates){ _, _ ->
                 loading.value = false

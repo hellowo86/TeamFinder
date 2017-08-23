@@ -81,7 +81,7 @@ class ChatingActivity : LifecycleActivity() {
         backBtn.setOnClickListener{ finish() }
         outBtn.setOnClickListener{ showOutChatAlert() }
         sendImageBtn.setOnClickListener { checkExternalStoragePermission() }
-        scrollToBottomBtn.setOnClickListener{ recyclerView.scrollToPosition(0) }
+        bottomScrolledLayout.setOnClickListener{ recyclerView.scrollToPosition(0) }
     }
 
     fun initListViews() {
@@ -100,9 +100,10 @@ class ChatingActivity : LifecycleActivity() {
                     viewModel.loadMoreMessages()
                 }
                 if(layoutManager.findFirstVisibleItemPosition() >= 2) {
-                    upScrolledLayout.visibility = View.VISIBLE
+                    bottomScrolledLayout.visibility = View.VISIBLE
                 }else {
-                    upScrolledLayout.visibility = View.GONE
+                    bottomScrolledLayout.visibility = View.GONE
+                    bottomScrollMessageView.visibility = View.GONE
                 }
                 setFloatingDateViewText()
             }
@@ -119,7 +120,7 @@ class ChatingActivity : LifecycleActivity() {
         memberRecyclerView.adapter = memberAdapter
 
         typingIndicator.hide()
-        upScrolledLayout.visibility = View.GONE
+        bottomScrolledLayout.visibility = View.GONE
     }
 
     fun initObserve() {
@@ -132,7 +133,13 @@ class ChatingActivity : LifecycleActivity() {
             if(layoutManager.findFirstVisibleItemPosition() <= 1) {
                 recyclerView.scrollToPosition(0)
             }else {
-
+                bottomScrollMessageView.visibility = View.VISIBLE
+                bottomScrollMessageText.text = it?.text
+                Glide.with(this)
+                        .load(makePublicPhotoUrl(it?.userId))
+                        .bitmapTransform(CropCircleTransformation(this))
+                        .placeholder(R.drawable.default_profile)
+                        .into(bottomScrollProfileImg)
             }
         })
         viewModel.members.observe(this, Observer {
@@ -158,6 +165,7 @@ class ChatingActivity : LifecycleActivity() {
         userChipLy.removeAllViews()
         if(typingList?.isEmpty() as Boolean) {
             typingIndicator.smoothToHide()
+            typingView.visibility = View.GONE
             //startToBottomSlideDisappearAnimation(typingView, ViewUtil.dpToPx(this, 40f))
         }else {
             typingIndicator.smoothToShow()

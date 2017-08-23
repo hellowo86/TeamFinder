@@ -15,6 +15,7 @@ data class Chat (
         var messageCount: Int = 0) {
 
     @Exclude var dtEntered: Long = 0
+    @Exclude var lastCheckIndex: Int = 0
 
     fun makeMap(hashTag: HashMap<String, Boolean>): HashMap<String, Any?> {
         val resultMap = HashMap<String, Any?>()

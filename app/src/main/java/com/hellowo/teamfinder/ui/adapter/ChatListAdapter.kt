@@ -36,7 +36,6 @@ class ChatListAdapter(val context: Context,
         Glide.with(context)
                 .load(makePublicPhotoUrl(chat.king))
                 .bitmapTransform(CropCircleTransformation(context))
-                .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)
                 .into(v.chatImage)
 

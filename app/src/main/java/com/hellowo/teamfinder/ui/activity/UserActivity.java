@@ -61,7 +61,6 @@ public class UserActivity extends LifecycleActivity {
         Glide.with(this)
                 .load(!TextUtils.isEmpty(user.getPhotoUrl()) ? user.getPhotoUrl() : R.drawable.default_profile)
                 .bitmapTransform(new CropCircleTransformation(this))
-                .thumbnail(0.1f)
                 .into(binding.profileImage);
         binding.nameText.setText(user.getNickName());
     }

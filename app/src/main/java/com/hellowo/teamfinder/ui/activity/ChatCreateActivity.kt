@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.GameData
+import com.hellowo.teamfinder.model.HashTag
 import com.hellowo.teamfinder.ui.dialog.SelectGameDialog
 import com.hellowo.teamfinder.ui.dialog.SelectTagDialog
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel
@@ -142,8 +143,8 @@ class ChatCreateActivity : LifecycleActivity() {
 
     private fun showSelectTagDialog() {
         val selectTagDialog = SelectTagDialog()
-        selectTagDialog.setDialogInterface { option ->
-            val tag = option.makeTag()
+        selectTagDialog.setDialogInterface{ hashTag ->
+            val tag = hashTag.makeTag()
             val startPos = contentsInput.selectionStart
             contentsInput.text.insert(if (startPos < 0) 0 else startPos, tag)
         }

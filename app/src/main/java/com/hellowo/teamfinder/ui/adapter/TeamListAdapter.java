@@ -91,7 +91,6 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
                 .load(!TextUtils.isEmpty(organizer.getPhotoUrl()) ?
                         organizer.getPhotoUrl() : R.drawable.default_profile)
                 .bitmapTransform(new CropCircleTransformation(context))
-                .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)
                 .into(binding.profileImage);
 

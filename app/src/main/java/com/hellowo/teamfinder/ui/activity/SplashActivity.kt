@@ -27,7 +27,9 @@ class SplashActivity : LifecycleActivity() {
         MeLiveData.observe(this, Observer { user ->
             if (user != null) {
                 MeLiveData.removeObservers(this)
-                startActivity(Intent(this, MainActivity::class.java))
+                val mainIntent = Intent(this, MainActivity::class.java)
+                intent.extras?.let { mainIntent.putExtras(it) }
+                startActivity(mainIntent)
                 finish()
             } else {
                 startActivity(Intent(this, SignInActivity::class.java))

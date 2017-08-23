@@ -166,13 +166,6 @@ public class CreateTeamActivity extends LifecycleActivity {
     }
 
     private void showSelectTagDialog() {
-        final SelectTagDialog selectTagDialog = new SelectTagDialog();
-        selectTagDialog.setDialogInterface(option -> {
-            String tag = option.makeTag();
-            int startPos = binding.contentsInput.getSelectionStart();
-            binding.contentsInput.getText().insert(startPos < 0 ? 0 : startPos, tag);
-        });
-        selectTagDialog.show(getSupportFragmentManager(), selectTagDialog.getTag());
     }
 
     private void showProgressDialog() {

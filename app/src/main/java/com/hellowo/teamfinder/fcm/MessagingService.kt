@@ -23,6 +23,9 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
 
 import org.json.JSONException
 import org.json.JSONObject
+import android.content.pm.PackageManager
+
+
 
 class MessagingService : com.google.firebase.messaging.FirebaseMessagingService() {
 
@@ -47,15 +50,17 @@ class MessagingService : com.google.firebase.messaging.FirebaseMessagingService(
         val chatId = data.getString("chatId")
         val resource = Glide.with(this).load(makePublicPhotoUrl(userId))
                 .asBitmap().transform(CropCircleTransformation(this)).into(100, 100).get()
-        sendNotification(userName, message, resource)
+
+        val manager = packageManager
+        val intent = manager.getLaunchIntentForPackage(packageName)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        intent.putExtra(AppConst.EXTRA_CHAT_ID, chatId)
+        val pendingIntent = PendingIntent.getActivity(this,0, intent, PendingIntent.FLAG_ONE_SHOT)
+
+        sendNotification(userName, message, resource, pendingIntent)
     }
 
-    private fun sendNotification(subject: String, message: String, icon: Bitmap?) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT)
-
+    private fun sendNotification(subject: String, message: String, icon: Bitmap?, pIntent: PendingIntent) {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -64,7 +69,7 @@ class MessagingService : com.google.firebase.messaging.FirebaseMessagingService(
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pIntent)
 
         icon?.let { notificationBuilder.setLargeIcon(it) }
 

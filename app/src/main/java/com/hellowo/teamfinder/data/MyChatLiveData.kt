@@ -7,6 +7,8 @@ import android.util.Log
 import com.google.firebase.database.*
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
+import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
+import com.hellowo.teamfinder.utils.KEY_LAST_CHECK_INDEX
 import com.hellowo.teamfinder.utils.KEY_USERS
 
 object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
@@ -15,7 +17,7 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     val itemsMap: ArrayMap<String, Chat> = ArrayMap()
     val listenerMap: MutableMap<String, ValueEventListener> = HashMap()
     val loading: MutableLiveData<Boolean> = MutableLiveData()
-    lateinit var currentUserId: String
+    var currentUserId = ""
     var currentCount = 0
 
     val joinedChatEventListener: ValueEventListener = object : ValueEventListener {
@@ -29,15 +31,20 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
 
                 chatListSnapshot.children.forEach {
                     val chatId = it.key
+                    val dtEntered = it.child(KEY_DT_ENTERED).value as Long
+                    val lastCheckIndex = it.child(KEY_LAST_CHECK_INDEX).value.toString().toInt()
                     removedMap.remove(chatId)
-                    if(!listenerMap.containsKey(chatId)) {
-                        val dtEntered = it.value as Long
+                    if(listenerMap.containsKey(chatId)) {
+                        itemsMap[chatId]?.dtEntered = dtEntered
+                        itemsMap[chatId]?.lastCheckIndex = lastCheckIndex
+                    }else {
                         val valueEventListener = object : ValueEventListener {
                             override fun onCancelled(p0: DatabaseError?) {}
                             override fun onDataChange(chatSnapshot: DataSnapshot?) {
                                 chatSnapshot?.getValue(Chat::class.java)?.let { chat ->
                                     chat.id = it.key
                                     chat.dtEntered = dtEntered
+                                    chat.lastCheckIndex = lastCheckIndex
                                     itemsMap.put(chat.id, chat)
                                     value = itemsMap
                                 }
@@ -48,14 +55,13 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
                         chatRef.child(chatId).addValueEventListener(valueEventListener)
                     }
                 }
-
                 removedMap.forEach { itemsMap.remove(it.key) }
-                loading.value = currentCount != itemsMap.size
                 value = itemsMap
             }else{
                 itemsMap.clear()
                 value = itemsMap
             }
+            loading.value = currentCount != itemsMap.size
         }
     }
 
@@ -65,10 +71,8 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     }
 
     override fun onActive() {
-        MeLiveData.value?.id?.let {
-            currentUserId = it
-            ref.child(KEY_USERS).child(currentUserId).child(KEY_CHAT).addValueEventListener(joinedChatEventListener)
-        }
+        currentUserId = MeLiveData.value?.id.toString()
+        ref.child(KEY_USERS).child(currentUserId).child(KEY_CHAT).addValueEventListener(joinedChatEventListener)
     }
 
     override fun onInactive() {

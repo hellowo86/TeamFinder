@@ -32,10 +32,16 @@ class MyChatListAdapter(val context: Context,
         v.lastMessageText.text = chat.lastMessage ?: ""
         v.lastTimeText.text = if(chat.lastMessageTime > 0) makeMessageLastTimeText(chat.lastMessageTime) else ""
 
+        if(chat.messageCount - chat.lastCheckIndex > 0) {
+            v.badgeView.visibility = View.VISIBLE
+            v.badgeText.text = (chat.messageCount - chat.lastCheckIndex).toString()
+        }else {
+            v.badgeView.visibility = View.GONE
+        }
+
         Glide.with(context)
                 .load(makePublicPhotoUrl(chat.king))
                 .bitmapTransform(CropCircleTransformation(context))
-                .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)
                 .into(v.chatImage)
 

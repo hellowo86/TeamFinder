@@ -198,37 +198,6 @@ class ChatingViewModel : ViewModel() {
         }
     }
 
-    private fun sendPushMessage(message: Message) {
-        memberMap.forEach {
-            if(!it.value.live && !(it.value.userId?.equals(me?.id) as Boolean)) {
-                it.value.pushToken?.let{ pushToken->
-                    Thread {
-                        try {
-                            val data = JSONObject()
-                            data.put("pushType", PUSH_TYPE_CHAT_MESSAGE)
-                            data.put("userId", message.userId)
-                            data.put("userName", message.userName)
-                            data.put("message", message.text)
-                            data.put("chatId", chatId)
-
-                            val bodyBuilder = FormBody.Builder()
-                            bodyBuilder.add("to", pushToken)
-                            bodyBuilder.add("data", data.toString())
-                            val request = Request.Builder()
-                                    .url("https://fcm.googleapis.com/fcm/send")
-                                    .addHeader("Authorization", KEY_PUSH_AUTH)
-                                    .post(bodyBuilder.build())
-                                    .build()
-                            val result = OkHttpClient().newCall(request).execute()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }.start()
-                }
-            }
-        }
-    }
-
     private fun increaseMessageCount() {
         ref.child(KEY_CHAT).child(chatId).child(KEY_MESSAGE_COUNT).runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
@@ -243,6 +212,37 @@ class ChatingViewModel : ViewModel() {
                 if(e == null) {}
             }
         })
+    }
+
+    private fun sendPushMessage(message: Message) {
+        Thread {
+            memberMap.forEach {
+                try {
+                    if(!it.value.live && !(it.value.userId.equals(me?.id))) {
+                        it.value.pushToken?.let{ pushToken->
+                            val data = JSONObject()
+                            data.put("pushType", PUSH_TYPE_CHAT_MESSAGE)
+                            data.put("userId", message.userId)
+                            data.put("userName", message.userName)
+                            data.put("message", if(message.type == 0) message.text else App.context.getString(R.string.photo))
+                            data.put("chatId", chatId)
+
+                            val bodyBuilder = FormBody.Builder()
+                            bodyBuilder.add("to", pushToken)
+                            bodyBuilder.add("data", data.toString())
+                            val request = Request.Builder()
+                                    .url("https://fcm.googleapis.com/fcm/send")
+                                    .addHeader("Authorization", KEY_PUSH_AUTH)
+                                    .post(bodyBuilder.build())
+                                    .build()
+                            OkHttpClient().newCall(request).execute()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
     }
 
     fun typingText(text: CharSequence) {
@@ -274,6 +274,7 @@ class ChatingViewModel : ViewModel() {
                 childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LIVE", false)
                 childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}/$KEY_LAST_CONNECTED_TIME", System.currentTimeMillis())
                 childUpdates.put("/$KEY_TYPING/$chatId/${it.id}", isTyping)
+                childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId/$KEY_LAST_CHECK_INDEX", currentChat.messageCount)
                 ref.updateChildren(childUpdates) { e, _ ->
                     if(e == null) {
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(chatId)

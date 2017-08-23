@@ -27,8 +27,7 @@ class ChatJoinViewModel : ViewModel() {
 
         this.chatId = chatId
 
-        FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
-                .child(chatId)
+        FirebaseDatabase.getInstance().reference.child(KEY_CHAT).child(chatId)
                 .addListenerForSingleValueEvent( object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val data = dataSnapshot.getValue(Chat::class.java)
@@ -46,26 +45,31 @@ class ChatJoinViewModel : ViewModel() {
         isJoining.value =  true
         val ref = FirebaseDatabase.getInstance().reference
         MeLiveData.value?.let {
-            val chatMember = it.makeChatMember()
-            chatMember.pushToken = FirebaseInstanceId.getInstance().token
-            ref.child(KEY_CHAT_MEMBERS).child(chatId).child(it.id).setValue(chatMember) { e,_->
-                if(e == null) {
-                    val dtEntered = System.currentTimeMillis()
-                    val newMessage = Message("", it.nickName, it.id, dtEntered, 1)
-                    val childUpdates = HashMap<String, Any>()
-                    val key = ref.child(KEY_MESSAGE).child(chatId).push().key
+            ref.child(KEY_CHAT).child(chatId).child(KEY_MESSAGE_COUNT)
+                    .addListenerForSingleValueEvent( object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val childUpdates = HashMap<String, Any>()
+                            val message_count = dataSnapshot.value.toString().toInt()
+                            val dtEntered = System.currentTimeMillis()
+                            val newMessage = Message("", it.nickName, it.id, dtEntered, 1)
+                            val key = ref.child(KEY_MESSAGE).child(chatId).push().key
+                            val chatMember = it.makeChatMember()
+                            chatMember.pushToken = FirebaseInstanceId.getInstance().token
 
-                    childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId", dtEntered)
-                    childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
+                            childUpdates.put("/$KEY_CHAT_MEMBERS/$chatId/${it.id}", chatMember)
+                            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId/$KEY_DT_ENTERED", dtEntered)
+                            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$chatId/$KEY_LAST_CHECK_INDEX", message_count)
+                            childUpdates.put("/$KEY_MESSAGE/$chatId/$key", newMessage)
 
-                    ref.updateChildren(childUpdates) { error, _ ->
-                        if(error == null) {
-                            isJoining.value = false
-                            joined.value = true
+                            ref.updateChildren(childUpdates) { error, _ ->
+                                if(error == null) {
+                                    isJoining.value = false
+                                    joined.value = true
+                                }
+                            }
                         }
-                    }
-                }
-            }
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
         }
     }
 }

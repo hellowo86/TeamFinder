@@ -45,7 +45,6 @@ class CommentListAdapter(private val context: Context, private val mContentsList
         Glide.with(context)
                 .load(makePublicPhotoUrl(comment.userId))
                 .bitmapTransform(CropCircleTransformation(context))
-                .thumbnail(0.1f)
                 .placeholder(R.drawable.default_profile)
                 .into(v.profileImage)
 
