@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.ui.activity
 
+import android.Manifest
+import android.app.Activity
 import android.app.ProgressDialog
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
@@ -23,12 +25,32 @@ import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.*
 import com.volokh.danylo.hashtaghelper.HashTagHelper
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_chat_create.*
+import android.support.v4.content.ContextCompat.startActivity
+import android.content.Intent
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import android.os.AsyncTask.execute
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import android.widget.Toast
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
+import java.util.*
 
 
 class ChatCreateActivity : LifecycleActivity() {
+    val PLACE_PICKER_REQUEST = 1
     lateinit var viewModel: ChatCreateViewModel
     lateinit var tagHelper: HashTagHelper
     internal var progressDialog: ProgressDialog? = null
+    internal var googleMap: GoogleMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +61,7 @@ class ChatCreateActivity : LifecycleActivity() {
     }
 
     fun initLayout() {
+        setMap()
         Glide.with(this)
                 .load(GameData.games[0].backgroundId)
                 .bitmapTransform(BlurTransformation(this, 20))
@@ -132,6 +155,24 @@ class ChatCreateActivity : LifecycleActivity() {
         return true
     }
 
+    private fun setMap() {
+        selectLocationBtn.setOnClickListener { startActivityForResult(PlacePicker.IntentBuilder().build(this), PLACE_PICKER_REQUEST) }
+
+        Thread(Runnable {
+            try {
+                val mf = SupportMapFragment.newInstance()
+                supportFragmentManager.beginTransaction().add(R.id.mapLy, mf).commit()
+                runOnUiThread{
+                    mf.getMapAsync { map ->
+                        googleMap = map
+                        map.moveCamera(CameraUpdateFactory.zoomTo(16f))
+                    }
+                }
+            } catch (ignored: Exception) {
+            }
+        }).start()
+    }
+
     private fun showSelectGameDialog() {
         val selectGameDialog = SelectGameDialog()
         selectGameDialog.setDialogInterface {
@@ -175,5 +216,13 @@ class ChatCreateActivity : LifecycleActivity() {
     private fun hideProgressDialog() {
         progressDialog?.dismiss()
         progressDialog = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK) {
+            val place = PlacePicker.getPlace(this, data)
+            Toast.makeText(this, String.format("Place: %s", place.getName()), Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -89,4 +89,5 @@
     <string name="who_out_of_chat">%1$s님이 채팅방을 나가셨습니다.</string>
     <string name="photo">사진</string>
     <string name="uploading_image">이미지 업로드중…</string>
+    <string name="select_loc">위치 선택하기</string>
 </resources>

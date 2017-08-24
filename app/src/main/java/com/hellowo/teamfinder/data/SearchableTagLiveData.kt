@@ -21,7 +21,6 @@ object SearchableTagLiveData : LiveData<List<HashTag>>() {
     var currentUserId = ""
     var currentCount = 0
 
-
     init {
     }
 
