@@ -7,15 +7,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.hellowo.teamfinder.AppConst
-import com.hellowo.teamfinder.AppConst.EXTRA_USER_ID
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MyChatLiveData
 import com.hellowo.teamfinder.data.MeLiveData
@@ -25,16 +25,21 @@ import com.hellowo.teamfinder.ui.fragment.FindFragment
 import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment
 import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
-import com.hellowo.teamfinder.utils.KEY_LAST_CHECK_INDEX
 import com.hellowo.teamfinder.utils.KEY_USERS
 import com.hellowo.teamfinder.viewmodel.MainViewModel
 import com.hellowo.teamfinder.viewmodel.MainViewModel.BottomTab
 import com.hellowo.teamfinder.viewmodel.MainViewModel.BottomTab.*
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.gms.maps.MapFragment
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.hellowo.teamfinder.data.LocationLiveData
+import com.hellowo.teamfinder.utils.getGoogleApiClient
 
-class MainActivity : LifecycleActivity() {
+
+class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     lateinit var viewModel: MainViewModel
+    lateinit var googleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,7 @@ class MainActivity : LifecycleActivity() {
     }
 
     private fun initLayout() {
+        setMap()
         profileTab.setOnLongClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
@@ -56,6 +62,20 @@ class MainActivity : LifecycleActivity() {
         chatTab.setOnClickListener{viewModel.bottomTab.value = Chat}
         clanTab.setOnClickListener{viewModel.bottomTab.value = Clan}
         profileTab.setOnClickListener{viewModel.bottomTab.value = Profile}
+    }
+
+    private fun setMap() {
+        val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(map: GoogleMap?) {
+        map?.let{
+            googleMap = it
+            googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
+            getGoogleApiClient(this)?.let { client -> LocationLiveData.loadCurrentLocation(client) }
+            LocationLiveData.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
+        }
     }
 
     private fun initObserve() {

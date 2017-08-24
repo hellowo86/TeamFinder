@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_chat_create.*
 import android.support.v4.content.ContextCompat.startActivity
 import android.content.Intent
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import android.os.AsyncTask.execute
 import android.util.Log
@@ -37,20 +36,20 @@ import android.view.View.OnTouchListener
 import android.widget.Toast
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlacePicker
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.hellowo.teamfinder.data.LocationLiveData
+import com.hellowo.teamfinder.utils.getGoogleApiClient
 import java.util.*
 
 
-class ChatCreateActivity : LifecycleActivity() {
+class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
     val PLACE_PICKER_REQUEST = 1
     lateinit var viewModel: ChatCreateViewModel
     lateinit var tagHelper: HashTagHelper
-    internal var progressDialog: ProgressDialog? = null
-    internal var googleMap: GoogleMap? = null
+    private var progressDialog: ProgressDialog? = null
+    lateinit var googleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +61,7 @@ class ChatCreateActivity : LifecycleActivity() {
 
     fun initLayout() {
         setMap()
-        Glide.with(this)
-                .load(GameData.games[0].backgroundId)
-                .bitmapTransform(BlurTransformation(this, 20))
-                .into(backgroundImg)
+        setBackground()
 
         nextBtn.setOnClickListener { goNext() }
         confirmBtn.setOnClickListener { viewModel.confirm(tagHelper.allHashTags) }
@@ -95,6 +91,13 @@ class ChatCreateActivity : LifecycleActivity() {
                 viewModel.setContents(s)
             }
         })
+    }
+
+    private fun setBackground() {
+        Glide.with(this)
+                .load(GameData.games[0].backgroundId)
+                .bitmapTransform(BlurTransformation(this, 20))
+                .into(backgroundImg)
     }
 
     fun initObserve() {
@@ -156,21 +159,17 @@ class ChatCreateActivity : LifecycleActivity() {
     }
 
     private fun setMap() {
-        selectLocationBtn.setOnClickListener { startActivityForResult(PlacePicker.IntentBuilder().build(this), PLACE_PICKER_REQUEST) }
+        val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
+        mapFragment.getMapAsync(this)
+    }
 
-        Thread(Runnable {
-            try {
-                val mf = SupportMapFragment.newInstance()
-                supportFragmentManager.beginTransaction().add(R.id.mapLy, mf).commit()
-                runOnUiThread{
-                    mf.getMapAsync { map ->
-                        googleMap = map
-                        map.moveCamera(CameraUpdateFactory.zoomTo(16f))
-                    }
-                }
-            } catch (ignored: Exception) {
-            }
-        }).start()
+    override fun onMapReady(map: GoogleMap?) {
+        map?.let{
+            googleMap = it
+            googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
+            getGoogleApiClient(this)?.let { client -> LocationLiveData.loadCurrentLocation(client) }
+            LocationLiveData.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
+        }
     }
 
     private fun showSelectGameDialog() {
