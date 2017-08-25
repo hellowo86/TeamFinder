@@ -35,7 +35,7 @@ class ChatFindActivity : LifecycleActivity() {
     }
 
     private fun initLayout() {
-        createBtn.setOnClickListener { checkLocationPermission() }
+        createBtn.setOnClickListener {  }
         backBtn.setOnClickListener{ finish() }
         searchInput.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
@@ -69,19 +69,6 @@ class ChatFindActivity : LifecycleActivity() {
             swipeRefreshLy.isRefreshing = false
             adapter.notifyDataSetChanged() })
     }
-
-    val permissionlistener = object : PermissionListener {
-        override fun onPermissionGranted() { startActivity(Intent(this@ChatFindActivity, ChatCreateActivity::class.java)) }
-        override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {}
-    }
-
-    fun checkLocationPermission() {
-        TedPermission(this)
-                .setPermissionListener(permissionlistener)
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-                .check()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == RC_JOIN && resultCode == Activity.RESULT_OK) {

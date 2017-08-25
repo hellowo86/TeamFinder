@@ -41,7 +41,7 @@
                             android:layout_marginTop="@dimen/normal_margin"
                             android:layout_marginBottom="@dimen/normal_margin"
                             android:layout_marginStart="@dimen/extra_margin"
-                            android:text="@string/game"/>
+                            android:text="@string/category"/>
 
                         <FrameLayout
                             android:layout_width="0dp"

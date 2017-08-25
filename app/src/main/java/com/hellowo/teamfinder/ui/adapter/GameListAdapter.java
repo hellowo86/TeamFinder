@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.GameData;
-import com.hellowo.teamfinder.model.Game;
+import com.hellowo.teamfinder.data.CategoryData;
+import com.hellowo.teamfinder.model.Category;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,14 +19,14 @@ import java.util.List;
 
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHolder> {
     private Context context;
-    private List<Game> mContentsList;
+    private List<Category> mContentsList;
     private AdapterInterface adapterInterface;
 
     public GameListAdapter(Context context, AdapterInterface adapterInterface) {
         this.context = context;
         this.adapterInterface = adapterInterface;
         mContentsList = new ArrayList<>();
-        mContentsList.addAll(GameData.INSTANCE.getGames());
+        mContentsList.addAll(CategoryData.INSTANCE.getCATEGORIES());
         Collections.sort(mContentsList, (l, r) ->
                 l.getTitle().charAt(0) < r.getTitle().charAt(0) ? -1 :
                 l.getTitle().charAt(0) > r.getTitle().charAt(0) ? 1 : 0);
@@ -56,11 +56,11 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Game game = mContentsList.get(position);
-        holder.titleText.setText(game.getTitle());
-        holder.imageView.setImageResource(game.getIconId());
+        final Category category = mContentsList.get(position);
+        holder.titleText.setText(category.getTitle());
+        holder.imageView.setImageResource(category.getIconId());
         holder.container.setOnClickListener(v ->
-            adapterInterface.onItemClicked(game));
+            adapterInterface.onItemClicked(category));
     }
 
     @Override
@@ -74,6 +74,6 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
     }
 
     public interface AdapterInterface {
-        void onItemClicked(Game game);
+        void onItemClicked(Category category);
     }
 }

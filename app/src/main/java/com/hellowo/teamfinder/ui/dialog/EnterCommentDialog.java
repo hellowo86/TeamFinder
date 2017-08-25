@@ -4,21 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Game;
-import com.hellowo.teamfinder.ui.adapter.BasicListAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EnterCommentDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;

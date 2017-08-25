@@ -3,13 +3,13 @@ package com.hellowo.teamfinder.data
 import com.beust.klaxon.JsonArray
 import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.model.Game
+import com.hellowo.teamfinder.model.Category
 import org.json.JSONArray
 
-object GameData {
-    val games: MutableList<Game> = mutableListOf()
+object CategoryData {
+    val CATEGORIES: MutableList<Category> = mutableListOf()
     val gameIconIds = intArrayOf(
-            R.drawable.game_icon_0, R.drawable.game_icon_1, R.drawable.game_icon_2)
+            R.drawable.ic_account_circle_black_48dp, R.drawable.ic_assignment_late_black_48dp, R.drawable.ic_dashboard_black_24dp)
     val gameBackgroundIds = intArrayOf(
             R.drawable.game_background_0, R.drawable.game_background_0, R.drawable.game_background_0)
 
@@ -18,7 +18,7 @@ object GameData {
         var id = 0
         gamesJson.map { JSONArray(it) }
                 .forEach {
-                    games.add(Game(
+                    CATEGORIES.add(Category(
                             id,
                             it.getString(0),
                             JsonArray(it.getString(1)).map { it as String },

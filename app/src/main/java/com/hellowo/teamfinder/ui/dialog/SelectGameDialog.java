@@ -1,12 +1,7 @@
 package com.hellowo.teamfinder.ui.dialog;
 
 import android.app.Dialog;
-import android.arch.lifecycle.ViewModelProviders;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Game;
+import com.hellowo.teamfinder.model.Category;
 import com.hellowo.teamfinder.ui.adapter.GameListAdapter;
-import com.hellowo.teamfinder.viewmodel.CreateTeamViewModel;
 
 public class SelectGameDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;
@@ -56,6 +50,6 @@ public class SelectGameDialog extends BottomSheetDialog {
     }
 
     public interface DialogInterface{
-        void onSelectedGame(Game game);
+        void onSelectedGame(Category category);
     }
 }

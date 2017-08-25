@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
@@ -30,55 +30,30 @@
                 android:textColor="@color/primaryWhiteText"
                 android:layout_marginTop="120dp"
                 android:gravity="center"
-                android:text="@string/ask_select_game"/>
-
-            <LinearLayout
-                android:layout_margin="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/gameSelectBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/ripple_button"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/gameIconImg"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp" />
-
-                    <TextView
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:id="@+id/gameTitleText"
-                        style="@style/TitleText"
-                        android:textColor="@color/primaryWhiteText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:text="@string/select_loc_and_main_icon"/>
 
             <Button
                 android:id="@+id/selectLocationBtn"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_width="wrap_content"
+                android:layout_margin="30dp"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:text="@string/select_loc"
                 style="@style/BasicButton" />
 
-            <fragment
-                android:name="com.google.android.gms.maps.MapFragment"
-                android:id="@+id/map"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.hellowo.teamfinder.ui.activity.ChatCreateActivity"/>
+                android:layout_height="match_parent">
+
+                <fragment
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context="com.hellowo.teamfinder.ui.activity.ChatCreateActivity"
+                    map:liteMode="true" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

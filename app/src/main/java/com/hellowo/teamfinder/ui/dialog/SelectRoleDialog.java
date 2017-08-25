@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Game;
+import com.hellowo.teamfinder.model.Category;
 import com.hellowo.teamfinder.ui.adapter.BasicListAdapter;
 
 import java.util.ArrayList;
@@ -18,14 +18,14 @@ import java.util.List;
 
 public class SelectRoleDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;
-    Game game;
+    Category category;
 
     public void setDialogInterface(DialogInterface dialogInterface) {
         this.dialogInterface = dialogInterface;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SelectRoleDialog extends BottomSheetDialog {
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
         sheetBehavior = (BottomSheetBehavior)layoutParams.getBehavior();
-        if (sheetBehavior != null && game != null) {
+        if (sheetBehavior != null && category != null) {
             sheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
 
             TextView mainTopTitle = (TextView) contentView.findViewById(R.id.mainTopTitle);
@@ -49,7 +49,7 @@ public class SelectRoleDialog extends BottomSheetDialog {
 
             List<String> items = new ArrayList<>();
             items.add(getContext().getString(R.string.free_role));
-            items.addAll(game.getRoles());
+            items.addAll(category.getRoles());
 
             recyclerView.setAdapter(new BasicListAdapter(getContext(), items, (item, pos)->{
                 if(dialogInterface != null) {

@@ -14,10 +14,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.GameData;
+import com.hellowo.teamfinder.data.CategoryData;
 import com.hellowo.teamfinder.data.TeamsLiveData;
 import com.hellowo.teamfinder.databinding.ListItemTeamBinding;
-import com.hellowo.teamfinder.model.Game;
+import com.hellowo.teamfinder.model.Category;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
@@ -69,7 +69,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Team team = mContentsList.get(position);
         final Member organizer = team.getOrganizer();
-        final Game game = GameData.INSTANCE.getGames().get(team.getGameId());
+        final Category category = CategoryData.INSTANCE.getCATEGORIES().get(team.getGameId());
         final ListItemTeamBinding binding = holder.binding;
 
         binding.contentsText.setText(team.getTitle());
@@ -82,10 +82,10 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.ViewHo
         tagHelper.handle(binding.contentsText);
 
         Glide.with(context)
-                .load(game.getIconId())
+                .load(category.getIconId())
                 .bitmapTransform(new GrayscaleTransformation(context))
                 .into(binding.gameIconImg);
-        binding.gameText.setText(game.getTitle());
+        binding.gameText.setText(category.getTitle());
 
         Glide.with(context)
                 .load(!TextUtils.isEmpty(organizer.getPhotoUrl()) ?

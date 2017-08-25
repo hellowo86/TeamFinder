@@ -1,12 +1,13 @@
 package com.hellowo.teamfinder.ui.activity
 
+import android.Manifest
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.util.ArrayMap
 import android.text.TextUtils
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,13 +34,21 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.hellowo.teamfinder.data.LocationLiveData
-import com.hellowo.teamfinder.utils.getGoogleApiClient
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
+import com.hellowo.teamfinder.data.CategoryData
+import com.hellowo.teamfinder.data.CurrentLocation
+import java.util.ArrayList
 
 
 class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     lateinit var viewModel: MainViewModel
     lateinit var googleMap: GoogleMap
+    val markerMap: MutableMap<String, Marker> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,14 +82,46 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
         map?.let{
             googleMap = it
             googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
-            getGoogleApiClient(this)?.let { client -> LocationLiveData.loadCurrentLocation(client) }
-            LocationLiveData.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
+            googleMap.setOnCameraIdleListener {
+                viewModel.search(googleMap.projection.visibleRegion)
+            }
+            checkLocationPermission()
         }
     }
+    /* 마커 기준으로 맵 옮기기
+    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+    for (Marker marker : markers) {
+        builder.include(marker.getPosition());
+    }
+    LatLngBounds bounds = builder.build();
+
+    int padding = 0; // offset from edges of the map in pixels
+    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+    googleMap.moveCamera(cu);
+     */
 
     private fun initObserve() {
         MeLiveData.observe(this, Observer { updateUserUI(it) })
         viewModel.bottomTab.observe(this, Observer { moveTab(it) })
+        viewModel.location.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
+        viewModel.chats.observe(this, Observer { addMarkers(it) })
+    }
+
+    private fun addMarkers(markers: ArrayMap<String, com.hellowo.teamfinder.model.Chat>?) {
+        markers?.forEach {
+            if(markerMap.containsKey(it.key)) {
+
+            }else {
+                val currentMarker = googleMap.addMarker(MarkerOptions()
+                        .position(LatLng(it.value.lat, it.value.lng))
+                        .title(it.value.title)
+                        .snippet(it.value.description)
+                        .icon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[it.value.gameId])))
+                currentMarker?.tag = it.value
+                markerMap.put(it.key, currentMarker)
+            }
+        }
     }
 
     private fun checkIntentExtra() {
@@ -125,4 +166,21 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
                 })
         fragmentTransaction.commit()
     }
+
+    val permissionlistener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            if(viewModel.location.value == null) {
+                CurrentLocation.setCurrentLocation(this@MainActivity) { viewModel.location.value = it.latLng }
+            }
+        }
+        override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {}
+    }
+
+    fun checkLocationPermission() {
+        TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                .check()
+    }
+
 }

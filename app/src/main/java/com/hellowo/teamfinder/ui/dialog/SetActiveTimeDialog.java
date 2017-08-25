@@ -10,12 +10,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.model.Game;
 import com.hellowo.teamfinder.ui.adapter.BasicListAdapter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SetActiveTimeDialog extends BottomSheetDialog {
     DialogInterface dialogInterface;

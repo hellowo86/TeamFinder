@@ -22,7 +22,7 @@
     <string name="failed_upload">사진 업로드를 실패했습니다. 다시 시도해 주세요.</string>
     <string name="recruiting_team_member">팀원 모집하기</string>
     <string name="title">제목</string>
-    <string name="game">게임</string>
+    <string name="category">게임</string>
     <string name="members">멤버</string>
     <string name="active_time">모집 종료시간</string>
     <string name="description">세부설명</string>
@@ -91,4 +91,5 @@
     <string name="uploading_image">이미지 업로드중…</string>
     <string name="select_loc">위치 선택하기</string>
     <string name="search_chat">채팅방 찾기</string>
+    <string name="select_loc_and_main_icon">채팅방의 위치와 아이콘을 선택해 주세요.</string>
 </resources>

@@ -5,14 +5,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.hellowo.teamfinder.R;
-import com.hellowo.teamfinder.data.GameData;
+import com.hellowo.teamfinder.data.CategoryData;
 import com.hellowo.teamfinder.databinding.ActivityTeamDetailBinding;
-import com.hellowo.teamfinder.model.Game;
+import com.hellowo.teamfinder.model.Category;
 import com.hellowo.teamfinder.model.Member;
 import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.ui.adapter.CommentListAdapter;
@@ -107,7 +106,7 @@ public class TeamDetailActivity extends LifecycleActivity {
     }
 
     private void updateUI(Team team) {
-        final Game game = GameData.INSTANCE.getGames().get(team.getGameId());
+        final Category category = CategoryData.INSTANCE.getCATEGORIES().get(team.getGameId());
         final Member organizer = team.getOrganizer();
 
         binding.contentsText.setText(team.getTitle());
@@ -119,9 +118,9 @@ public class TeamDetailActivity extends LifecycleActivity {
         tagHelper.handle(binding.contentsText);
 
         Glide.with(this)
-                .load(game.getIconId())
+                .load(category.getIconId())
                 .into(binding.gameIconImg);
-        binding.gameTitleText.setText(game.getTitle());
+        binding.gameTitleText.setText(category.getTitle());
 
     }
 

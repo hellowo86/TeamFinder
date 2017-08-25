@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.text.Editable
 import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
+import com.hellowo.teamfinder.data.CategoryData
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.*
@@ -68,6 +69,7 @@ class ChatCreateViewModel : ViewModel() {
             val chatMember = it.makeChatMember()
             chatMember.pushToken = FirebaseInstanceId.getInstance().token
 
+            tagMap.put(CategoryData.CATEGORIES[chat.gameId].title, true)
             allHashTags.forEach {
                 tagMap.put(it, true)
                 ref.child(KEY_HASH_TAG).child(it).runTransaction(object : Transaction.Handler {
@@ -95,7 +97,7 @@ class ChatCreateViewModel : ViewModel() {
         }
     }
 
-    fun selectGame(game: com.hellowo.teamfinder.model.Game?) {
-        gameId.value = game?.id
+    fun selectGame(category: com.hellowo.teamfinder.model.Category?) {
+        gameId.value = category?.id
     }
 }

@@ -1,6 +1,6 @@
 package com.hellowo.teamfinder.model
 
-data class Game (
+data class Category(
         val id: Int,
         val title: String,
         val roles: List<String>,

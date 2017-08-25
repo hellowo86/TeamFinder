@@ -1,6 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.arch.lifecycle.LifecycleActivity
@@ -13,35 +13,25 @@ import android.text.TextWatcher
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.GameData
-import com.hellowo.teamfinder.model.HashTag
+import com.hellowo.teamfinder.data.CategoryData
 import com.hellowo.teamfinder.ui.dialog.SelectGameDialog
 import com.hellowo.teamfinder.ui.dialog.SelectTagDialog
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.*
 import com.volokh.danylo.hashtaghelper.HashTagHelper
-import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_chat_create.*
-import android.support.v4.content.ContextCompat.startActivity
 import android.content.Intent
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.LatLng
-import android.os.AsyncTask.execute
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
-import android.widget.Toast
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.maps.*
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
-import com.hellowo.teamfinder.data.LocationLiveData
-import com.hellowo.teamfinder.utils.getGoogleApiClient
-import java.util.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.hellowo.teamfinder.data.CurrentLocation
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+
+
 
 
 class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
@@ -50,6 +40,7 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
     lateinit var tagHelper: HashTagHelper
     private var progressDialog: ProgressDialog? = null
     lateinit var googleMap: GoogleMap
+    var currentMarker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +57,6 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
         nextBtn.setOnClickListener { goNext() }
         confirmBtn.setOnClickListener { viewModel.confirm(tagHelper.allHashTags) }
         backBtn.setOnClickListener{ onBackPressed() }
-
-        gameSelectBtn.setOnClickListener{ showSelectGameDialog() }
         addTagBtn.setOnClickListener { showSelectTagDialog() }
 
         titleInput.addTextChangedListener(object : TextWatcher {
@@ -93,11 +82,47 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
         })
     }
 
+    private fun setMap() {
+        val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
+        mapFragment.getMapAsync(this)
+        selectLocationBtn.setOnClickListener {
+            val builder = PlacePicker.IntentBuilder()
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onMapReady(map: GoogleMap?) {
+        map?.let{
+            googleMap = it
+            googleMap.uiSettings.isMapToolbarEnabled = false
+            googleMap.setOnMapClickListener {  }
+            googleMap.moveCamera(CameraUpdateFactory.zoomTo(16f))
+            googleMap.setOnMarkerClickListener { marker -> showSelectGameDialog() }
+            CurrentLocation.setCurrentLocation(this) { setMarker(it) }
+        }
+    }
+
+    private fun setMarker(place: Place) {
+        viewModel.chat.lat = place.latLng.latitude
+        viewModel.chat.lng = place.latLng.longitude
+        viewModel.chat.location = place.name.toString()
+        currentMarker?.remove()
+        currentMarker = googleMap.addMarker(MarkerOptions()
+                .position(place.latLng)
+                .title(place.name.toString())
+                .icon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[viewModel.chat.gameId])))
+        currentMarker?.tag = viewModel.chat
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+    }
+
     private fun setBackground() {
+        /*
         Glide.with(this)
-                .load(GameData.games[0].backgroundId)
+                .load(CategoryData.CATEGORIES[0].backgroundId)
                 .bitmapTransform(BlurTransformation(this, 20))
                 .into(backgroundImg)
+                */
     }
 
     fun initObserve() {
@@ -109,9 +134,9 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
     }
 
     private fun updateGameUI(gameId: Int?) {
-        GameData.games[gameId as Int].let {
-            gameTitleText.text = it.title
-            gameIconImg.setImageResource(it.iconId)
+        CategoryData.CATEGORIES[gameId as Int].let {
+            viewModel.chat.gameId = gameId
+            currentMarker?.setIcon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[gameId]))
         }
     }
 
@@ -158,27 +183,14 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
         return true
     }
 
-    private fun setMap() {
-        val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
-        mapFragment.getMapAsync(this)
-    }
-
-    override fun onMapReady(map: GoogleMap?) {
-        map?.let{
-            googleMap = it
-            googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
-            getGoogleApiClient(this)?.let { client -> LocationLiveData.loadCurrentLocation(client) }
-            LocationLiveData.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
-        }
-    }
-
-    private fun showSelectGameDialog() {
+    private fun showSelectGameDialog(): Boolean {
         val selectGameDialog = SelectGameDialog()
         selectGameDialog.setDialogInterface {
             viewModel.selectGame(it)
             selectGameDialog.dismiss()
         }
         selectGameDialog.show(supportFragmentManager, selectGameDialog.tag)
+        return true
     }
 
     private fun showSelectTagDialog() {
@@ -220,8 +232,7 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK) {
-            val place = PlacePicker.getPlace(this, data)
-            Toast.makeText(this, String.format("Place: %s", place.getName()), Toast.LENGTH_LONG).show();
+            setMarker(PlacePicker.getPlace(this, data))
         }
     }
 }

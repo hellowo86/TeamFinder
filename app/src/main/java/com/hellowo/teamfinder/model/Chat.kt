@@ -12,7 +12,10 @@ data class Chat (
         var lastMessage: String? = null,
         var lastMessageTime: Long = 0,
         var gameId: Int = 0,
-        var messageCount: Int = 0) {
+        var messageCount: Int = 0,
+        var lat: Double = 0.0,
+        var lng: Double = 0.0,
+        var location: String? = null) {
 
     @Exclude var dtEntered: Long = 0
     @Exclude var lastCheckIndex: Int = 0
@@ -30,6 +33,10 @@ data class Chat (
         resultMap.put("gameId", gameId)
         resultMap.put("messageCount", messageCount)
         resultMap.put("hashTag", hashTag)
+        resultMap.put("lat", lat)
+        resultMap.put("lng", lng)
+        resultMap.put("latlng", "${lat}_$lng")
+        resultMap.put("location", location)
         return resultMap
     }
 }

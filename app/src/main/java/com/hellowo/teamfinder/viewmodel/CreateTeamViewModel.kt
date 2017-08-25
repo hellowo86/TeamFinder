@@ -3,19 +3,18 @@ package com.hellowo.teamfinder.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.text.Editable
-import android.text.TextUtils
 
 import com.google.firebase.database.FirebaseDatabase
 import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MeLiveData
-import com.hellowo.teamfinder.data.GameData
-import com.hellowo.teamfinder.model.Game
+import com.hellowo.teamfinder.data.CategoryData
+import com.hellowo.teamfinder.model.Category
 import com.hellowo.teamfinder.model.Team
 import com.hellowo.teamfinder.utils.KEY_TEAMS
 
 class CreateTeamViewModel : ViewModel() {
-    var selectedGame = MutableLiveData<Game>()
+    var selectedGame = MutableLiveData<Category>()
     var currentRoles = MutableLiveData<Map<String, Int>>()
     var needMemberSize = MutableLiveData<Int>()
     var isFullMember = MutableLiveData<Boolean>()
@@ -30,18 +29,18 @@ class CreateTeamViewModel : ViewModel() {
         team.dtActive = java.lang.Long.MAX_VALUE
         team.roles.put(App.context.getString(R.string.free_role), 1)
         needMemberSize.value = 1
-        selectedGame.value = GameData.games[0]
+        selectedGame.value = CategoryData.CATEGORIES[0]
         currentRoles.value = team.roles
         checkFullMember()
         checkConfirmable()
     }
 
-    fun selectGame(game: Game) {
+    fun selectGame(category: Category) {
         val prevGameId = selectedGame.value!!.id
-        team.gameId = game.id
-        selectedGame.setValue(game)
+        team.gameId = category.id
+        selectedGame.setValue(category)
 
-        if (game.id != prevGameId) {
+        if (category.id != prevGameId) {
             for (role in team.roles.keys) {
                 if (role == App.context.getString(R.string.free_role)) {
                 } else {

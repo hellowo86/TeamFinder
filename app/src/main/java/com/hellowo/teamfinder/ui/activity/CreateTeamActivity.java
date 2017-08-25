@@ -15,7 +15,6 @@ import com.hellowo.teamfinder.databinding.ActivityCreateTeamBinding;
 import com.hellowo.teamfinder.ui.adapter.RolesAdapter;
 import com.hellowo.teamfinder.ui.dialog.SelectGameDialog;
 import com.hellowo.teamfinder.ui.dialog.SelectRoleDialog;
-import com.hellowo.teamfinder.ui.dialog.SelectTagDialog;
 import com.hellowo.teamfinder.ui.dialog.SetActiveTimeDialog;
 import com.hellowo.teamfinder.viewmodel.CreateTeamViewModel;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
@@ -142,7 +141,7 @@ public class CreateTeamActivity extends LifecycleActivity {
 
     private void showRoloEditDialog(String prevRole, int delta) {
         final SelectRoleDialog selectRoleDialog = new SelectRoleDialog();
-        selectRoleDialog.setGame(viewModel.getSelectedGame().getValue());
+        selectRoleDialog.setCategory(viewModel.getSelectedGame().getValue());
         selectRoleDialog.setDialogInterface(role -> {
             if(TextUtils.isEmpty(prevRole)) {
                 viewModel.setRole(role, 1);
