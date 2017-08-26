@@ -1,8 +1,10 @@
 package com.hellowo.teamfinder.model
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
+import com.google.maps.android.clustering.ClusterItem
 
-data class Chat (
+data class Chat(
         var id: String? = null,
         var title: String? = null,
         var description: String? = null,
@@ -15,7 +17,7 @@ data class Chat (
         var messageCount: Int = 0,
         var lat: Double = 0.0,
         var lng: Double = 0.0,
-        var location: String? = null) {
+        var location: String? = null): ClusterItem {
 
     @Exclude var dtEntered: Long = 0
     @Exclude var lastCheckIndex: Int = 0
@@ -39,4 +41,6 @@ data class Chat (
         resultMap.put("location", location)
         return resultMap
     }
+
+    @Exclude override fun getPosition() = LatLng(lat, lng)
 }

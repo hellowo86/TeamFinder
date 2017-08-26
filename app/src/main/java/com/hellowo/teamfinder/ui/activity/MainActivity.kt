@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.data.CategoryData
@@ -49,6 +50,7 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     lateinit var viewModel: MainViewModel
     lateinit var googleMap: GoogleMap
     val markerMap: MutableMap<String, Marker> = HashMap()
+    lateinit var mClusterManager: ClusterManager<com.hellowo.teamfinder.model.Chat>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +75,13 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
         profileTab.setOnClickListener{viewModel.bottomTab.value = Profile}
     }
 
+    private fun initObserve() {
+        MeLiveData.observe(this, Observer { updateUserUI(it) })
+        viewModel.bottomTab.observe(this, Observer { moveTab(it) })
+        viewModel.location.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
+        viewModel.chats.observe(this, Observer { addMarkers(it) })
+    }
+
     private fun setMap() {
         val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
@@ -81,10 +90,12 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
         map?.let{
             googleMap = it
+            mClusterManager = ClusterManager(this, googleMap)
             googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
-            googleMap.setOnCameraIdleListener {
+            googleMap.setOnCameraIdleListener{
                 viewModel.search(googleMap.projection.visibleRegion)
             }
+            googleMap.setOnMarkerClickListener(mClusterManager)
             checkLocationPermission()
         }
     }
@@ -101,26 +112,24 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     googleMap.moveCamera(cu);
      */
 
-    private fun initObserve() {
-        MeLiveData.observe(this, Observer { updateUserUI(it) })
-        viewModel.bottomTab.observe(this, Observer { moveTab(it) })
-        viewModel.location.observe(this, Observer { googleMap.moveCamera(CameraUpdateFactory.newLatLng(it)) })
-        viewModel.chats.observe(this, Observer { addMarkers(it) })
-    }
-
     private fun addMarkers(markers: ArrayMap<String, com.hellowo.teamfinder.model.Chat>?) {
         markers?.forEach {
             if(markerMap.containsKey(it.key)) {
 
             }else {
+                mClusterManager.addItem(it.value)
+                /*
                 val currentMarker = googleMap.addMarker(MarkerOptions()
                         .position(LatLng(it.value.lat, it.value.lng))
                         .title(it.value.title)
                         .snippet(it.value.description)
-                        .icon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[it.value.gameId])))
+                        //.icon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[it.value.gameId]))
+                )
                 currentMarker?.tag = it.value
                 markerMap.put(it.key, currentMarker)
+                */
             }
+            mClusterManager.cluster()
         }
     }
 
