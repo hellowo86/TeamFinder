@@ -13,7 +13,7 @@ import com.hellowo.teamfinder.utils.KEY_CHAT
 
 
 class MainViewModel : ViewModel() {
-    enum class BottomTab {Instant, Chat, Clan, Profile}
+    enum class BottomTab {Find, ChatList, Clan, Profile}
     var bottomTab = MutableLiveData<BottomTab>()
     var location = MutableLiveData<LatLng>()
 
@@ -36,7 +36,7 @@ class MainViewModel : ViewModel() {
     }
 
     init {
-        bottomTab.value = BottomTab.Instant
+        bottomTab.value = BottomTab.ChatList
     }
 
     fun search(visibleRegion: VisibleRegion): Boolean {
