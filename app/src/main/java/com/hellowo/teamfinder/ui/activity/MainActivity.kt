@@ -1,30 +1,40 @@
 package com.hellowo.teamfinder.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
+import android.location.Geocoder
 import android.os.Bundle
 import android.support.v4.util.ArrayMap
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapFragment
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.maps.android.clustering.Cluster
+import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.clustering.view.DefaultClusterRenderer
+import com.google.maps.android.ui.IconGenerator
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MyChatLiveData
+import com.hellowo.teamfinder.data.CurrentLocation
 import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.MyChatLiveData
+import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.ui.fragment.ChatListFragment
 import com.hellowo.teamfinder.ui.fragment.FindFragment
@@ -33,28 +43,13 @@ import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
 import com.hellowo.teamfinder.utils.KEY_USERS
 import com.hellowo.teamfinder.viewmodel.MainViewModel
-import com.hellowo.teamfinder.viewmodel.MainViewModel.BottomTab
-import com.hellowo.teamfinder.viewmodel.MainViewModel.BottomTab.*
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
-import com.google.android.gms.maps.MapFragment
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.clustering.Cluster
-import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.algo.Algorithm
-import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import com.google.maps.android.ui.IconGenerator
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
-import com.hellowo.teamfinder.data.CategoryData
-import com.hellowo.teamfinder.data.CurrentLocation
-import com.hellowo.teamfinder.model.Chat
-import com.hellowo.teamfinder.utils.ViewUtil
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.fragment_find.*
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.collections.MutableMap
+import kotlin.collections.forEach
 
 
 class MainActivity : LifecycleActivity(), OnMapReadyCallback {
@@ -80,18 +75,34 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             FirebaseAuth.getInstance().signOut()
             return@setOnLongClickListener false
         }
-        instantTab.setOnClickListener{viewModel.bottomTab.value = Find}
-        chatTab.setOnClickListener{viewModel.bottomTab.value = ChatList}
-        clanTab.setOnClickListener{viewModel.bottomTab.value = Clan}
-        profileTab.setOnClickListener{viewModel.bottomTab.value = Profile}
+        instantTab.setOnClickListener{ clickTab(it) }
+        chatTab.setOnClickListener{ clickTab(it) }
+        clanTab.setOnClickListener{ clickTab(it) }
+        profileTab.setOnClickListener{ clickTab(it) }
+        clickTab(instantTab)
+    }
+
+    private fun clickTab(item: View?) {
+        instantTab.setBackgroundColor(getColor(R.color.transparent))
+        chatTab.setBackgroundColor(getColor(R.color.transparent))
+        clanTab.setBackgroundColor(getColor(R.color.transparent))
+        profileTab.setBackgroundColor(getColor(R.color.transparent))
+        item?.setBackgroundColor(getColor(R.color.backgroundDark))
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container,
+                when (item) {
+                    instantTab -> FindFragment()
+                    chatTab -> ChatListFragment()
+                    clanTab -> TeamInfoFragment()
+                    profileTab -> TeamInfoFragment()
+                    else -> return
+                })
+        fragmentTransaction.commit()
     }
 
     private fun initObserve() {
         MeLiveData.observe(this, Observer { updateUserUI(it) })
-        viewModel.bottomTab.observe(this, Observer { moveTab(it) })
-        viewModel.location.observe(this, Observer {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(it))
-        })
         viewModel.chats.observe(this, Observer { addMarkers(it) })
     }
 
@@ -105,18 +116,56 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             googleMap = it
             mClusterManager = ClusterManager(this, googleMap)
             mClusterManager.renderer = PersonRenderer()
-            googleMap.isMyLocationEnabled = true
             googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
+            googleMap.setOnMarkerClickListener(mClusterManager)
+            googleMap.setOnInfoWindowClickListener(mClusterManager)
             googleMap.setOnCameraIdleListener{
+                getAddressFromMap()
                 viewModel.search(googleMap.projection.visibleRegion)
             }
-            googleMap.setOnMarkerClickListener(mClusterManager)
+            mClusterManager.setOnClusterClickListener{ onClusterClick(it) }
+            mClusterManager.setOnClusterInfoWindowClickListener{}
+            mClusterManager.setOnClusterItemClickListener{ onClusterItemClick(it) }
+            mClusterManager.setOnClusterItemInfoWindowClickListener{}
             checkLocationPermission()
         }
     }
 
-    private inner class PersonRenderer : DefaultClusterRenderer<Chat>(
-            applicationContext, googleMap, mClusterManager) {
+    @SuppressLint("SetTextI18n")
+    fun getAddressFromMap() {
+        val lat = googleMap.projection.visibleRegion.latLngBounds.center.latitude
+        val lng = googleMap.projection.visibleRegion.latLngBounds.center.longitude
+        Thread{
+            try{
+                val geo = Geocoder(applicationContext, Locale.getDefault())
+                geo.getFromLocation(lat, lng, 1)?.let {
+                    if(it.size > 0) {
+                        runOnUiThread {
+                            titleText.text = "${it[0].locality} ${it[0].subLocality ?: it[0].thoroughfare}"
+                        }
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    fun setLocation(it: Place) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(it.latLng))
+    }
+
+    private fun onClusterItemClick(it: Chat?): Boolean {
+        Log.d("aaa", "111")
+        return false
+    }
+
+    private fun onClusterClick(it: Cluster<Chat>?): Boolean {
+        Log.d("aaa", "222")
+        return false
+    }
+
+    private inner class PersonRenderer : DefaultClusterRenderer<Chat>(applicationContext, googleMap, mClusterManager) {
         private val mIconGenerator = IconGenerator(applicationContext)
         private val mClusterIconGenerator = IconGenerator(applicationContext)
 
@@ -124,18 +173,6 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             return cluster?.size as Int > 1
         }
     }
-    /* 마커 기준으로 맵 옮기기
-    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-    for (Marker marker : markers) {
-        builder.include(marker.getPosition());
-    }
-    LatLngBounds bounds = builder.build();
-
-    int padding = 0; // offset from edges of the map in pixels
-    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-
-    googleMap.moveCamera(cu);
-     */
 
     private fun addMarkers(markers: ArrayMap<String, com.hellowo.teamfinder.model.Chat>?) {
         markers?.forEach {
@@ -144,16 +181,6 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             }else {
                 markerMap.put(it.key, it.value)
                 mClusterManager.addItem(it.value)
-                /*
-                val currentMarker = googleMap.addMarker(MarkerOptions()
-                        .position(LatLng(it.value.lat, it.value.lng))
-                        .title(it.value.title)
-                        .snippet(it.value.description)
-                        //.icon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[it.value.gameId]))
-                )
-                currentMarker?.tag = it.value
-                markerMap.put(it.key, currentMarker)
-                */
             }
         }
         mClusterManager.cluster()
@@ -163,7 +190,7 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
         intent.extras?.let {
             if(it.containsKey(AppConst.EXTRA_CHAT_ID)) {
                 val chatId = it.getString(AppConst.EXTRA_CHAT_ID)
-                viewModel.bottomTab.value = ChatList
+                clickTab(chatTab)
                 FirebaseDatabase.getInstance().reference.child(KEY_USERS).child(MyChatLiveData.currentUserId)
                         .child(KEY_CHAT).child(chatId).child(KEY_DT_ENTERED)
                         .addListenerForSingleValueEvent(object : ValueEventListener{
@@ -189,24 +216,11 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun moveTab(tab: BottomTab?) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container,
-                when (tab) {
-                    Find -> FindFragment()
-                    ChatList -> ChatListFragment()
-                    Clan -> TeamInfoFragment()
-                    Profile -> TeamInfoFragment()
-                    else -> return
-                })
-        fragmentTransaction.commit()
-    }
-
     val permissionlistener = object : PermissionListener {
+        @SuppressLint("MissingPermission")
         override fun onPermissionGranted() {
-            if(viewModel.location.value == null) {
-                CurrentLocation.setCurrentLocation(this@MainActivity) { viewModel.location.value = it.latLng }
-            }
+            googleMap.isMyLocationEnabled = true
+            CurrentLocation.setCurrentLocation(this@MainActivity) { setLocation(it) }
         }
         override fun onPermissionDenied(deniedPermissions: ArrayList<String>) {}
     }

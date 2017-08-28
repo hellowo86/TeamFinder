@@ -60,6 +60,7 @@ class ChatCreateViewModel : ViewModel() {
             val ref = FirebaseDatabase.getInstance().reference
             loading.value = true
             chat.dtCreated = System.currentTimeMillis()
+            chat.dtUpdated =  chat.dtCreated
             chat.maxMemberCount = 2
             chat.king = it.id
 
@@ -87,7 +88,7 @@ class ChatCreateViewModel : ViewModel() {
 
             childUpdates.put("/$KEY_CHAT/$key", chat.makeMap(tagMap))
             childUpdates.put("/$KEY_CHAT_MEMBERS/$key/${it.id}", chatMember)
-            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key/$KEY_DT_ENTERED", System.currentTimeMillis())
+            childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key/$KEY_DT_ENTERED", chat.dtCreated)
             childUpdates.put("/$KEY_USERS/${it.id}/$KEY_CHAT/$key/$KEY_LAST_CHECK_INDEX", 0)
 
             ref.updateChildren(childUpdates){ _, _ ->

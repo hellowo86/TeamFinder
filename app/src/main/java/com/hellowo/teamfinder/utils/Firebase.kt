@@ -26,12 +26,3 @@ val KEY_PUSH_AUTH = "key=AAAAf48YPzE:APA91bHTTAW9NmbxcijSrey7FCMYt20PvO-hKl23ge5
 
 fun makePublicPhotoUrl(userId: String?): String
         = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
-
-
-/*
-쿼리하는법
-databaseReference.orderByChild('_searchLastName')
-             .startAt(queryText)
-             .endAt(queryText+"\uf8ff")
-             .once("value")
- */

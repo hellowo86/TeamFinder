@@ -7,7 +7,19 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_menu_bar_height">
+        android:layout_height="@dimen/top_menu_bar_height"
+        android:background="@color/background"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TitleText"
+            android:text=""
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/big_margin"
+            android:layout_marginEnd="50dp"/>
 
         <ImageButton
             android:id="@+id/searchBtn"
@@ -22,31 +34,88 @@
             android:tint="@color/iconTint" />
 
         <ImageButton
-            android:id="@+id/createBtn"
+            android:id="@+id/filterBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical|end"
             android:background="@drawable/ripple_circle_button"
             android:padding="13dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_add_location_black_24dp"
+            android:src="@drawable/ic_filter_list_black_24dp"
             android:tint="@color/iconTint" />
 
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical"
+        app:elevation="2dp"
+        app:behavior_peekHeight="64dp"
+        app:behavior_hideable="false"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="@dimen/normal_margin"
+                        android:src="@drawable/ic_view_list_black_24dp"
+                        android:tint="@color/iconTint" />
+
+                    <TextView
+                        style="@style/TitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="64dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="name"
+                        android:textSize="@dimen/normal_text_size" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_filter_list_black_24dp"
-        android:tint="@color/white"
-        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_add_location_black_24dp"
+        android:tint="@color/iconTint"
+        app:backgroundTint="@color/white"
         app:borderWidth="0dp"
         app:elevation="6dp"
-        app:fabSize="normal"/>
+        app:fabSize="mini"
+        app:layout_anchor="@+id/bottomSheet"
+        app:layout_anchorGravity="top|right"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

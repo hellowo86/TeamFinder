@@ -92,4 +92,7 @@
     <string name="select_loc">위치 선택하기</string>
     <string name="search_chat">채팅방 찾기</string>
     <string name="select_loc_and_main_icon">채팅방의 위치와 아이콘을 선택해 주세요.</string>
+    <string name="search_tag">해시태그 검색</string>
+    <string name="no_search_result">검색결과 없음</string>
+    <string name="hashtag_count">관련 채팅방 수 %1$s개</string>
 </resources>

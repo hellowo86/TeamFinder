@@ -1,5 +1,6 @@
 package com.hellowo.teamfinder.ui.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
     };
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);

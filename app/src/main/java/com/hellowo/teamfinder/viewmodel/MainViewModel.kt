@@ -13,36 +13,46 @@ import com.hellowo.teamfinder.utils.KEY_CHAT
 
 
 class MainViewModel : ViewModel() {
-    enum class BottomTab {Find, ChatList, Clan, Profile}
-    var bottomTab = MutableLiveData<BottomTab>()
-    var location = MutableLiveData<LatLng>()
+    var region: VisibleRegion? = null
 
     val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
     val chatList: ArrayMap<String, Chat> = ArrayMap()
     val chats: MutableLiveData<ArrayMap<String, Chat>> = MutableLiveData()
+    val loading: MutableLiveData<Boolean> = MutableLiveData()
     val listener = object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError?) {}
         override fun onDataChange(snapshot: DataSnapshot?) {
+            Log.d("aaa", "-------------------------")
             chatList.clear()
             snapshot?.children?.forEach {
                 it.getValue(Chat::class.java)?.let { chat ->
                     chat.id = it.key
                     chatList.put(chat.id, chat)
-                    Log.d("aaa", chat.toString())
                 }
             }
+
+            region?.let {
+                chatList.filter { it.value.lng < (region as VisibleRegion).nearLeft.longitude
+                                || it.value.lng > (region as VisibleRegion).farRight.longitude }
+                        .map { chatList.remove(it.key) }
+            }
+
+            chatList.forEach {
+                Log.d("aaa", it.toString())
+            }
+
             chats.value = chatList
         }
     }
 
     init {
-        bottomTab.value = BottomTab.ChatList
     }
 
     fun search(visibleRegion: VisibleRegion): Boolean {
-        chatRef.orderByChild("latlng")
-                .startAt("${visibleRegion.nearLeft.latitude}_${visibleRegion.nearLeft.longitude}")
-                .endAt("${visibleRegion.farRight.latitude}_${visibleRegion.farRight.longitude}")
+        region = visibleRegion
+        chatRef.orderByChild("lat")
+                .startAt(visibleRegion.nearLeft.latitude)
+                .endAt(visibleRegion.farRight.latitude)
                 .addListenerForSingleValueEvent(listener)
         return true
     }

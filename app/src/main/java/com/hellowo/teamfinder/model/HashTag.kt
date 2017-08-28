@@ -1,10 +1,8 @@
 package com.hellowo.teamfinder.model
 
 data class HashTag (
-        var id: Int,
-        var name: String,
-        var iconId: Int,
-        var count: Int){
+        var name: String? = null,
+        var count: Int = 0){
 
     fun makeTag(): String {
         return "#$name "

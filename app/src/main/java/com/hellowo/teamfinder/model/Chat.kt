@@ -17,7 +17,8 @@ data class Chat(
         var messageCount: Int = 0,
         var lat: Double = 0.0,
         var lng: Double = 0.0,
-        var location: String? = null): ClusterItem {
+        var location: String? = null,
+        var dtUpdated: Long = 0): ClusterItem {
 
     @Exclude var dtEntered: Long = 0
     @Exclude var lastCheckIndex: Int = 0
@@ -39,6 +40,7 @@ data class Chat(
         resultMap.put("lng", lng)
         resultMap.put("latlng", "${lat}_$lng")
         resultMap.put("location", location)
+        resultMap.put("dtUpdated", dtUpdated)
         return resultMap
     }
 
