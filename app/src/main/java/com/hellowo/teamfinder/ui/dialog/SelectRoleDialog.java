@@ -49,7 +49,6 @@ public class SelectRoleDialog extends BottomSheetDialog {
 
             List<String> items = new ArrayList<>();
             items.add(getContext().getString(R.string.free_role));
-            items.addAll(category.getRoles());
 
             recyclerView.setAdapter(new BasicListAdapter(getContext(), items, (item, pos)->{
                 if(dialogInterface != null) {

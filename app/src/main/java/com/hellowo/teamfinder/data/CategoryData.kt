@@ -8,23 +8,14 @@ import org.json.JSONArray
 
 object CategoryData {
     val CATEGORIES: MutableList<Category> = mutableListOf()
-    val gameIconIds = intArrayOf(
+    val icons = intArrayOf(
             R.drawable.ic_account_circle_black_48dp, R.drawable.ic_assignment_late_black_48dp, R.drawable.ic_dashboard_black_24dp)
-    val gameBackgroundIds = intArrayOf(
+    val backgrounds = intArrayOf(
             R.drawable.game_background_0, R.drawable.game_background_0, R.drawable.game_background_0)
 
     init {
-        val gamesJson = App.context.resources.getStringArray(R.array.games).toList()
+        val gamesJson = App.context.resources.getStringArray(R.array.categories).toList()
         var id = 0
-        gamesJson.map { JSONArray(it) }
-                .forEach {
-                    CATEGORIES.add(Category(
-                            id,
-                            it.getString(0),
-                            JsonArray(it.getString(1)).map { it as String },
-                            it.getInt(2),
-                            gameIconIds[id],
-                            gameBackgroundIds[id++]))
-                }
+        gamesJson.forEach { CATEGORIES.add(Category(id, it, icons[id], backgrounds[id++])) }
     }
 }

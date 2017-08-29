@@ -59,7 +59,7 @@ class CreateTeamViewModel : ViewModel() {
     }
 
     private fun checkFullMember() {
-        isFullMember.setValue(needMemberSize.value!! >= selectedGame.value!!.maxMemberCount - 1)
+        isFullMember.setValue(needMemberSize.value!! >= 1)
     }
 
     private fun checkConfirmable() {

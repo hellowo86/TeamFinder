@@ -12,6 +12,7 @@ import android.support.v4.util.ArrayMap
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -45,7 +46,6 @@ import com.hellowo.teamfinder.utils.KEY_USERS
 import com.hellowo.teamfinder.viewmodel.MainViewModel
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_find.*
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.MutableMap
@@ -56,7 +56,7 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     lateinit var viewModel: MainViewModel
     lateinit var googleMap: GoogleMap
     val markerMap: MutableMap<String, Chat> = HashMap()
-    lateinit var mClusterManager: ClusterManager<com.hellowo.teamfinder.model.Chat>
+    lateinit var mClusterManager: ClusterManager<Chat>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,19 +75,19 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             FirebaseAuth.getInstance().signOut()
             return@setOnLongClickListener false
         }
-        instantTab.setOnClickListener{ clickTab(it) }
-        chatTab.setOnClickListener{ clickTab(it) }
-        clanTab.setOnClickListener{ clickTab(it) }
-        profileTab.setOnClickListener{ clickTab(it) }
+        instantTab.setOnClickListener{ clickTab(it as ImageButton?) }
+        chatTab.setOnClickListener{ clickTab(it as ImageButton?) }
+        clanTab.setOnClickListener{ clickTab(it as ImageButton?) }
+        profileTab.setOnClickListener{ clickTab(it as ImageButton?) }
         clickTab(instantTab)
     }
 
-    private fun clickTab(item: View?) {
-        instantTab.setBackgroundColor(getColor(R.color.transparent))
-        chatTab.setBackgroundColor(getColor(R.color.transparent))
-        clanTab.setBackgroundColor(getColor(R.color.transparent))
-        profileTab.setBackgroundColor(getColor(R.color.transparent))
-        item?.setBackgroundColor(getColor(R.color.backgroundDark))
+    private fun clickTab(item: ImageButton?) {
+        instantTab.setColorFilter(getColor(R.color.disableText))
+        chatTab.setColorFilter(getColor(R.color.disableText))
+        clanTab.setColorFilter(getColor(R.color.disableText))
+        profileTab.setColorFilter(getColor(R.color.disableText))
+        item?.setColorFilter(getColor(R.color.grey))
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container,
@@ -141,7 +141,7 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
                 geo.getFromLocation(lat, lng, 1)?.let {
                     if(it.size > 0) {
                         runOnUiThread {
-                            titleText.text = "${it[0].locality} ${it[0].subLocality ?: it[0].thoroughfare}"
+                            viewModel.address.value = "${it[0].locality} ${it[0].subLocality ?: it[0].thoroughfare}"
                         }
                     }
                 }
@@ -174,16 +174,30 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun addMarkers(markers: ArrayMap<String, com.hellowo.teamfinder.model.Chat>?) {
-        markers?.forEach {
-            if(markerMap.containsKey(it.key)) {
+    private fun addMarkers(markers: ArrayMap<String, Chat>?) {
+        markers?.let {
+            val removedMap: MutableMap<String, Chat> = ArrayMap()
+            removedMap.putAll(markerMap)
 
-            }else {
-                markerMap.put(it.key, it.value)
-                mClusterManager.addItem(it.value)
+            markers.forEach { item ->
+                if(markerMap.containsKey(item.key)) {
+                    removedMap.remove(item.key)
+                    if(item.value.dtUpdated > markerMap[item.key]!!.dtUpdated) {
+                        mClusterManager.removeItem(markerMap.remove(item.key))
+                        markerMap.put(item.key, item.value)
+                        mClusterManager.addItem(item.value)
+                    }
+                }else {
+                    markerMap.put(item.key, item.value)
+                    mClusterManager.addItem(item.value)
+                }
             }
+
+            removedMap.forEach {
+                mClusterManager.removeItem(markerMap.remove(it.key))
+            }
+            mClusterManager.cluster()
         }
-        mClusterManager.cluster()
     }
 
     private fun checkIntentExtra() {
@@ -209,10 +223,6 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
 
     private fun updateUserUI(user: User?) {
         if(user != null) {
-            Glide.with(this)
-                    .load(if(!TextUtils.isEmpty(user.photoUrl)) user.photoUrl else R.drawable.default_profile)
-                    .bitmapTransform(CropCircleTransformation(this))
-                    .into(profileTab)
         }
     }
 

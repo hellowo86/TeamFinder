@@ -19,8 +19,9 @@ class MainViewModel : ViewModel() {
     val chatList: ArrayMap<String, Chat> = ArrayMap()
     val chats: MutableLiveData<ArrayMap<String, Chat>> = MutableLiveData()
     val loading: MutableLiveData<Boolean> = MutableLiveData()
+    val address: MutableLiveData<String> = MutableLiveData()
     val listener = object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError?) {}
+        override fun onCancelled(p0: DatabaseError?) { loading.value = false }
         override fun onDataChange(snapshot: DataSnapshot?) {
             Log.d("aaa", "-------------------------")
             chatList.clear()
@@ -42,6 +43,7 @@ class MainViewModel : ViewModel() {
             }
 
             chats.value = chatList
+            loading.value = false
         }
     }
 
@@ -49,6 +51,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun search(visibleRegion: VisibleRegion): Boolean {
+        loading.value = true
         region = visibleRegion
         chatRef.orderByChild("lat")
                 .startAt(visibleRegion.nearLeft.latitude)

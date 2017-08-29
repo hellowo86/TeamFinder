@@ -14,11 +14,8 @@ import com.hellowo.teamfinder.viewmodel.FindViewModel
 import kotlinx.android.synthetic.main.fragment_pager.*
 
 class PagerFragment : LifecycleFragment() {
-    lateinit var viewModel: FindViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity).get(FindViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

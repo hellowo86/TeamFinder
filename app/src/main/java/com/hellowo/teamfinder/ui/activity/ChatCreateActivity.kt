@@ -111,7 +111,7 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
         currentMarker = googleMap.addMarker(MarkerOptions()
                 .position(place.latLng)
                 .title(place.name.toString())
-                .icon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[viewModel.chat.gameId])))
+                .icon(BitmapDescriptorFactory.fromResource(CategoryData.icons[viewModel.chat.gameId])))
         currentMarker?.tag = viewModel.chat
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
     }
@@ -136,7 +136,7 @@ class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
     private fun updateGameUI(gameId: Int?) {
         CategoryData.CATEGORIES[gameId as Int].let {
             viewModel.chat.gameId = gameId
-            currentMarker?.setIcon(BitmapDescriptorFactory.fromResource(CategoryData.gameIconIds[gameId]))
+            currentMarker?.setIcon(BitmapDescriptorFactory.fromResource(CategoryData.icons[gameId]))
         }
     }
 

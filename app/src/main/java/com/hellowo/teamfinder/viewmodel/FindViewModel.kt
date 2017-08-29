@@ -2,13 +2,12 @@ package com.hellowo.teamfinder.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.hellowo.teamfinder.data.ChatFliterData
 
 class FindViewModel : ViewModel() {
-    enum class Tab {Team, Instant}
-
-    var tab = MutableLiveData<Tab>()
+    var isOnfilter = MutableLiveData<Boolean>()
 
     init {
-        tab.value = Tab.Team
+        isOnfilter.value = ChatFliterData.hashTagSet.isNotEmpty()
     }
 }

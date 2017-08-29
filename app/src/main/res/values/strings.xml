@@ -95,4 +95,6 @@
     <string name="search_tag">해시태그 검색</string>
     <string name="no_search_result">검색결과 없음</string>
     <string name="hashtag_count">관련 채팅방 수 %1$s개</string>
+    <string name="total_chat_count_is">총 %1$d개의 채팅방이 검색되었습니다.</string>
+    <string name="searching">검색중...</string>
 </resources>

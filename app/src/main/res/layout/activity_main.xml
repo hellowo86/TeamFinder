@@ -12,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/top_menu_bar_height"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="114dp"
         tools:context="com.hellowo.teamfinder.ui.activity.MainActivity"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomTabs"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <FrameLayout
         android:id="@+id/container"
@@ -26,7 +26,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomTabs">
+        app:layout_constraintBottom_toTopOf="@id/bottomTabs"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="1.0">
     </FrameLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -46,7 +48,7 @@
             android:background="@drawable/ripple_button"
             android:scaleType="centerInside"
             android:padding="@dimen/small_margin"
-            android:src="@drawable/look_people_icon"
+            android:src="@drawable/ic_search_black_48dp"
             android:tint="@color/grey"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +63,7 @@
             android:background="@drawable/ripple_button"
             android:scaleType="centerInside"
             android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_format_quote_black_48dp"
+            android:src="@drawable/ic_comment_black_48dp"
             android:tint="@color/grey"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toEndOf="@+id/instantTab"
@@ -76,7 +78,7 @@
             android:background="@drawable/ripple_button"
             android:scaleType="centerInside"
             android:padding="@dimen/small_margin"
-            android:src="@drawable/team_icon"
+            android:src="@drawable/ic_people_black_48dp"
             android:tint="@color/grey"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toEndOf="@+id/chatTab"
@@ -91,6 +93,8 @@
             android:background="@drawable/ripple_button"
             android:scaleType="centerInside"
             android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_account_circle_black_48dp"
+            android:tint="@color/grey"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toEndOf="@+id/clanTab"
             app:layout_constraintEnd_toEndOf="parent"
