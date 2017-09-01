@@ -1,5 +1,7 @@
 package com.hellowo.teamfinder.utils
 
+import android.util.Log
+
 val KEY_USERS = "users"
 val KEY_PHOTO_URL = "photoUrl"
 val KEY_TEAMS = "teams"
@@ -26,3 +28,5 @@ val KEY_PUSH_AUTH = "key=AAAAf48YPzE:APA91bHTTAW9NmbxcijSrey7FCMYt20PvO-hKl23ge5
 
 fun makePublicPhotoUrl(userId: String?): String
         = "https://firebasestorage.googleapis.com/v0/b/teamfinder-32133.appspot.com/o/userPhoto%2F${userId}.jpg?alt=media"
+
+fun log(t: String) { Log.d("aaa", t) }

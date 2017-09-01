@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.v4.util.ArrayMap
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
 import com.bumptech.glide.Glide
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,12 +39,12 @@ import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.data.MyChatLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.User
-import com.hellowo.teamfinder.ui.fragment.ChatListFragment
-import com.hellowo.teamfinder.ui.fragment.FindFragment
-import com.hellowo.teamfinder.ui.fragment.TeamInfoFragment
+import com.hellowo.teamfinder.ui.adapter.ChatInfoWindowAdpater
+import com.hellowo.teamfinder.ui.fragment.*
 import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
 import com.hellowo.teamfinder.utils.KEY_USERS
+import com.hellowo.teamfinder.utils.log
 import com.hellowo.teamfinder.viewmodel.MainViewModel
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
@@ -94,8 +96,8 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
                 when (item) {
                     instantTab -> FindFragment()
                     chatTab -> ChatListFragment()
-                    clanTab -> TeamInfoFragment()
-                    profileTab -> TeamInfoFragment()
+                    clanTab -> EventListFragment()
+                    profileTab -> ProfileFragment()
                     else -> return
                 })
         fragmentTransaction.commit()
@@ -116,6 +118,8 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             googleMap = it
             mClusterManager = ClusterManager(this, googleMap)
             mClusterManager.renderer = PersonRenderer()
+            googleMap.uiSettings.isMapToolbarEnabled = false
+            googleMap.setMinZoomPreference(7f)
             googleMap.moveCamera(CameraUpdateFactory.zoomTo(14f))
             googleMap.setOnMarkerClickListener(mClusterManager)
             googleMap.setOnInfoWindowClickListener(mClusterManager)
@@ -123,54 +127,12 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
                 getAddressFromMap()
                 viewModel.search(googleMap.projection.visibleRegion)
             }
+            mClusterManager.markerCollection.setOnInfoWindowAdapter(
+                    ChatInfoWindowAdpater(LayoutInflater.from(this), mClusterManager.renderer as PersonRenderer))
+            googleMap.setInfoWindowAdapter(mClusterManager.markerManager)
             mClusterManager.setOnClusterClickListener{ onClusterClick(it) }
-            mClusterManager.setOnClusterInfoWindowClickListener{}
-            mClusterManager.setOnClusterItemClickListener{ onClusterItemClick(it) }
-            mClusterManager.setOnClusterItemInfoWindowClickListener{}
+            mClusterManager.setOnClusterItemInfoWindowClickListener{ onClusterItemClick(it) }
             checkLocationPermission()
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    fun getAddressFromMap() {
-        val lat = googleMap.projection.visibleRegion.latLngBounds.center.latitude
-        val lng = googleMap.projection.visibleRegion.latLngBounds.center.longitude
-        Thread{
-            try{
-                val geo = Geocoder(applicationContext, Locale.getDefault())
-                geo.getFromLocation(lat, lng, 1)?.let {
-                    if(it.size > 0) {
-                        runOnUiThread {
-                            viewModel.address.value = "${it[0].locality} ${it[0].subLocality ?: it[0].thoroughfare}"
-                        }
-                    }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }.start()
-    }
-
-    fun setLocation(it: Place) {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(it.latLng))
-    }
-
-    private fun onClusterItemClick(it: Chat?): Boolean {
-        Log.d("aaa", "111")
-        return false
-    }
-
-    private fun onClusterClick(it: Cluster<Chat>?): Boolean {
-        Log.d("aaa", "222")
-        return false
-    }
-
-    private inner class PersonRenderer : DefaultClusterRenderer<Chat>(applicationContext, googleMap, mClusterManager) {
-        private val mIconGenerator = IconGenerator(applicationContext)
-        private val mClusterIconGenerator = IconGenerator(applicationContext)
-
-        override fun shouldRenderAsCluster(cluster: Cluster<Chat>?): Boolean {
-            return cluster?.size as Int > 1
         }
     }
 
@@ -198,6 +160,55 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
             }
             mClusterManager.cluster()
         }
+    }
+
+    public inner class PersonRenderer : DefaultClusterRenderer<Chat>(applicationContext, googleMap, mClusterManager) {
+        private val mIconGenerator = IconGenerator(applicationContext)
+        private val mClusterIconGenerator = IconGenerator(applicationContext)
+
+        override fun shouldRenderAsCluster(cluster: Cluster<Chat>?): Boolean {
+            return cluster?.size as Int > 1
+        }
+    }
+
+    private fun onClusterItemClick(chat: Chat?): Boolean {
+        chat?.let {
+            val intent = Intent(this, ChatJoinActivity::class.java)
+            intent.putExtra(AppConst.EXTRA_CHAT_ID, it.id)
+            startActivity(intent)
+        }
+        return false
+    }
+
+    private fun onClusterClick(it: Cluster<Chat>?): Boolean {
+        it?.let {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, googleMap.cameraPosition.zoom + 1))
+        }
+        return true
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun getAddressFromMap() {
+        val lat = googleMap.projection.visibleRegion.latLngBounds.center.latitude
+        val lng = googleMap.projection.visibleRegion.latLngBounds.center.longitude
+        Thread{
+            try{
+                val geo = Geocoder(applicationContext, Locale.getDefault())
+                geo.getFromLocation(lat, lng, 1)?.let {
+                    if(it.size > 0) {
+                        runOnUiThread {
+                            viewModel.address.value = "${it[0].locality} ${it[0].subLocality ?: it[0].thoroughfare}"
+                        }
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }.start()
+    }
+
+    fun setLocation(it: Place) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(it.latLng))
     }
 
     private fun checkIntentExtra() {

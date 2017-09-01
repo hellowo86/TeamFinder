@@ -233,7 +233,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackground"
                     android:padding="14dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_add_black_48dp"
