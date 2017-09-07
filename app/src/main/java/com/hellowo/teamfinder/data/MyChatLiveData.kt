@@ -15,6 +15,8 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
     val itemsMap: ArrayMap<String, Chat> = ArrayMap()
+    val dtEnteredMap: HashMap<String, Long> = HashMap()
+    val lastCheckIndexMap: HashMap<String, Int> = HashMap()
     val listenerMap: MutableMap<String, ValueEventListener> = HashMap()
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     var currentUserId = ""
@@ -33,18 +35,20 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
                     val chatId = it.key
                     val dtEntered = it.child(KEY_DT_ENTERED).value as Long
                     val lastCheckIndex = it.child(KEY_LAST_CHECK_INDEX).value.toString().toInt()
+
+                    dtEnteredMap.put(chatId, dtEntered)
+                    lastCheckIndexMap.put(chatId, lastCheckIndex)
+
                     removedMap.remove(chatId)
-                    if(listenerMap.containsKey(chatId)) {
-                        itemsMap[chatId]?.dtEntered = dtEntered
-                        itemsMap[chatId]?.lastCheckIndex = lastCheckIndex
-                    }else {
+
+                    if(!listenerMap.containsKey(chatId)) {
                         val valueEventListener = object : ValueEventListener {
                             override fun onCancelled(p0: DatabaseError?) {}
                             override fun onDataChange(chatSnapshot: DataSnapshot?) {
                                 chatSnapshot?.getValue(Chat::class.java)?.let { chat ->
                                     chat.id = it.key
-                                    chat.dtEntered = dtEntered
-                                    chat.lastCheckIndex = lastCheckIndex
+                                    chat.dtEntered = dtEnteredMap[it.key] ?: 0
+                                    chat.lastCheckIndex = lastCheckIndexMap[it.key] ?: 0
                                     itemsMap.put(chat.id, chat)
                                     value = itemsMap
                                 }
@@ -53,6 +57,9 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
                         }
                         listenerMap.put(chatId, valueEventListener)
                         chatRef.child(chatId).addValueEventListener(valueEventListener)
+                    }else {
+                        itemsMap[chatId]?.dtEntered = dtEntered
+                        itemsMap[chatId]?.lastCheckIndex = lastCheckIndex
                     }
                 }
                 removedMap.forEach { itemsMap.remove(it.key) }

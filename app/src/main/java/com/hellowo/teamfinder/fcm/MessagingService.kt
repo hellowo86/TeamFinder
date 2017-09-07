@@ -48,8 +48,11 @@ class MessagingService : com.google.firebase.messaging.FirebaseMessagingService(
         val userName = data.getString("userName")
         val message = data.getString("message")
         val chatId = data.getString("chatId")
-        val resource = Glide.with(this).load(makePublicPhotoUrl(userId))
-                .asBitmap().transform(CropCircleTransformation(this)).into(100, 100).get()
+        var resource: Bitmap? = null
+        try{
+            resource = Glide.with(this).load(makePublicPhotoUrl(userId))
+                    .asBitmap().transform(CropCircleTransformation(this)).into(100, 100).get()
+        }catch (e: Exception){}
 
         val manager = packageManager
         val intent = manager.getLaunchIntentForPackage(packageName)

@@ -44,5 +44,7 @@ data class Chat(
         return resultMap
     }
 
+
+
     @Exclude override fun getPosition() = LatLng(lat, lng)
 }
