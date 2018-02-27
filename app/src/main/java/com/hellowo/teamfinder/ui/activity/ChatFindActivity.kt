@@ -2,7 +2,7 @@ package com.hellowo.teamfinder.ui.activity
 
 import android.Manifest
 import android.app.Activity
-import android.arch.lifecycle.LifecycleActivity
+import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -21,7 +21,7 @@ import com.hellowo.teamfinder.viewmodel.ChatFindViewModel
 import kotlinx.android.synthetic.main.activity_find_chat.*
 import java.util.ArrayList
 
-class ChatFindActivity : LifecycleActivity() {
+class ChatFindActivity : AppCompatActivity() {
     val RC_JOIN = 1111
     lateinit var viewModel: ChatFindViewModel
     lateinit var adapter: ChatListAdapter

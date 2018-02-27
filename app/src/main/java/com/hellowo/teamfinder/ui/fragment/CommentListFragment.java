@@ -1,6 +1,8 @@
 package com.hellowo.teamfinder.ui.fragment;
 
-import android.arch.lifecycle.LifecycleFragment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -21,7 +23,7 @@ import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 
 import java.util.List;
 
-public class CommentListFragment extends LifecycleFragment{
+public class CommentListFragment extends Fragment {
     TeamDetailViewModel viewModel;
     FragmentCommentsListBinding binding;
     CommentListAdapter adapter;
@@ -36,7 +38,7 @@ public class CommentListFragment extends LifecycleFragment{
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comments_list, container, false);
         binding = DataBindingUtil.bind(view);
         binding.sendBtn.setOnClickListener(v->enterComment());

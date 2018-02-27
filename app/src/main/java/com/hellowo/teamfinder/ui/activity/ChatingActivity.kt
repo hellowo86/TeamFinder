@@ -5,13 +5,13 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.activity_chating.*
 import java.text.DateFormat
 import java.util.*
 
-class ChatingActivity : LifecycleActivity() {
+class ChatingActivity : AppCompatActivity() {
     lateinit var viewModel: ChatingViewModel
     lateinit var adapter: MessageListAdapter
     lateinit var memberAdapter: ChatMemberListAdapter
@@ -246,7 +246,6 @@ class ChatingActivity : LifecycleActivity() {
     private fun showPhotoPicker() {
         val bottomSheetDialogFragment = TedBottomPicker.Builder(this)
                 .setOnImageSelectedListener { uri -> viewModel.sendPhotoMessage(uri) }
-                .setMaxCount(100)
                 .create()
         bottomSheetDialogFragment.show(supportFragmentManager)
     }

@@ -1,6 +1,8 @@
 package com.hellowo.teamfinder.ui.fragment;
 
-import android.arch.lifecycle.LifecycleFragment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,7 +17,7 @@ import com.hellowo.teamfinder.model.Team;
 import com.hellowo.teamfinder.viewmodel.MainViewModel;
 import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 
-public class TeamInfoFragment extends LifecycleFragment{
+public class TeamInfoFragment extends Fragment {
     MainViewModel viewModel;
     FragmentTeamInfoBinding binding;
 
@@ -29,14 +31,14 @@ public class TeamInfoFragment extends LifecycleFragment{
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_info, container, false);
         binding = DataBindingUtil.bind(view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 

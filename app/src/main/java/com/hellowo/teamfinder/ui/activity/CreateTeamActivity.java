@@ -1,7 +1,7 @@
 package com.hellowo.teamfinder.ui.activity;
 
 import android.app.ProgressDialog;
-import android.arch.lifecycle.LifecycleActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.hellowo.teamfinder.ui.dialog.SetActiveTimeDialog;
 import com.hellowo.teamfinder.viewmodel.CreateTeamViewModel;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
-public class CreateTeamActivity extends LifecycleActivity {
+public class CreateTeamActivity extends AppCompatActivity {
     ActivityCreateTeamBinding binding;
     CreateTeamViewModel viewModel;
     ProgressDialog progressDialog;

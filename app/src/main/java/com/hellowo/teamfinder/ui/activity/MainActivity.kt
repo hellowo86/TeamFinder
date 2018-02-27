@@ -2,13 +2,16 @@ package com.hellowo.teamfinder.ui.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.arch.lifecycle.LifecycleActivity
+import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.util.ArrayMap
+import android.support.v7.content.res.AppCompatResources
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -54,7 +57,7 @@ import kotlin.collections.MutableMap
 import kotlin.collections.forEach
 
 
-class MainActivity : LifecycleActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var viewModel: MainViewModel
     lateinit var googleMap: GoogleMap
     val markerMap: MutableMap<String, Chat> = HashMap()
@@ -85,11 +88,11 @@ class MainActivity : LifecycleActivity(), OnMapReadyCallback {
     }
 
     private fun clickTab(item: ImageButton?) {
-        instantTab.setColorFilter(getColor(R.color.disableText))
-        chatTab.setColorFilter(getColor(R.color.disableText))
-        clanTab.setColorFilter(getColor(R.color.disableText))
-        profileTab.setColorFilter(getColor(R.color.disableText))
-        item?.setColorFilter(getColor(R.color.grey))
+        instantTab.setColorFilter(resources.getColor(R.color.disableText))
+        chatTab.setColorFilter(resources.getColor(R.color.disableText))
+        clanTab.setColorFilter(resources.getColor(R.color.disableText))
+        profileTab.setColorFilter(resources.getColor(R.color.disableText))
+        item?.setColorFilter(resources.getColor(R.color.grey))
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container,

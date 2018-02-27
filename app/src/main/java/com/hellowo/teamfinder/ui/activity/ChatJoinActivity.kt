@@ -2,7 +2,7 @@ package com.hellowo.teamfinder.ui.activity
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.arch.lifecycle.LifecycleActivity
+import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -16,7 +16,7 @@ import com.hellowo.teamfinder.viewmodel.ChatJoinViewModel
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_join_chat.*
 
-class ChatJoinActivity : LifecycleActivity() {
+class ChatJoinActivity : AppCompatActivity() {
     lateinit var viewModel: ChatJoinViewModel
     internal var progressDialog: ProgressDialog? = null
 

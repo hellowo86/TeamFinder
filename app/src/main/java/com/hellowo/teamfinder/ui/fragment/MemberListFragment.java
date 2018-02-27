@@ -1,6 +1,8 @@
 package com.hellowo.teamfinder.ui.fragment;
 
-import android.arch.lifecycle.LifecycleFragment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +19,7 @@ import com.hellowo.teamfinder.viewmodel.TeamDetailViewModel;
 
 import java.util.List;
 
-public class MemberListFragment extends LifecycleFragment{
+public class MemberListFragment extends Fragment {
     TeamDetailViewModel viewModel;
     RecyclerView recyclerView;
     MemberListAdapter adapter;
@@ -32,7 +34,7 @@ public class MemberListFragment extends LifecycleFragment{
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_single_list, container, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new MemberListAdapter(
@@ -52,7 +54,7 @@ public class MemberListFragment extends LifecycleFragment{
 
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel.getMembers().observe(this, this::updateUI);
     }

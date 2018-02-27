@@ -1,6 +1,6 @@
 package com.hellowo.teamfinder.ui.activity;
 
-import android.arch.lifecycle.LifecycleActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 import static com.hellowo.teamfinder.AppConst.EXTRA_TEAM_ID;
 
-public class TeamDetailActivity extends LifecycleActivity {
+public class TeamDetailActivity extends AppCompatActivity {
     ActivityTeamDetailBinding binding;
     TeamDetailViewModel viewModel;
     MemberListAdapter memberListAdapter;

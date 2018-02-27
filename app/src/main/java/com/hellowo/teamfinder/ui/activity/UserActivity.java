@@ -2,7 +2,7 @@ package com.hellowo.teamfinder.ui.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.LifecycleActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 import static com.hellowo.teamfinder.AppConst.EXTRA_USER_ID;
 
-public class UserActivity extends LifecycleActivity {
+public class UserActivity extends AppCompatActivity {
     ActivityUserBinding binding;
     UserViewModel viewModel;
     ProgressDialog progressDialog;
@@ -84,7 +84,6 @@ public class UserActivity extends LifecycleActivity {
     private void showPhotoPicker() {
         TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(UserActivity.this)
                 .setOnImageSelectedListener(uri -> viewModel.uploadPhoto(uri))
-                .setMaxCount(100)
                 .create();
         bottomSheetDialogFragment.show(getSupportFragmentManager());
     }

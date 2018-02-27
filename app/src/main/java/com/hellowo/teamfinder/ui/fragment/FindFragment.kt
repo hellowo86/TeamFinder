@@ -1,12 +1,13 @@
 package com.hellowo.teamfinder.ui.fragment
 
 import android.app.Activity.RESULT_OK
-import android.arch.lifecycle.LifecycleFragment
+import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,7 +29,7 @@ import com.hellowo.teamfinder.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_find.*
 
 
-class FindFragment : LifecycleFragment() {
+class FindFragment : Fragment() {
     lateinit var viewModel: FindViewModel
     lateinit var mainViewModel: MainViewModel
     lateinit var adapter: ChatListAdapter
@@ -37,17 +38,17 @@ class FindFragment : LifecycleFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity).get(FindViewModel::class.java)
-        mainViewModel = ViewModelProviders.of(activity).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(FindViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_find, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_find, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ChatListAdapter(context, mainViewModel.chatList) {
+        adapter = ChatListAdapter(context!!, mainViewModel.chatList) {
             val intent = Intent(activity, ChatJoinActivity::class.java)
             intent.putExtra(AppConst.EXTRA_CHAT_ID, it.id)
             startActivityForResult(intent, JOIN_REQUEST_CODE)
@@ -69,9 +70,9 @@ class FindFragment : LifecycleFragment() {
 
         viewModel.isOnfilter.observe(this, Observer {
             if(it as Boolean) {
-                filterBtn.setColorFilter(context.resources.getColor(R.color.colorPrimary))
+                filterBtn.setColorFilter(resources.getColor(R.color.colorPrimary))
             }else {
-                filterBtn.setColorFilter(context.resources.getColor(R.color.iconTint))
+                filterBtn.setColorFilter(resources.getColor(R.color.iconTint))
             }
         })
         mainViewModel.address.observe(this, Observer { titleText.text = it })
@@ -93,7 +94,7 @@ class FindFragment : LifecycleFragment() {
 
     private fun showChatFilterDialog() {
         val chatFilterDialog = ChatFilterDialog()
-        chatFilterDialog.show(activity.supportFragmentManager, chatFilterDialog.tag)
+        chatFilterDialog.show(activity?.supportFragmentManager, chatFilterDialog.tag)
     }
 
 

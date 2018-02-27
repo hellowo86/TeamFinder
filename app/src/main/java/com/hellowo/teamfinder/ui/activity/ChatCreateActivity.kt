@@ -3,7 +3,7 @@ package com.hellowo.teamfinder.ui.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
-import android.arch.lifecycle.LifecycleActivity
+import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -34,7 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 
 
-class ChatCreateActivity : LifecycleActivity(), OnMapReadyCallback {
+class ChatCreateActivity : AppCompatActivity(), OnMapReadyCallback {
     val PLACE_PICKER_REQUEST = 1
     lateinit var viewModel: ChatCreateViewModel
     lateinit var tagHelper: HashTagHelper

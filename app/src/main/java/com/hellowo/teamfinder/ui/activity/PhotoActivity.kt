@@ -1,6 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
-import android.arch.lifecycle.LifecycleActivity
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
@@ -13,7 +13,7 @@ import com.bumptech.glide.request.target.Target
 import java.lang.Exception
 
 
-class PhotoActivity : LifecycleActivity() {
+class PhotoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

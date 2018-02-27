@@ -1,6 +1,6 @@
 package com.hellowo.teamfinder.ui.activity
 
-import android.arch.lifecycle.LifecycleActivity
+import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -10,7 +10,7 @@ import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.viewmodel.SplashViewModel
 
-class SplashActivity : LifecycleActivity() {
+class SplashActivity : AppCompatActivity() {
     lateinit var viewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

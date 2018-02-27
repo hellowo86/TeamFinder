@@ -80,7 +80,7 @@ class SelectTagDialog : BottomSheetDialog() {
             }
 
             val layoutManager = LinearLayoutManager(context)
-            tagListAdapter = HashTagListAdapter(context, tagList) { hashTag ->
+            tagListAdapter = HashTagListAdapter(context!!, tagList) { hashTag ->
                 dialogInterface.invoke(hashTag)
                 dismiss()
             }

@@ -1,6 +1,6 @@
 package com.hellowo.teamfinder.ui.activity;
 
-import android.arch.lifecycle.LifecycleActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -13,7 +13,7 @@ import com.hellowo.teamfinder.R;
 import com.hellowo.teamfinder.databinding.ActivitySignUpBinding;
 import com.hellowo.teamfinder.viewmodel.SignUpViewModel;
 
-public class SingUpActivity extends LifecycleActivity {
+public class SingUpActivity extends AppCompatActivity {
     ActivitySignUpBinding binding;
     SignUpViewModel viewModel;
 
