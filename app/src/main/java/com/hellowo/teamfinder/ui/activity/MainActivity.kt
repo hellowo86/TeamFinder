@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    public inner class PersonRenderer : DefaultClusterRenderer<Chat>(applicationContext, googleMap, mClusterManager) {
+    inner class PersonRenderer : DefaultClusterRenderer<Chat>(applicationContext, googleMap, mClusterManager) {
         private val mIconGenerator = IconGenerator(applicationContext)
         private val mClusterIconGenerator = IconGenerator(applicationContext)
 

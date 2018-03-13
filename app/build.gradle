@@ -46,6 +46,7 @@ dependencies {
     compile "com.google.firebase:firebase-storage:$firebase_version"
     compile "com.google.firebase:firebase-crash:$firebase_version"
     compile "com.google.firebase:firebase-auth:$firebase_version"
+    compile "com.google.firebase:firebase-firestore:$firebase_version"
 
     //google play service
     compile "com.google.android.gms:play-services-maps:$firebase_version"
