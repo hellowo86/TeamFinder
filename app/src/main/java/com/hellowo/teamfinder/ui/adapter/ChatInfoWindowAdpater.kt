@@ -6,10 +6,10 @@ import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.ui.activity.MainActivity
+import com.hellowo.teamfinder.ui.activity.MapActivity
 
 class ChatInfoWindowAdpater(private val mInflater: LayoutInflater,
-                            private val renderer: MainActivity.PersonRenderer) : GoogleMap.InfoWindowAdapter {
+                            private val renderer: MapActivity.PersonRenderer) : GoogleMap.InfoWindowAdapter {
     override fun getInfoWindow(marker: Marker): View? {
         return null
     }

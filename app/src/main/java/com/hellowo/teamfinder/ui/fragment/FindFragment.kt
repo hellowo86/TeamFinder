@@ -21,7 +21,7 @@ import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.ui.activity.ChatCreateActivity
 import com.hellowo.teamfinder.ui.activity.ChatJoinActivity
-import com.hellowo.teamfinder.ui.activity.MainActivity
+import com.hellowo.teamfinder.ui.activity.MapActivity
 import com.hellowo.teamfinder.ui.adapter.ChatListAdapter
 import com.hellowo.teamfinder.ui.dialog.ChatFilterDialog
 import com.hellowo.teamfinder.viewmodel.FindViewModel
@@ -102,7 +102,7 @@ class FindFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_OK) {
             val place = PlaceAutocomplete.getPlace(activity, data)
-            (activity as MainActivity).setLocation(place)
+            (activity as MapActivity).setLocation(place)
         }
     }
 }

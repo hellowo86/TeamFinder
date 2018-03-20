@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 
 fun startScaleShowAnimation(view: View) {
@@ -119,14 +120,19 @@ fun moveToBottom(view: View, offset: Float) {
     animSet.start()
 }
 
-fun changeScale(view: ImageView, offset: Float) {
-    val current_scale = view.scaleX
-
+fun tabAnimation(selectedView: View, canceledVeiw: View?) {
     val animSet = AnimatorSet()
-    animSet.playTogether(
-            ObjectAnimator.ofFloat(view, "scaleX", current_scale, offset).setDuration(250),
-            ObjectAnimator.ofFloat(view, "scaleY", current_scale, offset).setDuration(250)
-    )
+    if(canceledVeiw == null) {
+        animSet.playTogether(
+                ObjectAnimator.ofFloat(selectedView, "scaleX", 1f, 1.5f).setDuration(250),
+                ObjectAnimator.ofFloat(selectedView, "scaleY", 1f, 1.5f).setDuration(250))
+    }else {
+        animSet.playTogether(
+                ObjectAnimator.ofFloat(selectedView, "scaleX", 1f, 1.5f).setDuration(250),
+                ObjectAnimator.ofFloat(selectedView, "scaleY", 1f, 1.5f).setDuration(250),
+                ObjectAnimator.ofFloat(canceledVeiw, "scaleX", 1.5f, 1f).setDuration(250),
+                ObjectAnimator.ofFloat(canceledVeiw, "scaleY", 1.5f, 1f).setDuration(250))
+    }
     animSet.interpolator = FastOutSlowInInterpolator()
     animSet.start()
 }

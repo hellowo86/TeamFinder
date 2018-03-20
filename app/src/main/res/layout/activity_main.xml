@@ -1,106 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <fragment
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/top_menu_bar_height"
-        android:layout_marginBottom="114dp"
-        tools:context="com.hellowo.teamfinder.ui.activity.MainActivity"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <FrameLayout
         android:id="@+id/container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomTabs"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="1.0">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     </FrameLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:id="@+id/bottomTabs"
-        android:layout_width="0dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/top_menu_bar_height"
         android:background="@color/white"
-        android:elevation="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_gravity="bottom"
+        android:elevation="5dp">
 
-        <ImageButton
-            android:id="@+id/instantTab"
+        <FrameLayout
+            android:id="@+id/homeTab"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/ripple_button"
-            android:scaleType="centerInside"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_search_black_48dp"
-            android:tint="@color/grey"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/chatTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground">
 
-        <ImageButton
+            <ImageView
+                android:id="@+id/homeTabImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:padding="@dimen/small_margin"
+                android:src="@drawable/ic_search_black_48dp"
+                android:tint="@color/disableText"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/matchingTab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/matchingTabImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:padding="@dimen/small_margin"
+                android:src="@drawable/ic_comment_black_48dp"
+                android:tint="@color/disableText"/>
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/chatTab"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/ripple_button"
-            android:scaleType="centerInside"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_comment_black_48dp"
-            android:tint="@color/grey"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toEndOf="@+id/instantTab"
-            app:layout_constraintEnd_toStartOf="@+id/clanTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground">
 
-        <ImageButton
-            android:id="@+id/clanTab"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/ripple_button"
-            android:scaleType="centerInside"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_people_black_48dp"
-            android:tint="@color/grey"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toEndOf="@+id/chatTab"
-            app:layout_constraintEnd_toStartOf="@+id/profileTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageView
+                android:id="@+id/chatTabImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:padding="@dimen/small_margin"
+                android:src="@drawable/ic_comment_black_48dp"
+                android:tint="@color/disableText"/>
 
-        <ImageButton
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/profileTab"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/ripple_button"
-            android:scaleType="centerInside"
-            android:padding="@dimen/small_margin"
-            android:src="@drawable/ic_account_circle_black_48dp"
-            android:tint="@color/grey"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toEndOf="@+id/clanTab"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground">
 
-    </android.support.constraint.ConstraintLayout>
+            <ImageView
+                android:id="@+id/profileTabImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:padding="@dimen/small_margin"
+                android:src="@drawable/ic_comment_black_48dp"
+                android:tint="@color/disableText"/>
 
-</android.support.constraint.ConstraintLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
