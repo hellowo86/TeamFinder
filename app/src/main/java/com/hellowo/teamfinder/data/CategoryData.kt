@@ -11,7 +11,7 @@ object CategoryData {
     val icons = intArrayOf(
             R.drawable.ic_account_circle_black_48dp, R.drawable.ic_assignment_late_black_48dp, R.drawable.ic_dashboard_black_24dp)
     val backgrounds = intArrayOf(
-            R.drawable.game_background_0, R.drawable.game_background_0, R.drawable.game_background_0)
+            R.drawable.search_love, R.drawable.search_love, R.drawable.search_love)
 
     init {
         val gamesJson = App.context.resources.getStringArray(R.array.categories).toList()

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.hellowo.teamfinder.R
 import android.widget.BaseAdapter
+import com.hellowo.teamfinder.utils.log
 import kotlinx.android.synthetic.main.fragment_choice.*
 import link.fls.swipestack.SwipeStack
 
@@ -27,6 +28,7 @@ class ChoiceFragment : Fragment() {
         swipeStack.adapter = SwipeStackAdapter(listOf("!!"))
         swipeStack.setListener(object : SwipeStack.SwipeStackListener{
             override fun onViewSwipedToLeft(position: Int) {
+                log(position.toString())
             }
 
             override fun onViewSwipedToRight(position: Int) {
@@ -35,6 +37,19 @@ class ChoiceFragment : Fragment() {
             override fun onStackEmpty() {
             }
         })
+        swipeStack.setSwipeProgressListener(object : SwipeStack.SwipeProgressListener{
+            override fun onSwipeEnd(position: Int) {
+            }
+
+            override fun onSwipeStart(position: Int) {
+            }
+
+            override fun onSwipeProgress(position: Int, progress: Float) {
+                log(progress.toString())
+            }
+
+        })
+        centerImage.setOnClickListener { rippleView.startRippleAnimation() }
     }
 
     inner class SwipeStackAdapter(private val mData: List<String>) : BaseAdapter() {

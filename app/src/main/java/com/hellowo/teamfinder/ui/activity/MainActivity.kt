@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container,
                 when (item) {
-                    homeTabImg -> ChatListFragment()
+                    homeTabImg -> ChoiceFragment()
                     matchingTabImg -> ChatListFragment()
-                    chatTabImg -> ChoiceFragment()
+                    chatTabImg -> ChatListFragment()
                     profileTabImg -> ProfileFragment()
                     else -> return
                 })

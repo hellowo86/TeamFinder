@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_menu_bar_height"
         android:background="@color/white"
-        android:layout_gravity="bottom"
-        android:elevation="5dp">
+        android:layout_gravity="bottom">
 
         <FrameLayout
             android:id="@+id/homeTab"
@@ -33,8 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_search_black_48dp"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/love"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>
@@ -51,8 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_comment_black_48dp"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/heart"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>
@@ -69,8 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_comment_black_48dp"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/love_chat"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>
@@ -87,8 +86,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                android:padding="@dimen/small_margin"
-                android:src="@drawable/ic_comment_black_48dp"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/lock_love"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>

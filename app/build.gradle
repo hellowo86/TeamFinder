@@ -85,10 +85,14 @@ dependencies {
     //util
     compile 'com.beust:klaxon:0.30'
 
+    //커스텀 쉐도우 뷰
+    compile 'com.loopeer.lib:shadow:0.0.4-beta2'
+
     // 스와이프 스택 https://github.com/flschweiger/SwipeStack
     compile 'link.fls:swipestack:0.3.0'
     // 스팟라이트 https://github.com/TakuSemba/Spotlight
     // 리플 백그라운드 https://github.com/skyfishjy/android-ripple-background
+    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
     // 축하효과 https://github.com/DanielMartinus/konfetti
 }
 

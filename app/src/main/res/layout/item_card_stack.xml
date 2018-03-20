@@ -11,6 +11,9 @@
         android:id="@+id/textViewCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/green_gradient"
+        android:text="fuck it"
+        android:textColor="@color/white"
         android:gravity="center"
         android:textSize="44sp"/>
 
