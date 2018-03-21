@@ -44,7 +44,7 @@ public class CommentListFragment extends Fragment {
         binding.sendBtn.setOnClickListener(v->enterComment());
 
         binding.swipeRefreshLy.setProgressViewOffset(false, 0,
-                (int) ViewUtil.dpToPx(getActivity(), 50));
+                (int) ViewUtil.INSTANCE.dpToPx(getActivity(), 50));
         binding.swipeRefreshLy.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         binding.swipeRefreshLy.setOnRefreshListener(() -> viewModel.getComments());
 

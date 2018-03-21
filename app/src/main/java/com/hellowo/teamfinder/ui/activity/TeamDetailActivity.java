@@ -69,7 +69,7 @@ public class TeamDetailActivity extends AppCompatActivity {
                 });
         binding.memberRecyclerView.setAdapter(memberListAdapter);
         binding.memberRecyclerView.addItemDecoration(
-                new HorizontalDecoration((int) ViewUtil.dpToPx(this, 20)));
+                new HorizontalDecoration((int) ViewUtil.INSTANCE.dpToPx(this, 20)));
     }
 
     private void initRoleRecyclerView() {

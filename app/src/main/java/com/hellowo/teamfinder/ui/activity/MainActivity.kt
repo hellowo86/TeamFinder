@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,8 +22,8 @@ import com.hellowo.teamfinder.ui.fragment.*
 import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
 import com.hellowo.teamfinder.utils.KEY_USERS
-import com.hellowo.teamfinder.utils.tabAnimation
 import com.hellowo.teamfinder.viewmodel.MainViewModel
+import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initLayout() {
-        profileTab.setOnLongClickListener {
+        communityTab.setOnLongClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
             FirebaseAuth.getInstance().signOut()
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         homeTab.setOnClickListener{ clickTab(homeTabImg) }
         matchingTab.setOnClickListener{ clickTab(matchingTabImg) }
         chatTab.setOnClickListener{ clickTab(chatTabImg) }
-        profileTab.setOnClickListener{ clickTab(profileTabImg) }
+        communityTab.setOnClickListener{ clickTab(communityTabImg) }
         clickTab(homeTabImg)
     }
 
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     homeTabImg -> ChoiceFragment()
                     matchingTabImg -> ChatListFragment()
                     chatTabImg -> ChatListFragment()
-                    profileTabImg -> ProfileFragment()
+                    communityTabImg -> ProfileFragment()
                     else -> return
                 })
         fragmentTransaction.commit()
@@ -98,8 +99,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUserUI(user: User?) {
-        if(user != null) {
+        user?.let {
+            Glide.with(this).load(it.photoUrl).placeholder(R.drawable.default_profile)
+                    .bitmapTransform(CropCircleTransformation(this)).into(profileImage)
+            nameText.text = it.nickName
         }
     }
-
 }

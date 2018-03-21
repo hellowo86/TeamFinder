@@ -98,6 +98,7 @@
     <string name="total_chat_count_is">총 %1$d개의 채팅방이 검색되었습니다.</string>
     <string name="searching">검색중...</string>
     <string name="event_list">이벤트 목록</string>
-    <string name="people_interest_me">나에게 관심있는 사람들</string>
+    <string name="people_interest_me">%1$s 님에게 호감을 표시한 사람이 있습니다.</string>
     <string name="where_is_my_lover">연인 찾기</string>
+    <string name="start_introduce">소개받기</string>
 </resources>

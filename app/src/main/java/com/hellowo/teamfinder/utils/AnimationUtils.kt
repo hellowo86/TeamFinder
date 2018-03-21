@@ -120,19 +120,11 @@ fun moveToBottom(view: View, offset: Float) {
     animSet.start()
 }
 
-fun tabAnimation(selectedView: View, canceledVeiw: View?) {
+fun setScale(view: View, scale: Float) {
     val animSet = AnimatorSet()
-    if(canceledVeiw == null) {
-        animSet.playTogether(
-                ObjectAnimator.ofFloat(selectedView, "scaleX", 1f, 1.5f).setDuration(250),
-                ObjectAnimator.ofFloat(selectedView, "scaleY", 1f, 1.5f).setDuration(250))
-    }else {
-        animSet.playTogether(
-                ObjectAnimator.ofFloat(selectedView, "scaleX", 1f, 1.5f).setDuration(250),
-                ObjectAnimator.ofFloat(selectedView, "scaleY", 1f, 1.5f).setDuration(250),
-                ObjectAnimator.ofFloat(canceledVeiw, "scaleX", 1.5f, 1f).setDuration(250),
-                ObjectAnimator.ofFloat(canceledVeiw, "scaleY", 1.5f, 1f).setDuration(250))
-    }
+    animSet.playTogether(
+            ObjectAnimator.ofFloat(view, "scaleX", view.scaleX, scale).setDuration(250),
+            ObjectAnimator.ofFloat(view, "scaleY", view.scaleY, scale).setDuration(250))
     animSet.interpolator = FastOutSlowInInterpolator()
     animSet.start()
 }
