@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLayout() {
         communityTab.setOnLongClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
-            finish()
             FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
             return@setOnLongClickListener false
         }
         homeTab.setOnClickListener{ clickTab(homeTabImg) }

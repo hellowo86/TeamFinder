@@ -15,6 +15,11 @@
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/window_background</item>
+    </style>
+
     <style name="TranslucentStatusTheme" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@color/transparent</item>

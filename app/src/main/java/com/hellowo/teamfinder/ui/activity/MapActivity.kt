@@ -64,9 +64,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initLayout() {
         setMap()
         profileTab.setOnLongClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
-            finish()
             FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
             return@setOnLongClickListener false
         }
         instantTab.setOnClickListener{ clickTab(it as ImageButton?) }

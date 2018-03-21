@@ -72,7 +72,5 @@ public class SingUpActivity extends AppCompatActivity {
     }
 
     public void goSignInView(){
-        startActivity(new Intent(SingUpActivity.this, SignInActivity.class));
-        finish();
     }
 }

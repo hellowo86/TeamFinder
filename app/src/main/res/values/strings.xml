@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TeamFinder</string>
+    <string name="app_name">Lovinside</string>
     <string name="sign_in">로그인</string>
     <string name="auto_agree">회원가입과 동시에 개인정보취급방침 및 이용약관에 동의하게됩니다</string>
     <string name="sign_up">회원가입</string>
