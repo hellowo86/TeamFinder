@@ -12,8 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:largeHeap="true">
-        <activity android:name=".ui.activity.SplashActivity"
-            android:theme="@style/SplashTheme">
+        <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.MainActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ui.activity.SingUpActivity"/>
         <activity android:name=".ui.activity.CreateTeamActivity"/>
         <activity android:name=".ui.activity.TeamDetailActivity"/>
         <activity android:name=".ui.activity.UserActivity"/>

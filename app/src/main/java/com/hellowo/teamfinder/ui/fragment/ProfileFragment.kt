@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.User
+import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import com.hellowo.teamfinder.viewmodel.ProfileViewModel
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -35,7 +36,7 @@ class ProfileFragment : Fragment() {
 
     private fun updateUserUI(user: User?) {
         user?.let {
-            Glide.with(this).load(it.photoUrl).placeholder(R.drawable.default_profile)
+            Glide.with(this).load(makePublicPhotoUrl(user.id)).placeholder(R.drawable.default_profile)
                     .bitmapTransform(CropCircleTransformation(context)).into(profileImage)
             nameText.text = it.nickName
             descriptionText.text = it.email

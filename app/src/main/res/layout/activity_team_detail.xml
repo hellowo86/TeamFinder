@@ -27,7 +27,7 @@
                     android:layout_marginStart="@dimen/extra_margin"
                     android:layout_marginEnd="@dimen/extra_margin"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ripple_button"
+                    android:background="?android:attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -93,7 +93,7 @@
 
                 <TextView
                     android:id="@+id/enterCommentBtn"
-                    android:background="@drawable/ripple_button"
+                    android:background="?android:attr/selectableItemBackground"
                     android:paddingLeft="@dimen/extra_margin"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/normal_button_height"
@@ -124,7 +124,7 @@
                 android:id="@+id/backBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/ripple_circle_button"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="14dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_arrow_back_black_48dp"

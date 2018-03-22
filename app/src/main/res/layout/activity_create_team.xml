@@ -53,7 +53,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
-                                android:background="@drawable/ripple_button"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -109,14 +109,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
-                                android:background="@drawable/ripple_button"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
                                 <TextView
                                     android:id="@+id/memberSizeText"
                                     style="@style/TitleText"
-                                    android:background="@drawable/ripple_button"
+                                    android:background="?android:attr/selectableItemBackground"
                                     android:layout_gravity="center_vertical|end"
                                     android:layout_width="0dp"
                                     android:layout_weight="1"
@@ -204,7 +204,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
-                                android:background="@drawable/ripple_button"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -310,7 +310,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/ripple_circle_button"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="14dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_arrow_back_black_48dp"
@@ -320,7 +320,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="end|center_vertical"
-                android:background="@drawable/ripple_circle_button"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="14dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_done_black_48dp"

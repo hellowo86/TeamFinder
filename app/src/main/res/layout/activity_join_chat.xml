@@ -68,7 +68,7 @@
         android:layout_marginTop="25dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/ripple_circle_button"
+        android:background="?android:attr/selectableItemBackground"
         android:padding="14dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_arrow_back_black_48dp"

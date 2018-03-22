@@ -21,7 +21,6 @@
     </style>
 
     <style name="BasicButton" parent="@android:style/Widget.TextView">
-        <item name="android:background">@drawable/primary_ripple_button</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/normal_button_height</item>
         <item name="android:paddingLeft">@dimen/normal_margin</item>
@@ -32,7 +31,6 @@
     </style>
 
     <style name="SmallButton" parent="@android:style/Widget.TextView">
-        <item name="android:background">@drawable/primary_ripple_button</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/small_button_height</item>
         <item name="android:paddingLeft">@dimen/normal_margin</item>
@@ -44,7 +42,6 @@
 
     <style name="FullButton" parent="@android:style/Widget.TextView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@drawable/primary_ripple_button</item>
         <item name="android:layout_height">@dimen/full_button_height</item>
         <item name="android:paddingLeft">@dimen/big_margin</item>
         <item name="android:paddingRight">@dimen/big_margin</item>

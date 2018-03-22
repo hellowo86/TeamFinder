@@ -35,7 +35,7 @@
             android:layout_height="50dp"
             android:padding="10dp"
             android:id="@+id/backBtn"
-            android:background="@drawable/ripple_circle_button"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_arrow_down"
             android:tint="@color/white"
             android:scaleType="centerInside" />

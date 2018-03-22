@@ -22,6 +22,7 @@ import com.hellowo.teamfinder.ui.fragment.*
 import com.hellowo.teamfinder.utils.KEY_CHAT
 import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
 import com.hellowo.teamfinder.utils.KEY_USERS
+import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import com.hellowo.teamfinder.viewmodel.MainViewModel
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
@@ -100,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUserUI(user: User?) {
         user?.let {
-            Glide.with(this).load(it.photoUrl).placeholder(R.drawable.default_profile)
+            Glide.with(this).load(makePublicPhotoUrl(user.id)).placeholder(R.drawable.default_profile)
                     .bitmapTransform(CropCircleTransformation(this)).into(profileImage)
             nameText.text = it.nickName
         }

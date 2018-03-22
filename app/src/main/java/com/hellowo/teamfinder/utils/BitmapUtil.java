@@ -15,8 +15,8 @@ public class BitmapUtil {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(filePath, options);
 
-        float widthScale = options.outWidth / 128;
-        float heightScale = options.outHeight / 128;
+        float widthScale = options.outWidth / 512;
+        float heightScale = options.outHeight / 512;
         float scale = widthScale > heightScale ? widthScale : heightScale;
 
         /*if(scale >= 16) {

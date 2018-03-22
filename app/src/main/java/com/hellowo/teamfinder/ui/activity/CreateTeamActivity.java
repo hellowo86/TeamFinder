@@ -100,7 +100,7 @@ public class CreateTeamActivity extends AppCompatActivity {
 
         viewModel.isConfirmable().observe(this, isConfirmable -> {
             if(isConfirmable) {
-                binding.confirmBtn.setBackgroundResource(R.drawable.primary_ripple_button);
+                binding.confirmBtn.setBackgroundResource(R.color.transparent);
             }else {
                 binding.confirmBtn.setBackgroundResource(R.color.disableText);
             }

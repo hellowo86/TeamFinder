@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">Lovinside</string>
+    <string name="app_name">PaperPlane</string>
     <string name="sign_in">로그인</string>
     <string name="auto_agree">회원가입과 동시에 개인정보취급방침 및 이용약관에 동의하게됩니다</string>
     <string name="sign_up">회원가입</string>
     <string name="didnt_have_id">계정이 없으신가요?</string>
-    <string name="enter_password">비밀번호 입력</string>
+    <string name="enter_password">비밀번호</string>
     <string name="find_the_password">비밀번호 찾기</string>
-    <string name="enter_email">이메일 입력</string>
-    <string name="enter_nick_name">닉네임 입력</string>
+    <string name="enter_email">이메일</string>
+    <string name="enter_nick_name">이름</string>
     <string name="signup_failed">회원가입이 실패했습니다. 다시 시도해주세요.</string>
     <string name="already_have_id">이미 계정이 있습니다.</string>
     <string name="invalid_email">이메일 형식이 올바르지 않습니다.</string>
-    <string name="invalid_nick_name">닉네임은 2글자 이상 10글자 이하로 만들어야 합니다.</string>
+    <string name="invalid_nick_name">이름은 2글자 이상 8글자 이하로 만들어야 합니다.</string>
     <string name="invalid_password">비밀번호는 8자리 이상이어야 합니다.</string>
     <string name="plz_check_policy">개인정보 취급방침에 동의해야합니다.</string>
     <string name="existed_nick_name">이미 존재하는 이름입니다.</string>
@@ -101,4 +101,20 @@
     <string name="people_interest_me">%1$s 님에게 호감을 표시한 사람이 있습니다.</string>
     <string name="where_is_my_lover">연인 찾기</string>
     <string name="start_introduce">소개받기</string>
+    <string name="do_sign_up">새로운 계정 만들기</string>
+    <string name="male">남자</string>
+    <string name="location">지역</string>
+    <string name="birth">출생년도</string>
+    <string name="gender">성별</string>
+    <string name="moreInfo">소개말</string>
+    <string name="female">여자</string>
+    <string name="age">나이</string>
+    <string name="start">시작하기</string>
+    <string name="do_login">로그인하기</string>
+    <string name="plz_check_gender">성별을 선택해주세요</string>
+    <string name="selected">지정됨</string>
+    <string name="plz_check_location">지역을 지정해주세요</string>
+    <string name="plz_check_age">나이를 지정해주세요</string>
+    <string name="plz_check_moreInfo">소개말을 작성해주세요</string>
+    <string name="plz_check_profile_img">프로필 사진을 설정해주세요</string>
 </resources>

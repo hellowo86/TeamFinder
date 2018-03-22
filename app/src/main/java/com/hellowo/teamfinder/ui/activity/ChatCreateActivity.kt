@@ -143,10 +143,8 @@ class ChatCreateActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun updateConfirmBtn(isCanGoNextProgress: Boolean?) {
         if(isCanGoNextProgress as Boolean) {
             nextBtn.setTextColor(getColor(R.color.primaryWhiteText))
-            nextBtn.setBackgroundResource(R.drawable.ripple_button)
         }else {
             nextBtn.setTextColor(getColor(R.color.disableWhiteText))
-            nextBtn.setBackgroundResource(R.color.transparent)
         }
     }
 
