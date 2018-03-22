@@ -7,78 +7,8 @@
         android:id="@+id/container"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/top_menu_bar_height"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
-
-        <LinearLayout
-            android:id="@+id/profileLy"
-            android:layout_gravity="right|center_vertical"
-            android:animateLayoutChanges="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/normal_margin"
-            android:paddingRight="@dimen/normal_margin"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/default_profile"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp">
-
-                <TextView
-                    android:id="@+id/nameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="name"
-                    android:textSize="13dp"
-                    android:textColor="@color/disableText"/>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center_vertical"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/color_potion" />
-
-                    <TextView
-                        android:id="@+id/currentCoinText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="5dp"
-                        android:text="0"
-                        android:textColor="@color/disableText"
-                        android:textSize="15dp"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/top_menu_bar_height">
     </FrameLayout>
 
     <LinearLayout
@@ -86,12 +16,13 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_menu_bar_height"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:paddingLeft="@dimen/big_margin"
-        android:paddingRight="@dimen/big_margin"
-        android:background="@color/whiteAlpha"
-        android:layout_gravity="bottom">
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:background="@color/background"
+        android:layout_gravity="bottom"
+        android:elevation="10dp">
 
         <FrameLayout
             android:id="@+id/homeTab"
@@ -106,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:padding="@dimen/normal_margin"
-                android:src="@drawable/love"
+                android:src="@drawable/search_love"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>
@@ -124,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:padding="@dimen/normal_margin"
-                android:src="@drawable/lock_love"
+                android:src="@drawable/color_jigsaw"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>
@@ -142,7 +73,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:padding="@dimen/normal_margin"
-                android:src="@drawable/love_chat"
+                android:src="@drawable/chat"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>
@@ -160,7 +91,25 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:padding="@dimen/normal_margin"
-                android:src="@drawable/heart"
+                android:src="@drawable/color_potion"
+                android:tint="@color/disableText"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/profileTab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/profileImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:padding="13dp"
+                android:src="@drawable/default_profile"
                 android:tint="@color/disableText"/>
 
         </FrameLayout>

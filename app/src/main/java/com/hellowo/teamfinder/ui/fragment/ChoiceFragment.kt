@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.transition.Explode
-import android.support.transition.Fade
-import android.support.transition.Slide
-import android.support.transition.TransitionManager
+import android.support.transition.*
 import android.support.v4.app.Fragment
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.view.Gravity
@@ -24,6 +21,7 @@ import com.hellowo.teamfinder.utils.log
 import com.hellowo.teamfinder.utils.setScale
 import com.hellowo.teamfinder.viewmodel.ChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_choice.*
+import kotlinx.android.synthetic.main.list_item_chat.view.*
 import link.fls.swipestack.SwipeStack
 
 
@@ -52,12 +50,9 @@ class ChoiceFragment : Fragment() {
         swipeStack.adapter = adapter
         swipeStack.setListener(object : SwipeStack.SwipeStackListener{
             override fun onViewSwipedToLeft(position: Int) {
-                log("left"+position.toString())
             }
-
             override fun onViewSwipedToRight(position: Int) {
             }
-
             override fun onStackEmpty() {
             }
         })
@@ -79,39 +74,53 @@ class ChoiceFragment : Fragment() {
             }
         })
 
-        startBtn.setOnClickListener {
-            rippleView.visibility = View.VISIBLE
-            rippleView.startRippleAnimation()
-            val anim = TranslateAnimation(0f, 0f, 0f, -15f)
-            anim.duration = 500
-            anim.repeatCount = Animation.INFINITE
-            anim.repeatMode = Animation.REVERSE
-            centerImage.startAnimation(anim)
-        }
-
+        searchBtn.setOnClickListener { viewModel.startNewSearch() }
     }
 
     private fun setObserver() {
-        viewModel.interestMeList.observe(this, Observer { it?.let { if(it.size > 0) showChoiceView() } })
+        viewModel.interestMeList.observe(this, Observer { it?.let { if(it.size > 0){
+
+        }}})
         viewModel.loading.observe(this, Observer { progressBar.visibility = if(it as Boolean) View.VISIBLE else View.GONE })
+        viewModel.viewMode.observe(this, Observer {
+            makeTransition()
+            when(it){
+                0 -> {
+                    optionLy.visibility = View.VISIBLE
+                    optionChild1.visibility = View.VISIBLE
+                    optionChild2.visibility = View.VISIBLE
+                    responseBtn.visibility = View.VISIBLE
+                    searchBtn.visibility = View.VISIBLE
+                    loadingLy.visibility = View.INVISIBLE
+                    rippleView.visibility = View.INVISIBLE
+                }
+                1 -> {
+                    optionLy.visibility = View.INVISIBLE
+                    optionChild1.visibility = View.INVISIBLE
+                    optionChild2.visibility = View.INVISIBLE
+                    responseBtn.visibility = View.INVISIBLE
+                    searchBtn.visibility = View.INVISIBLE
+                    loadingLy.visibility = View.VISIBLE
+                    rippleView.visibility = View.VISIBLE
+                    rippleView.startRippleAnimation()
+                    val anim = TranslateAnimation(0f, 0f, 0f, -15f)
+                    anim.duration = 500
+                    anim.repeatCount = Animation.INFINITE
+                    anim.repeatMode = Animation.REVERSE
+                    centerImage.startAnimation(anim)
+                }
+            }
+        })
     }
 
-    private fun showChoiceView() {
-        val trasition = Slide()
-        trasition.slideEdge = Gravity.BOTTOM
-        trasition.duration = 500
-        trasition.interpolator = FastOutSlowInInterpolator()
-        TransitionManager.beginDelayedTransition(choiceLy, trasition)
-        ViewUtil.toggleVisibility(choiceLy, swipeStack, choiceNoBtn, choiceYesBtn)
+    private fun makeTransition(){ // VISIBLITIY 설정 전에 호출해야함
+        val transition = Slide()
+        transition.slideEdge = Gravity.BOTTOM
+        transition.duration = 500
+        transition.interpolator = FastOutSlowInInterpolator()
+        TransitionManager.beginDelayedTransition(rootLy, transition)
     }
 
-    /*
-        TransitionManager.beginDelayedTransition(coordinator_layout, makeAutoTransition())
-         val explode = Explode()
-            explode.setDuration(500)
-            explode.setInterpolator(AnticipateOvershootInterpolator())
-            return explode
-    */
     inner class SwipeStackAdapter(private val mData: List<String>) : BaseAdapter() {
 
         override fun getCount(): Int {

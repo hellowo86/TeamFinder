@@ -15,6 +15,7 @@ class ChoiceViewModel : ViewModel() {
     var newList = MutableLiveData<ArrayList<User>>()
     var interestMeList = MutableLiveData<ArrayList<User>>()
     var loading = MutableLiveData<Boolean>()
+    var viewMode = MutableLiveData<Int>()
 
     init {
         newList.value = ArrayList()
@@ -24,6 +25,7 @@ class ChoiceViewModel : ViewModel() {
 
     fun loadInterestMeList() {
         loading.value = true
+        interestMeList.value?.clear()
         ref.child(KEY_USERS)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(error: DatabaseError?) {
@@ -31,14 +33,20 @@ class ChoiceViewModel : ViewModel() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (postSnapshot in snapshot.children) {
                             postSnapshot.getValue(User::class.java)?.let {
-                                log(it.toString())
                                 interestMeList.value?.add(it)
                             }
+                        }
+                        if(viewMode.value == null) {
+                            viewMode.value = 0
                         }
                         interestMeList.value = interestMeList.value
                         loading.value = false
                     }
                 })
+    }
+
+    fun startNewSearch() {
+        viewMode.value = 1
     }
 
 

@@ -54,7 +54,7 @@ object ViewUtil {
     fun toggleVisibility(vararg views: View) {
         // Loop through the views
         for (v in views) {
-            if (v.visibility === View.VISIBLE) {
+            if (v.visibility == View.VISIBLE) {
                 v.visibility = View.INVISIBLE
             } else {
                 v.visibility = View.VISIBLE

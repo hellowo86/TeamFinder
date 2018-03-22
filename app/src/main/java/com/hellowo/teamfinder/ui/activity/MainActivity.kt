@@ -51,13 +51,14 @@ class MainActivity : AppCompatActivity() {
         matchingTab.setOnClickListener{ clickTab(matchingTabImg) }
         chatTab.setOnClickListener{ clickTab(chatTabImg) }
         communityTab.setOnClickListener{ clickTab(communityTabImg) }
+        profileTab.setOnClickListener{ clickTab(profileImg) }
         clickTab(homeTabImg)
     }
 
     private fun clickTab(item: ImageView) {
         if(item != clickedTab) {
-            clickedTab?.setColorFilter(resources.getColor(R.color.disableText))
-            item.setColorFilter(resources.getColor(R.color.colorPrimary))
+            if(clickedTab != profileImg) clickedTab?.setColorFilter(resources.getColor(R.color.disableText))
+            if(item != profileImg) item.setColorFilter(resources.getColor(R.color.colorPrimary))
             clickedTab = item
         }
 
@@ -67,7 +68,8 @@ class MainActivity : AppCompatActivity() {
                     homeTabImg -> ChoiceFragment()
                     matchingTabImg -> ChatListFragment()
                     chatTabImg -> ChatListFragment()
-                    communityTabImg -> ProfileFragment()
+                    communityTabImg -> ChatListFragment()
+                    profileImg -> ProfileFragment()
                     else -> return
                 })
         fragmentTransaction.commit()
@@ -102,8 +104,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateUserUI(user: User?) {
         user?.let {
             Glide.with(this).load(makePublicPhotoUrl(user.id)).placeholder(R.drawable.default_profile)
-                    .bitmapTransform(CropCircleTransformation(this)).into(profileImage)
-            nameText.text = it.nickName
+                    .bitmapTransform(CropCircleTransformation(this)).into(profileImg)
         }
     }
 }

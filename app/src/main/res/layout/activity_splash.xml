@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white">
+    android:background="@color/background">
 
     <LinearLayout
         android:id="@+id/rootLy"
