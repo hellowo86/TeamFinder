@@ -1,6 +1,5 @@
 package com.hellowo.teamfinder.ui.fragment
 
-import android.support.v7.app.AppCompatActivity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -10,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import com.hellowo.teamfinder.viewmodel.ProfileViewModel
@@ -31,7 +30,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MeLiveData.observe(this, Observer { updateUserUI(it) })
+        Me.observe(this, Observer { updateUserUI(it) })
     }
 
     private fun updateUserUI(user: User?) {

@@ -4,10 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.v4.util.ArrayMap
 import android.util.Log
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.VisibleRegion
 import com.google.firebase.database.*
-import com.hellowo.teamfinder.data.MyChatLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
 

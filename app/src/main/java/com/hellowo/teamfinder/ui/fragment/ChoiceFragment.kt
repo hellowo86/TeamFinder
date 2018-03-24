@@ -74,7 +74,7 @@ class ChoiceFragment : Fragment() {
             }
         })
 
-        searchBtn.setOnClickListener { viewModel.startNewSearch() }
+        searchBtn.setOnClickListener { viewModel.startNewSearch(0.0) }
     }
 
     private fun setObserver() {
@@ -93,6 +93,8 @@ class ChoiceFragment : Fragment() {
                     searchBtn.visibility = View.VISIBLE
                     loadingLy.visibility = View.INVISIBLE
                     rippleView.visibility = View.INVISIBLE
+                    loadingChild1.visibility = View.INVISIBLE
+                    loadingChild2.visibility = View.INVISIBLE
                 }
                 1 -> {
                     optionLy.visibility = View.INVISIBLE
@@ -102,6 +104,8 @@ class ChoiceFragment : Fragment() {
                     searchBtn.visibility = View.INVISIBLE
                     loadingLy.visibility = View.VISIBLE
                     rippleView.visibility = View.VISIBLE
+                    loadingChild1.visibility = View.VISIBLE
+                    loadingChild2.visibility = View.VISIBLE
                     rippleView.startRippleAnimation()
                     val anim = TranslateAnimation(0f, 0f, 0f, -15f)
                     anim.duration = 500

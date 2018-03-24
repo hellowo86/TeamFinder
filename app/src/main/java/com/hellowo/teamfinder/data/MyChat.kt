@@ -3,7 +3,6 @@ package com.hellowo.teamfinder.data
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.support.v4.util.ArrayMap
-import android.util.Log
 import com.google.firebase.database.*
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
@@ -11,7 +10,7 @@ import com.hellowo.teamfinder.utils.KEY_DT_ENTERED
 import com.hellowo.teamfinder.utils.KEY_LAST_CHECK_INDEX
 import com.hellowo.teamfinder.utils.KEY_USERS
 
-object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
+object MyChat : LiveData<ArrayMap<String, Chat>>() {
     val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     val chatRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child(KEY_CHAT)
     val itemsMap: ArrayMap<String, Chat> = ArrayMap()
@@ -78,7 +77,7 @@ object MyChatLiveData : LiveData<ArrayMap<String, Chat>>() {
     }
 
     override fun onActive() {
-        currentUserId = MeLiveData.value?.id.toString()
+        currentUserId = Me.value?.id.toString()
         ref.child(KEY_USERS).child(currentUserId).child(KEY_CHAT).addValueEventListener(joinedChatEventListener)
     }
 

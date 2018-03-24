@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -25,7 +24,6 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.ui.adapter.ChatMemberListAdapter

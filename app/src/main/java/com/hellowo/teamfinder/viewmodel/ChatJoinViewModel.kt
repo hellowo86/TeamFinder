@@ -2,10 +2,9 @@ package com.hellowo.teamfinder.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.utils.*
@@ -44,7 +43,7 @@ class ChatJoinViewModel : ViewModel() {
     fun joinChat() {
         isJoining.value =  true
         val ref = FirebaseDatabase.getInstance().reference
-        MeLiveData.value?.let {
+        Me.value?.let {
             ref.child(KEY_CHAT).child(chatId).child(KEY_MESSAGE_COUNT)
                     .addListenerForSingleValueEvent( object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {

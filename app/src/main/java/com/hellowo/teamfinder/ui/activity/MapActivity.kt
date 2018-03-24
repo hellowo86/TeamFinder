@@ -30,8 +30,8 @@ import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
 import com.hellowo.teamfinder.data.CurrentLocation
-import com.hellowo.teamfinder.data.MeLiveData
-import com.hellowo.teamfinder.data.MyChatLiveData
+import com.hellowo.teamfinder.data.Me
+import com.hellowo.teamfinder.data.MyChat
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.ui.adapter.ChatInfoWindowAdpater
@@ -96,7 +96,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initObserve() {
-        MeLiveData.observe(this, Observer { updateUserUI(it) })
+        Me.observe(this, Observer { updateUserUI(it) })
         viewModel.chats.observe(this, Observer { addMarkers(it) })
     }
 
@@ -208,7 +208,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             if(it.containsKey(AppConst.EXTRA_CHAT_ID)) {
                 val chatId = it.getString(AppConst.EXTRA_CHAT_ID)
                 clickTab(chatTab)
-                FirebaseDatabase.getInstance().reference.child(KEY_USERS).child(MyChatLiveData.currentUserId)
+                FirebaseDatabase.getInstance().reference.child(KEY_USERS).child(MyChat.currentUserId)
                         .child(KEY_CHAT).child(chatId).child(KEY_DT_ENTERED)
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onCancelled(p0: DatabaseError?) {}

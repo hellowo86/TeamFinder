@@ -8,7 +8,7 @@ import com.hellowo.teamfinder.model.Member
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.utils.KEY_USERS
 
-object MeLiveData : LiveData<User>() {
+object Me : LiveData<User>() {
     val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     val mAuthListener: FirebaseAuth.AuthStateListener
     var valueEventListener: ValueEventListener
@@ -27,7 +27,7 @@ object MeLiveData : LiveData<User>() {
             if(auth.currentUser != null) {
                 loadCurrentLoginUser(auth.currentUser as FirebaseUser)
             }else {
-                MyChatLiveData.clear()
+                MyChat.clear()
                 value = null
             }
         }

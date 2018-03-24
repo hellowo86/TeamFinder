@@ -6,7 +6,7 @@ import android.text.Editable
 import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hellowo.teamfinder.data.CategoryData
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.*
 import com.hellowo.teamfinder.viewmodel.ChatCreateViewModel.CurrentProgress.Contents
@@ -56,7 +56,7 @@ class ChatCreateViewModel : ViewModel() {
     }
 
     fun confirm(allHashTags: MutableList<String>) {
-        MeLiveData.value?.let {
+        Me.value?.let {
             val ref = FirebaseDatabase.getInstance().reference
             loading.value = true
             chat.dtCreated = System.currentTimeMillis()

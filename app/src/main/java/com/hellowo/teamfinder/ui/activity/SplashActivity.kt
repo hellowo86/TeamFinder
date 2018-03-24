@@ -19,7 +19,7 @@ import com.gun0912.tedpermission.TedPermission
 import com.hellowo.teamfinder.App
 
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.utils.StringUtil
 import com.hellowo.teamfinder.viewmodel.SplashViewModel
@@ -60,8 +60,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        MeLiveData.observe(this, Observer { user ->
-            MeLiveData.removeObservers(this)
+        Me.observe(this, Observer { user ->
+            Me.removeObservers(this)
             if (user != null) {
                 val mainIntent = Intent(this, MainActivity::class.java)
                 intent.extras?.let { mainIntent.putExtras(it) }

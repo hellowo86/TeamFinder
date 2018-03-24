@@ -7,18 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
-import com.beust.klaxon.JsonObject
 import com.bumptech.glide.Glide
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.model.ChatMember
 import com.hellowo.teamfinder.model.Message
 import com.hellowo.teamfinder.utils.makePublicPhotoUrl
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.list_item_message.view.*
-import kotlinx.android.synthetic.main.list_item_message_typing.view.*
 import org.json.JSONObject
 import java.text.DateFormat
 import java.util.*
@@ -36,7 +33,7 @@ class MessageListAdapter(val context: Context,
     private val VIEW_TYPE_PHOTO_ME = 5
     private val currentCal: Calendar = Calendar.getInstance()
     private val nextCal: Calendar = Calendar.getInstance()
-    private val myId = MeLiveData.value?.id
+    private val myId = Me.value?.id
 
     inner class ViewHolder(container: View) : RecyclerView.ViewHolder(container)
 

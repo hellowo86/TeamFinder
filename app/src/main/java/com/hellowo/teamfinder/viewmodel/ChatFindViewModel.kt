@@ -3,9 +3,8 @@ package com.hellowo.teamfinder.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.v4.util.ArrayMap
-import android.util.Log
 import com.google.firebase.database.*
-import com.hellowo.teamfinder.data.MyChatLiveData
+import com.hellowo.teamfinder.data.MyChat
 import com.hellowo.teamfinder.model.Chat
 import com.hellowo.teamfinder.utils.KEY_CHAT
 
@@ -23,7 +22,7 @@ class ChatFindViewModel : ViewModel() {
                     chatList.put(chat.id, chat)
                 }
             }
-            chatList.filter { MyChatLiveData.itemsMap.containsKey(it.key) }
+            chatList.filter { MyChat.itemsMap.containsKey(it.key) }
                     .map { chatList.remove(it.key) }
             chats.value = chatList
         }

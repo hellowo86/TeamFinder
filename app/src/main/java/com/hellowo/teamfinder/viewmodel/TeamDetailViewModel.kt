@@ -6,12 +6,11 @@ import android.util.Log
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.Comment
 import com.hellowo.teamfinder.model.Member
 import com.hellowo.teamfinder.model.Team
@@ -97,8 +96,8 @@ class TeamDetailViewModel : ViewModel() {
         loading.setValue(true)
         val comment = Comment(
                 message,
-                MeLiveData.value!!.nickName,
-                MeLiveData.value!!.id,
+                Me.value!!.nickName,
+                Me.value!!.id,
                 System.currentTimeMillis())
 
         val ref = FirebaseDatabase.getInstance().reference.child(KEY_COMMENTS).child(teamId!!)

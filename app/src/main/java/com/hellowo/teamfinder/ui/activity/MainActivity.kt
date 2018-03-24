@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -15,8 +14,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.hellowo.teamfinder.AppConst
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
-import com.hellowo.teamfinder.data.MyChatLiveData
+import com.hellowo.teamfinder.data.Me
+import com.hellowo.teamfinder.data.MyChat
 import com.hellowo.teamfinder.model.User
 import com.hellowo.teamfinder.ui.fragment.*
 import com.hellowo.teamfinder.utils.KEY_CHAT
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        MeLiveData.observe(this, Observer { updateUserUI(it) })
+        Me.observe(this, Observer { updateUserUI(it) })
         viewModel.chats.observe(this, Observer {  })
     }
 
@@ -85,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             if(it.containsKey(AppConst.EXTRA_CHAT_ID)) {
                 val chatId = it.getString(AppConst.EXTRA_CHAT_ID)
                 clickTab(chatTabImg)
-                FirebaseDatabase.getInstance().reference.child(KEY_USERS).child(MyChatLiveData.currentUserId)
+                FirebaseDatabase.getInstance().reference.child(KEY_USERS).child(MyChat.currentUserId)
                         .child(KEY_CHAT).child(chatId).child(KEY_DT_ENTERED)
                         .addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onCancelled(p0: DatabaseError?) {}

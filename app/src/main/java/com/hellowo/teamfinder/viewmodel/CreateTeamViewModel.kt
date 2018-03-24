@@ -7,7 +7,7 @@ import android.text.Editable
 import com.google.firebase.database.FirebaseDatabase
 import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.data.CategoryData
 import com.hellowo.teamfinder.model.Category
 import com.hellowo.teamfinder.model.Team
@@ -25,7 +25,7 @@ class CreateTeamViewModel : ViewModel() {
 
     init {
         team = Team()
-        team.members.add(MeLiveData.value!!.makeMember(App.context.getString(R.string.free_role)))
+        team.members.add(Me.value!!.makeMember(App.context.getString(R.string.free_role)))
         team.dtActive = java.lang.Long.MAX_VALUE
         team.roles.put(App.context.getString(R.string.free_role), 1)
         needMemberSize.value = 1

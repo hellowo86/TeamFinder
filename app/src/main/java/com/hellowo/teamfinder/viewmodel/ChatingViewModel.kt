@@ -5,24 +5,20 @@ import android.arch.lifecycle.ViewModel
 import android.graphics.Bitmap
 import android.net.Uri
 import android.support.v4.util.ArrayMap
-import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.hellowo.teamfinder.App
 import com.hellowo.teamfinder.R
-import com.hellowo.teamfinder.data.MeLiveData
-import com.hellowo.teamfinder.data.TeamsLiveData
+import com.hellowo.teamfinder.data.Me
 import com.hellowo.teamfinder.model.*
 import com.hellowo.teamfinder.utils.*
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.text.DateFormat
 import java.util.*
 
 class ChatingViewModel : ViewModel() {
@@ -41,7 +37,7 @@ class ChatingViewModel : ViewModel() {
     val outOfChat = MutableLiveData<Boolean>()
 
     val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    val me = MeLiveData.value
+    val me = Me.value
     var lastTime: Long = System.currentTimeMillis()
     var chatLoading = false
     var messagesLoading = false
